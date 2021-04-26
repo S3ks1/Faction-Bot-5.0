@@ -926,11 +926,12 @@ bot.on('message', async (message) => {
     bot.serverchat.push(message.toString())
     if(message.toString().includes("[!] WE ARE BEING RAIDED [!]")){
         let guild = await getGuild(config.mainGuild)
+        let g = client.guilds.cache.get(config.mainGuild)
         let embed = new Discord.MessageEmbed()
         .setColor(guild.embedColor)
         .setTimestamp()
         .setDescription(`:warning: We are getting raided`)
-        guild.channels.cache.find(c => c.name === "raid-alerts").then(c=>{
+        g.channels.cache.find(c => c.name === "raid-alerts").then(c=>{
             c.send(embed)
             c.send("@everyone")
         })
