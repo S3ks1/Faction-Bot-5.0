@@ -911,11 +911,12 @@ bot.on('fcf', (user,content) => {
 
 bot.on('raid', async () => {
     let guild = await getGuild(config.mainGuild)
+    let g = client.guilds.cache.get(config.mainGuild)
     let embed = new Discord.MessageEmbed()
     .setColor(guild.embedColor)
     .setTimestamp()
     .setDescription(`:warning: We are getting raided`)
-    guild.channels.cache.find(c => c.name === "raid-alerts").then(c=>{
+    g.channels.cache.find(c => c.name === "raid-alerts").then(c=>{
         c.send(embed)
         c.send("@everyone")
     })
