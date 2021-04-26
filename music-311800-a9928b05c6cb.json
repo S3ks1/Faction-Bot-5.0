@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "music-311800",
+  "private_key_id": "a9928b05c6cb3dd73868e0c4168b1ec268d55d55",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDkf9+1ULeFzf4y\nIiOOaWD+7mFL5hLmA/G3H4/4oGi6fYEZ9OdRSr2UZWNhPRbAiiUe5kV6FKV0g2u9\nonMcnspxOo2+kWHv1Yr00z8ZMrEoW86z6C9E/rXdIY0Hr5ZuQaOLoQu0n+EE4VgJ\nLKoTvDP/5LY+ahvrq7zYy88pi9NIxR/ISmdED6+7Wr+4SrftmvKiIA46j8ILVuUa\nwnserrR55bnOg7hODnvlCysw6p6p/66iT8RbIow6PDenWp9QNoXqMhNEGxrw7elC\n3t+tTzrjwwE3xpmJLumkX2DCJWuy1BFRQAPFIhVBhdo2dYvoWmQo3lafQ/r2ipjl\nX7zGpaDFAgMBAAECggEAIEtcZEVkssIS56YAjXuiTFWHpdD+Ickz6/RHhlWxh43+\nZZtB6DDei28q9Q7LvOmpZm0YK7FoUwfR/erMRyLALPGgH+tvQpTVP1Xt6JNMC46y\nL6YkrCUtsfOweYIdCjc3tJ/NxjkEdgqdRSqtXP2wAb4i7b5UdOIAXkmr3UzYT0Pc\niXls5hDsn1OzPQEQQrllam0QXBXw241a/oaGAKgY9M3MJ8hya8KpU40OnMToggWp\nBOJ0e3YNhkKICsLJsp/Fv/Iixf8mh9elPOXqSBO9IMdCLpgc3UiNprGwk9FB+mG/\nG1+oj1ZPOAtKPcF+uDr+HbdlMJJeZ+hCJ30i5BwyPwKBgQD/xVbIUKF+i6PkZUYM\n2XPTCDX309sdlxG3370rNcWFTTef6Wj8gnmM/yEfmvakrEZsghbxHjp6hoNKKiQ7\nFCo8v0BY/U5rzJxqQoPnehYc27Vje7MwkLQX6DxwuknUPABnGqOQkZGAPuX29Jee\nx/6LoQJlN8fTd1tW2yxvjtM+9wKBgQDktEe6U6+QvSwRruhGwekgdoKhHSNOzZ55\njpzE94roJZHszQBAG6XRXFV4jf4ctO745ZoPelv/njDJabtuBV3LcuPVVLCd3jyL\nRYekVPD5wXRHoaxOcNG+Xg9ct9z6rpEuY+q1swlOAu2ncloQgtQJC0PoOq5/hGri\nzh7WucnjIwKBgQCaavsE/2Ew9H+jcd1D/rkl7KwgjsCYcc+ZsrQT9WfmHgN6QUJI\nSUG3dYT6/uTv8K6n7jaJplVqCfIUAbNUE82YVWM1FuGUxbidksDuLNBS5fbyNAmw\nRXzlfimXaXEPeJZJqVSdALXWtqLCYVN04ov0ouW+VFoJeuMjYjnGtHUnawKBgQCf\n56TXFDgGnR2453AkOORE/FdtSrArIv0QxLO7y9BlbA9RYCwypqITddmUxsLLU35a\nrD5BYC3+1Z4K1VBlJn9kBlpiCCrM1lvCjMTAE1vBZI9mnhWZaqxby+w1yaBJ7dA4\nfUfX7uwsjUOY9g0eyjpycFv0fUMQiYcqOS+6tn//vQKBgHVBcLX78mIwwkKM5qxy\nB5y4p3ekiH419Ygd+T8XsFSDwR8tuugLQQ9Tw3OPqG9zNZfXP2zjmB9VXrTQ+W4O\neOnzKjjWAE9+3EhzT62EkCzADszD5SckXrjPNWffoDIyNCl1H3o1JO4CPjR7kCQl\n2PwGKWPL43F8YKNPbw5WaJjJ\n-----END PRIVATE KEY-----\n",
+  "client_email": "xling-284@music-311800.iam.gserviceaccount.com",
+  "client_id": "109223056743973972870",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/xling-284%40music-311800.iam.gserviceaccount.com"
+}
