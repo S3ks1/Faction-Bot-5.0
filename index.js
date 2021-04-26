@@ -916,10 +916,10 @@ bot.on('raid', async () => {
     .setColor(guild.embedColor)
     .setTimestamp()
     .setDescription(`:warning: We are getting raided`)
-    g.channels.cache.find(c => c.name === "raid-alerts").then(c=>{
+    let c = g.channels.cache.find(c => c.name === "raid-alerts")
         c.send(embed)
         c.send("@everyone")
-    })
+    
 })
 
 bot.on('message', async (message) => {
