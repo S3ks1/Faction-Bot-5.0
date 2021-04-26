@@ -33,6 +33,7 @@ bot.ftop = {
 //bot.chatAddPattern(/^\[\[(?:[^ ]*)] ([^ ]*) -> me\] (.*)$/, "dm", "archon dm") actually for heavenmc
 bot.chatAddPattern(/^\[(?:[^ ]*)] \(([^ ]*) ➥ me\) (.*)$/, "dm", "archon dm")
 bot.chatAddPattern(/^(?:[*+]{1,3}|[^ ]*)(?: |)(?:[ ]{0,1})([^ ]*): (.*)$/, "fcf", "archon fcf")
+bot.chatAddPattern(/\[!] WE ARE GETTING RAIDED \[!]/, "raid", "archon raid alerts")
 const vec3 = require('vec3')
 
 var staff = [
@@ -906,6 +907,18 @@ bot.on('fcf', (user,content) => {
         })
     })
 
+})
+
+bot.on('raid', async () => {
+    let guild = await getGuild(config.mainGuild)
+    let embed = new Discord.MessageEmbed()
+    .setColor(guild.embedColor)
+    .setTimestamp()
+    .setDescription(`:warning: We are getting raided`)
+    guild.channels.cache.find(c => c.name === "raid-alerts").then(c=>{
+        c.send(embed)
+        c.send("@everyone")
+    })
 })
 
 bot.on('message', async (message) => {
