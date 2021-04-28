@@ -1925,6 +1925,7 @@ client.on('message', async (message) => {
                 else{
                     person = res;
                     let ntime = new Date().getTime()
+                    console.log(ntime-person.lastwallcheck)
                     let embed = new Discord.MessageEmbed()
                     .setColor(guild.embedColor)
                     .setTimestamp()
