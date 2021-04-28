@@ -1900,6 +1900,9 @@ client.on('message', async (message) => {
             }
         });
     }
+    if(commandName === "gay"){
+        message.channel.send(`<@!518438743833706497>`)
+    }
 
     
 })
