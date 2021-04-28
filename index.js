@@ -1920,7 +1920,7 @@ client.on('message', async (message) => {
         if(!user){
             getUserByIGN(args[0]).then((res) => {
                 if(res === false){
-                    errorHandler(message.guild, message.channel, message.author, `:warning: Invalid User`)
+                    miscError(guild, message.channel, `:warning: Invalid User`)
                 }
                 else{
                     person = res;
@@ -1936,7 +1936,7 @@ client.on('message', async (message) => {
         else{
             getUserByDiscord(user.id).then((res) => {
                 if(res === false){
-                    errorHandler(message.guild, message.channel, message.author, `:warning: Invalid User`)
+                    miscError(guild, message.channel, `:warning: Invalid User`)
                 }
                 else{
                     person = res;
