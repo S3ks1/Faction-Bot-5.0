@@ -16,6 +16,7 @@ const textToSpeech = require('@google-cloud/text-to-speech');
 const clientt = new textToSpeech.TextToSpeechClient();
 const client = new Discord.Client({partials: ["MESSAGE", "CHANNEL", "REACTION"]})
 const cooldowns = new Set()
+var exec = require('child_process').exec;
 var used = 0;
 client.aliases = new Discord.Collection()
 client.commands = new Discord.Collection()
@@ -61,6 +62,7 @@ const { inspect } = require("util")
 const process = require("child_process")
 var data;
 //Mongo Schemas
+
 
 const userSchema = new mongoose.Schema({
     discordId: {
@@ -260,6 +262,17 @@ mongoose.connect(config.mongoURL, {
 })
 
 // Global Functions
+var result = function(command, cb){
+    var child = exec(command, function(err, stdout, stderr){
+        if(err != null){
+            return cb(new Error(err), null);
+        }else if(typeof(stderr) != "string"){
+            return cb(new Error(stderr), null);
+        }else{
+            return cb(null, stdout);
+        }
+    });
+}
 
 async function tts(text) {
     // The text to synthesize
@@ -975,7 +988,7 @@ client.on('ready', async function() {
         }
     })
 });
-let commands = ["help", "eval", "exec", "av", "whitelist", "flist", "ftop", "sudo", "ftop", "fwho", "wtop", "btop", "settings", "members", "dm", "perm", "setign"]
+let commands = ["help", "eval", "exec", "av", "whitelist", "flist", "ftop", "sudo", "ftop", "fwho", "wtop", "btop", "settings", "members", "dm", "perm", "setign", "update"]
 client.on('message', async (message) => {
     if(message.author.bot) return;
     if(message.channel.type == "dm") return;
@@ -1875,6 +1888,17 @@ client.on('message', async (message) => {
             }
         })
 
+    }
+    if(commandName === "update" || commandName === "git" && args[0] === "pull"){
+        let z = await checkPerms(commandName, message)
+        if(z === false) return noPerms(guild, commandName, message)
+        result("git pull", function(err, response){
+            if(!err){
+                message.channel.send(`\`\`\`${response}\`\`\``)
+            }else {
+                message.channel.send(`\`\`\`${err}\`\`\``)
+            }
+        });
     }
 
     
