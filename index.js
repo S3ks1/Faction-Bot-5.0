@@ -1924,7 +1924,7 @@ client.on('message', async (message) => {
                 }
                 else{
                     person = res;
-                    let ntime = new Date().getTime()/100
+                    let ntime = new Date().getTime()/1000
                     console.log(ntime-person.lastwallcheck)
                     let embed = new Discord.MessageEmbed()
                     .setColor(guild.embedColor)
@@ -1933,9 +1933,9 @@ client.on('message', async (message) => {
                     .addField(`Wall Checks`, person.wallchecks, true)
                     .addField(`Buffer Checks`, person.bufferchecks, true)
                     .addField(`RPost Checks`, person.rpostchecks, true)
-                    .addField(`Last Wall Check`, `${ms(ntime-person.lastwallcheck, { long: true })} ago`)
-                    .addField(`Last Buffer Check`, `${ms(ntime-person.lastbuffercheck, { long: true })} ago`)
-                    .addField(`Last RPost Check`, `${ms(ntime-person.lastrpostcheck, { long: true })} ago`)
+                    .addField(`Last Wall Check`, `${ms(ntime-person.lastwallcheck*1000, { long: true })} ago`)
+                    .addField(`Last Buffer Check`, `${ms(ntime-person.lastbuffercheck*1000, { long: true })} ago`)
+                    .addField(`Last RPost Check`, `${ms(ntime-person.lastrpostcheck*1000, { long: true })} ago`)
                     message.channel.send(embed)
                 }
             })
