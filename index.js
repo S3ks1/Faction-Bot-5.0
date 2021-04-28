@@ -1896,12 +1896,12 @@ client.on('message', async (message) => {
                 message.channel.send(`\`\`\`${response}\`\`\``)
                 setTimeout(() => {
                     process.exit(0)
-                }, 250)
+                }, 1000)
             }else {
                 message.channel.send(`\`\`\`${err}\`\`\``)
                 setTimeout(() => {
                     process.exit(0)
-                }, 250)
+                }, 1000)
             }
         });
 
