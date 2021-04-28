@@ -1924,11 +1924,15 @@ client.on('message', async (message) => {
                 }
                 else{
                     person = res;
+                    let ntime = new Time().getTime()
                     let embed = new Discord.MessageEmbed()
                     .setColor(guild.embedColor)
                     .setTimestamp()
                     .setTitle(`User stats for ${person.ign}`)
-                    .addField(`Wall Checks`, person.wallchecks)
+                    .addField(`Wall Checks`, person.wallchecks, true)
+                    .addField(`Buffer Checks`, person.bufferchecks, true)
+                    .addField(`RPost Checks`, person.rpostchecks, true)
+                    .addField(`Last Wall Check`, `${ms(ntime-person.lastwallcheck)} ago`)
                     message.channel.send(embed)
                 }
             })
