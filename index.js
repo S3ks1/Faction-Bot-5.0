@@ -1961,7 +1961,8 @@ client.on('message', async (message) => {
                 }
                 else{
                     person = res;
-                    getUUID(person.ign).then(res => console.log(res))
+                    let pic = ""
+                    getUUID(person.ign).then(res => pic = res.id)
                     let ntime = new Date().getTime()/1000
                     let embed = new Discord.MessageEmbed()
                     .setColor(guild.embedColor)
@@ -1973,6 +1974,7 @@ client.on('message', async (message) => {
                     .addField(`Last Wall Check`, `${ms((ntime-person.lastwallcheck)*1000, { long: true })} ago`, true)
                     .addField(`Last Buffer Check`, `${ms((ntime-person.lastbuffercheck)*1000, { long: true })} ago`, true)
                     .addField(`Last RPost Check`, `${ms((ntime-person.lastrpostcheck)*1000, { long: true })} ago`, true)
+                    .setThumbnail(`https://crafatar.com/avatars/${pic}.png`, true)
                     message.channel.send(embed)
                 }
             })
