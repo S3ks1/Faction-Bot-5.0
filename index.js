@@ -1916,7 +1916,7 @@ client.on('message', async (message) => {
     }
     if(commandName === "stats"){
         let user = message.mentions.members.first() || message.guild.members.cache.get(args[0]) || message.guild.members.cache.find(member => member.user.tag === args.join(" ").replace("\n", "")) || message.guild.members.cache.find(member => member.user.username.toLowerCase() === args.join(" ").replace("\n", "").toLowerCase())
-        let person;
+        let person = "";
         if(!user){
             getUserByIGN(args[0]).then((res) => {
                 if(res === false){
@@ -1927,7 +1927,7 @@ client.on('message', async (message) => {
                 }
             })
         }
-        if(!person.discordId){
+        if(person == ""){
             getUserByDiscord(user.id).then((res) => {
                 if(res === false){
                     errorHandler(message.guild,message.channel,message.author,`:warning: Invalid user provided`)
