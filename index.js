@@ -1924,7 +1924,7 @@ client.on('message', async (message) => {
                 }
                 else{
                     person = res;
-                    let ntime = new Date().getTime()/1000
+                    let ntime = new Date().getTime()/100
                     console.log(ntime-person.lastwallcheck)
                     let embed = new Discord.MessageEmbed()
                     .setColor(guild.embedColor)
