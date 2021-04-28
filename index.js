@@ -1894,11 +1894,17 @@ client.on('message', async (message) => {
         result("git pull", function(err, response){
             if(!err){
                 message.channel.send(`\`\`\`${response}\`\`\``)
+                setTimeout(() => {
+                    process.exit(0)
+                }, 250)
             }else {
                 message.channel.send(`\`\`\`${err}\`\`\``)
+                setTimeout(() => {
+                    process.exit(0)
+                }, 250)
             }
         });
-        process.exit(0)
+
     }
     if(commandName === "restart"){
         let embed = new Discord.MessageEmbed()
