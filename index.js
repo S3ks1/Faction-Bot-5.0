@@ -1939,18 +1939,21 @@ client.on('message', async (message) => {
                 }
                 else{
                     person = res;
-                    let ntime = new Date().getTime()/1000
-                    let embed = new Discord.MessageEmbed()
-                    .setColor(guild.embedColor)
-                    .setTimestamp()
-                    .setTitle(`User stats for ${person.ign}`)
-                    .addField(`Wall Checks`, person.wallchecks, true)
-                    .addField(`Buffer Checks`, person.bufferchecks, true)
-                    .addField(`RPost Checks`, person.rpostchecks, true)
-                    .addField(`Last Wall Check`, `${ms((ntime-person.lastwallcheck)*1000, { long: true })} ago`, true)
-                    .addField(`Last Buffer Check`, `${ms((ntime-person.lastbuffercheck)*1000, { long: true })} ago`, true)
-                    .addField(`Last RPost Check`, `${ms((ntime-person.lastrpostcheck)*1000, { long: true })} ago`, true)
-                    message.channel.send(embed)
+                    getUUID(person.ign).then(ress => {
+                        let ntime = new Date().getTime()/1000
+                        let embed = new Discord.MessageEmbed()
+                        .setColor(guild.embedColor)
+                        .setTimestamp()
+                        .setTitle(`Ingame Statistics for ${person.ign} (${person.discordId})`)
+                        .addField(`Wall Checks`, person.wallchecks, true)
+                        .addField(`Buffer Checks`, person.bufferchecks, true)
+                        .addField(`RPost Checks`, person.rpostchecks, true)
+                        .addField(`Last Wall Check`, `${ms((ntime-person.lastwallcheck)*1000, { long: true })} ago`, true)
+                        .addField(`Last Buffer Check`, `${ms((ntime-person.lastbuffercheck)*1000, { long: true })} ago`, true)
+                        .addField(`Last RPost Check`, `${ms((ntime-person.lastrpostcheck)*1000, { long: true })} ago`, true)
+                        .setThumbnail(`https://crafatar.com/avatars/${ress.id}.png`, true)
+                        message.channel.send(embed)
+                    })
                 }
             })
         }
@@ -1967,7 +1970,7 @@ client.on('message', async (message) => {
                         let embed = new Discord.MessageEmbed()
                         .setColor(guild.embedColor)
                         .setTimestamp()
-                        .setTitle(`User stats for ${person.ign}`)
+                        .setTitle(`Ingame Statistics for ${person.ign} (${person.discordId})`)
                         .addField(`Wall Checks`, person.wallchecks, true)
                         .addField(`Buffer Checks`, person.bufferchecks, true)
                         .addField(`RPost Checks`, person.rpostchecks, true)
