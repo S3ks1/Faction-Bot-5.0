@@ -1924,7 +1924,7 @@ client.on('message', async (message) => {
                 }
                 else{
                     person = res;
-                    let ntime = new Time().getTime()
+                    let ntime = new Date().getTime()
                     let embed = new Discord.MessageEmbed()
                     .setColor(guild.embedColor)
                     .setTimestamp()
