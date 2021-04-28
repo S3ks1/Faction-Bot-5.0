@@ -1916,11 +1916,34 @@ client.on('message', async (message) => {
     }
     if(commandName === "stats"){
         let user = message.mentions.members.first() || message.guild.members.cache.get(args[0]) || message.guild.members.cache.find(member => member.user.tag === args.join(" ").replace("\n", "")) || message.guild.members.cache.find(member => member.user.username.toLowerCase() === args.join(" ").replace("\n", "").toLowerCase())
+        let person;
         if(!user){
             getUserByIGN(args[0]).then((res) => {
-                console.log(res)
+                if(res === false){
+                    user = message.author
+                }
+                else{
+                    person = res;
+                }
             })
         }
+        if(!person.discordId){
+            getUserByDiscord(user.id).then((res) => {
+                if(res === false){
+                    errorHandler(message.guild,message.channel,message.author,`:warning: Invalid user provided`)
+                    return;
+                }
+                else{
+                    person = res;
+                }
+            })
+        }
+        let embed = new Discord.MessageEmbed()
+        .setColor(guild.embedColor)
+        .setTimestamp()
+        .setTitle(`User stats for ${person.ign}`)
+        .addField(`Wall Checks`, person.wallchecks)
+        message.channel.send(embed)
     }
 
     
