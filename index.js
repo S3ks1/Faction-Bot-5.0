@@ -1963,6 +1963,7 @@ client.on('message', async (message) => {
                     person = res;
                     let pic = ""
                     getUUID(person.ign).then(res => pic = res.id)
+                    console.log(pic)
                     let ntime = new Date().getTime()/1000
                     let embed = new Discord.MessageEmbed()
                     .setColor(guild.embedColor)
