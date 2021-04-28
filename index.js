@@ -1925,7 +1925,6 @@ client.on('message', async (message) => {
                 else{
                     person = res;
                     let ntime = new Date().getTime()/1000
-                    console.log(ntime-person.lastwallcheck)
                     let embed = new Discord.MessageEmbed()
                     .setColor(guild.embedColor)
                     .setTimestamp()
@@ -1933,9 +1932,9 @@ client.on('message', async (message) => {
                     .addField(`Wall Checks`, person.wallchecks, true)
                     .addField(`Buffer Checks`, person.bufferchecks, true)
                     .addField(`RPost Checks`, person.rpostchecks, true)
-                    .addField(`Last Wall Check`, `${ms((ntime-person.lastwallcheck)*1000, { long: true })} ago`)
-                    .addField(`Last Buffer Check`, `${ms((ntime-person.lastbuffercheck)*1000, { long: true })} ago`)
-                    .addField(`Last RPost Check`, `${ms((ntime-person.lastrpostcheck)*1000, { long: true })} ago`)
+                    .addField(`Last Wall Check`, `${ms((ntime-person.lastwallcheck)*1000, { long: true })} ago`, true)
+                    .addField(`Last Buffer Check`, `${ms((ntime-person.lastbuffercheck)*1000, { long: true })} ago`, true)
+                    .addField(`Last RPost Check`, `${ms((ntime-person.lastrpostcheck)*1000, { long: true })} ago`, true)
                     message.channel.send(embed)
                 }
             })
@@ -1947,11 +1946,17 @@ client.on('message', async (message) => {
                 }
                 else{
                     person = res;
+                    let ntime = new Date().getTime()/1000
                     let embed = new Discord.MessageEmbed()
                     .setColor(guild.embedColor)
                     .setTimestamp()
                     .setTitle(`User stats for ${person.ign}`)
-                    .addField(`Wall Checks`, person.wallchecks)
+                    .addField(`Wall Checks`, person.wallchecks, true)
+                    .addField(`Buffer Checks`, person.bufferchecks, true)
+                    .addField(`RPost Checks`, person.rpostchecks, true)
+                    .addField(`Last Wall Check`, `${ms((ntime-person.lastwallcheck)*1000, { long: true })} ago`, true)
+                    .addField(`Last Buffer Check`, `${ms((ntime-person.lastbuffercheck)*1000, { long: true })} ago`, true)
+                    .addField(`Last RPost Check`, `${ms((ntime-person.lastrpostcheck)*1000, { long: true })} ago`, true)
                     message.channel.send(embed)
                 }
             })
