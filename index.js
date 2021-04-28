@@ -1278,7 +1278,11 @@ client.on('message', async (message) => {
             .setTimestamp();
         message.channel.send(embed)
         bot.ftopon = false
-        bot.ftop = []
+        bot.ftop = {
+            names:[],
+            ftop:[],
+            ptop:[]
+        }
         }
         else{
             let embed = new Discord.MessageEmbed()
