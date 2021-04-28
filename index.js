@@ -988,7 +988,7 @@ client.on('ready', async function() {
         }
     })
 });
-let commands = ["help", "eval", "exec", "av", "whitelist", "flist", "ftop", "sudo", "ftop", "fwho", "wtop", "btop", "settings", "members", "dm", "perm", "setign", "update"]
+let commands = ["help", "eval", "exec", "av", "whitelist", "flist", "ftop", "sudo", "ftop", "fwho", "wtop", "btop", "settings", "members", "dm", "perm", "setign", "update", "restarts"]
 client.on('message', async (message) => {
     if(message.author.bot) return;
     if(message.channel.type == "dm") return;
@@ -1899,9 +1899,15 @@ client.on('message', async (message) => {
                 message.channel.send(`\`\`\`${err}\`\`\``)
             }
         });
+        process.exit(0)
     }
-    if(commandName === "gay"){
-        message.channel.send(`<@!518438743833706497>`)
+    if(commandName === "restart"){
+        let embed = new Discord.MessageEmbed()
+        .setColor(guild.embedColor)
+        .setTimestamp()
+        .setDescription(`:ok_hand: Back in 5-7 seconds`)
+        message.channel.send(embed)
+        process.exit(0);
     }
 
     
