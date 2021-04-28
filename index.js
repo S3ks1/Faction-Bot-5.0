@@ -274,7 +274,7 @@ function getUUID(ign){
             }
         })
     })
-
+    return promise;
 }
 var result = function(command, cb){
     var child = exec(command, function(err, stdout, stderr){
