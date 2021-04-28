@@ -8,6 +8,7 @@ const mineflayer = require("mineflayer")
 var tpsPlugin = require("mineflayer-tps")(mineflayer)
 const randomstring = require("randomstring")
 const config = require("./config")
+const axios = require('axios')
 const request = require("request")
 const { help, typeOf, i } = require("mathjs")
 const fs = require("fs")
@@ -261,6 +262,20 @@ mongoose.connect(config.mongoURL, {
 })
 
 // Global Functions
+
+function getUUID(ign){
+    let promise = new Promise(function(resolve, reject) {
+        axios.get(`https://api.mojang.com/users/profiles/minecraft/${ign}`).then(res => {
+            if(res.data){
+                resolve(res.data)
+            }
+            else{
+                resolve(false)
+            }
+        })
+    })
+
+}
 var result = function(command, cb){
     var child = exec(command, function(err, stdout, stderr){
         if(err != null){
