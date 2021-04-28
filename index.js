@@ -59,7 +59,6 @@ var staff = [
 ]
 let v = []
 const { inspect } = require("util")
-const process = require("child_process")
 var data;
 //Mongo Schemas
 
@@ -1038,7 +1037,7 @@ client.on('message', async (message) => {
         if(z === false) return noPerms(guild, commandName, message)
         message.channel.send(`:ok_hand: Executing code...`).then((msg) => {msg.delete({timeout: 5000})})
 
-        process.exec(args.join(" "), (error, stdout) => {
+        exec.exec(args.join(" "), (error, stdout) => {
             let response = (error || stdout)
             message.channel.send(response, {code: 'asciidoc', split: "\n"}).catch((err) => {
                 message.channel.send(`\`\`\`${err}\`\`\``)
@@ -1907,7 +1906,7 @@ client.on('message', async (message) => {
         .setTimestamp()
         .setDescription(`:ok_hand: Back in 5-7 seconds`)
         message.channel.send(embed)
-        process.exit(0);
+        process.exit(0)
     }
 
     
