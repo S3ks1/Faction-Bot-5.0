@@ -1933,7 +1933,9 @@ client.on('message', async (message) => {
                     .addField(`Wall Checks`, person.wallchecks, true)
                     .addField(`Buffer Checks`, person.bufferchecks, true)
                     .addField(`RPost Checks`, person.rpostchecks, true)
-                    .addField(`Last Wall Check`, `${ms(ntime-person.lastwallcheck)} ago`)
+                    .addField(`Last Wall Check`, `${ms(ntime-person.lastwallcheck, { long: true })} ago`)
+                    .addField(`Last Buffer Check`, `${ms(ntime-person.lastbuffercheck, { long: true })} ago`)
+                    .addField(`Last RPost Check`, `${ms(ntime-person.lastrpostcheck, { long: true })} ago`)
                     message.channel.send(embed)
                 }
             })
