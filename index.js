@@ -1928,6 +1928,7 @@ client.on('message', async (message) => {
             })
         }
         if(person == ""){
+            console.log(user)
             getUserByDiscord(user.id).then((res) => {
                 if(res === false){
                     errorHandler(message.guild,message.channel,message.author,`:warning: Invalid user provided`)
