@@ -987,7 +987,7 @@ client.on('ready', async function() {
         }
     })
 });
-let commands = ["help", "eval", "exec", "av", "whitelist", "flist", "ftop", "sudo", "ftop", "fwho", "wtop", "btop", "settings", "members", "dm", "perm", "setign", "update", "restarts"]
+let commands = ["help", "eval", "exec", "av", "whitelist", "flist", "ftop", "sudo", "ftop", "fwho", "wtop", "btop", "settings", "members", "dm", "perm", "setign", "update", "restart"]
 client.on('message', async (message) => {
     if(message.author.bot) return;
     if(message.channel.type == "dm") return;
@@ -1907,6 +1907,14 @@ client.on('message', async (message) => {
         .setDescription(`:ok_hand: Back in 5-7 seconds`)
         message.channel.send(embed)
         process.exit(0)
+    }
+    if(commandName === "stats"){
+        let user = message.mentions.members.first() || message.guild.members.cache.get(args[0]) || message.guild.members.cache.find(member => member.user.tag === args.join(" ").replace("\n", "")) || message.guild.members.cache.find(member => member.user.username.toLowerCase() === args.join(" ").replace("\n", "").toLowerCase())
+        if(!user){
+            getUserByIGN(args[0]).then((res) => {
+                console.log(res)
+            })
+        }
     }
 
     
