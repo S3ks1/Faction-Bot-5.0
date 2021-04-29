@@ -315,11 +315,7 @@ function tts(text) {
                 console.log(err)
             } 
             else{
-                console.log(data)
-                util.promisify(fs.writeFile).then(lol=>{
-                    lol('output.mp3', response.audioContent, 'binary');
-                })
-                resolve(data);
+                resolve(data.AudioStream);
             }
         })
     })
@@ -892,17 +888,8 @@ bot.on('fcf', (user,content) => {
                                 //console.log(args)
                                 //console.log(args.join(" "))
 
-                                broadcast.play("./output.mp3")
+                                broadcast.play(res)
                                 let dispatcher = connection.play(broadcast)
-                                dispatcher.on('start', () => {
-                                    console.log("start")
-                                    used = 1
-                                });
-                                
-                                dispatcher.on('finish', () => {
-                                    console.log("done")
-                                    used = 0
-                                });
                             })
                         })
 
