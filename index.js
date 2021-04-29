@@ -1541,6 +1541,78 @@ client.on('message', async (message) => {
             })
         })
     }
+    if(commandName === "rtop"){
+        let z = await checkPerms(commandName, message)
+        if(z === false) return noPerms(guild, commandName, message)
+        let whitelisted = []
+        let description = []
+        let field2 = []
+        getUsers().then((result) => {
+            result.forEach(user => {
+                whitelisted.push({
+                    "id": user.discordId,
+                    "ign": user.ign,
+                    "checks": user.rpostchecks
+                })
+                if (whitelisted.length === result.length) {
+                    let sorted = whitelisted.slice().sort((a, b) => b.checks - a.checks)
+                    sorted.forEach(person => {
+                        field2.push(`**${person.checks}**`)
+                        if(client.users.cache.get(person.id)){
+                            description.push(`**${client.users.cache.get(person.id)} (${person.ign})**`)
+                        }
+                        else{
+                            description.push(`**Unknown User (ID: ${person.id})**`)
+                        }
+                    })
+                }
+            })
+            const generateEmbed = start => {
+                var n = description.slice(start, start + 10)
+                var n2 = field2.slice(start,start + 10)
+                var embed = new Discord.MessageEmbed()
+                    .setTimestamp()
+                    .setTitle(`Top RPost checks`)
+                    .setColor(guild.embedColor)
+                if(n.length > 0 && n2.length >0){
+                    embed.addField("**Discord**", n.join("\n"), true)
+                    embed.addField("**Checks**", n2.join("\n"), true)
+                    embed.setFooter(`Page ${Math.floor(start/10) + Math.ceil(n.length/10)}/${Math.ceil(description.length/10)}`)
+                }
+                else{
+                    embed.setDescription(":warning: No whitelisted users")
+                }
+    
+                return embed
+            }
+    
+            const author = message.author
+            message.channel.send(generateEmbed(0)).then(message2 => {
+                if (description.length <= 10) return
+                message2.react('◀️')
+                message2.react('▶️')
+                const collector = message2.createReactionCollector(
+                    (reaction, user) => ['◀️', '▶️'].includes(reaction.emoji.name) && user.id === author.id, {
+                        time: 180000
+                    }
+                )
+    
+                let currentIndex = 0
+                collector.on('collect', async (reaction, user) => {
+                    reaction.users.remove(message.author.id)
+                    if (reaction.emoji.name === "◀️" && currentIndex > 9) {
+                        currentIndex = currentIndex - 10
+                    }
+                    if (reaction.emoji.name === "▶️" && currentIndex + 10 < description.length) {
+                        currentIndex = currentIndex + 10
+                    }
+    
+                    message2.edit(generateEmbed(currentIndex))
+    
+                })
+            })
+        })
+    }
     if(commandName === "settings"){
         let z = await checkPerms(commandName, message)
         if(z === false) return noPerms(guild, commandName, message)
