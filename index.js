@@ -2003,19 +2003,36 @@ client.on('message', async (message) => {
                         return;
                     }
                     if(args[1].toLowerCase() == "walls"){
-                        +args[2] !== NaN ? res.wallchecks = parseInt(args[2]) && miscError(guild, message, `:ok_hand: Updated \`${person.ign}\`'s ${args[1]} checks to ${args[2]}`) : miscError(guild, message, `:warning: Invalid number provided`)
-                        res.save()
+                        if(+args[2] !== NaN){
+                            res.wallchecks = parseInt(args[2]) 
+                            miscError(guild, message, `:ok_hand: Updated \`${person.ign}\`'s ${args[1]} checks to ${args[2]}`) 
+                            res.save()
+                        }
+                        else{
+                            miscError(guild, message, `:warning: Invalid number provided`)
+                        } 
                         return;
                     }
                     else if(args[1].toLowerCase() == "buffers"){
-                        +args[2] !== NaN ? res.bufferchecks = parseInt(args[2]) && miscError(guild, message, `:ok_hand: Updated \`${person.ign}\`'s ${args[1]} checks to ${args[2]}`) : miscError(guild, message, `:warning: Invalid number provided`)
-                        res.save()
+                        if(+args[2] !== NaN){
+                            res.bufferchecks = parseInt(args[2]) 
+                            miscError(guild, message, `:ok_hand: Updated \`${person.ign}\`'s ${args[1]} checks to ${args[2]}`) 
+                            res.save()
+                        }
+                        else{
+                            miscError(guild, message, `:warning: Invalid number provided`)
+                        } 
                         return;
                     }
                     else if(args[1].toLowerCase() == "rpost"){
-                        +args[2] !== NaN ? res.rpostchecks = parseInt(args[2]) && miscError(guild, message, `:ok_hand: Updated \`${person.ign}\`'s ${args[1]} checks to ${args[2]}`) : miscError(guild, message, `:warning: Invalid number provided`)
-                        res.rpostchecks = parseInt(args[2])
-                        res.save()
+                        if(+args[2] !== NaN){
+                            res.rpostchecks = parseInt(args[2]) 
+                            miscError(guild, message, `:ok_hand: Updated \`${person.ign}\`'s ${args[1]} checks to ${args[2]}`) 
+                            res.save()
+                        }
+                        else{
+                            miscError(guild, message, `:warning: Invalid number provided`)
+                        } 
                         return;
                     }
                     else{
@@ -2037,18 +2054,36 @@ client.on('message', async (message) => {
                         return;
                     }
                     if(args[1].toLowerCase() == "walls"){
-                        +args[2] !== NaN ? res.wallchecks = parseInt(args[2]) && miscError(guild, message, `:ok_hand: Updated \`${person.ign}\`'s ${args[1]} checks to ${args[2]}`) : miscError(guild, message, `:warning: Invalid number provided`)
-                        res.save()
+                        if(+args[2] !== NaN){
+                            res.wallchecks = parseInt(args[2]) 
+                            miscError(guild, message, `:ok_hand: Updated \`${person.ign}\`'s ${args[1]} checks to ${args[2]}`) 
+                            res.save()
+                        }
+                        else{
+                            miscError(guild, message, `:warning: Invalid number provided`)
+                        } 
                         return;
                     }
                     else if(args[1].toLowerCase() == "buffers"){
-                        +args[2] !== NaN ? res.bufferchecks = parseInt(args[2]) && miscError(guild, message, `:ok_hand: Updated \`${person.ign}\`'s ${args[1]} checks to ${args[2]}`) : miscError(guild, message, `:warning: Invalid number provided`)
-                        res.save()
+                        if(+args[2] !== NaN){
+                            res.bufferchecks = parseInt(args[2]) 
+                            miscError(guild, message, `:ok_hand: Updated \`${person.ign}\`'s ${args[1]} checks to ${args[2]}`) 
+                            res.save()
+                        }
+                        else{
+                            miscError(guild, message, `:warning: Invalid number provided`)
+                        } 
                         return;
                     }
                     else if(args[1].toLowerCase() == "rpost"){
-                        +args[2] !== NaN ? res.rpostchecks = parseInt(args[2]) && miscError(guild, message, `:ok_hand: Updated \`${person.ign}\`'s ${args[1]} checks to ${args[2]}`) : miscError(guild, message, `:warning: Invalid number provided`)
-                        res.save()
+                        if(+args[2] !== NaN){
+                            res.rpostchecks = parseInt(args[2]) 
+                            miscError(guild, message, `:ok_hand: Updated \`${person.ign}\`'s ${args[1]} checks to ${args[2]}`) 
+                            res.save()
+                        }
+                        else{
+                            miscError(guild, message, `:warning: Invalid number provided`)
+                        } 
                         return;
                     }
                     else{
