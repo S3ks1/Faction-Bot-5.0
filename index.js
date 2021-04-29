@@ -613,7 +613,9 @@ async function checkPerms(cmdname, message){
     let promise = new Promise(function(resolve,reject){
         getPerm(cmdname).then((cmd) => {
             if(cmd === null){
-                createPerm(cmdname)
+                createPerm(cmdname).then(res=>{
+                    checkPerms(cmdname, message)
+                })
             }
             else{
                 let final = []
