@@ -1998,6 +1998,10 @@ client.on('message', async (message) => {
                 }
                 else{
                     person = res
+                    if(!args[1]){
+                        miscError(guild, message, `:warning: Invalid syntax, use the command like this: \`${guild.prefix}setstats <user/IGN> <walls/buffers/rpost> <number>\``)
+                        return;
+                    }
                     if(args[1].toLowerCase() == "walls"){
                         args[2]+num !== NaN ? res.wallchecks = args[2] : miscError(guild, message, `:warning: Invalid number provided`)
                         res.save()
@@ -2026,6 +2030,10 @@ client.on('message', async (message) => {
                 }
                 else{
                     person = res
+                    if(!args[1]){
+                        miscError(guild, message, `:warning: Invalid syntax, use the command like this: \`${guild.prefix}setstats <user/IGN> <walls/buffers/rpost> <number>\``)
+                        return;
+                    }
                     if(args[1].toLowerCase() == "walls"){
                         args[2]+num !== NaN ? res.wallchecks = args[2] : miscError(guild, message, `:warning: Invalid number provided`)
                         res.save()
