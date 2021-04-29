@@ -1027,12 +1027,11 @@ client.on('message', async (message) => {
             await createPerm(commandName)
         }
         else{
-            //console.log(perms)
+            let z = await checkPerms(commandName, message)
+            if(z === false) return noPerms(guild, commandName, message)
         }
     }
     if(commandName === "help"){
-        let z = await checkPerms(commandName, message)
-        if(z === false) return noPerms(guild, commandName, message)
         let lol = []
         commands.forEach(c=>lol.push(`\`${c}\``))
         let embed = new Discord.MessageEmbed()
@@ -1043,8 +1042,6 @@ client.on('message', async (message) => {
         message.channel.send(embed)
     }
     if(commandName === "eval"){
-        let z = await checkPerms(commandName, message)
-        if(z === false) return noPerms(guild, commandName, message)
         const code = args.join(" ")
         try{
             const result = await eval(code)
@@ -1059,8 +1056,6 @@ client.on('message', async (message) => {
         }
     }
     if(commandName === "exec"){
-        let z = await checkPerms(commandName, message)
-        if(z === false) return noPerms(guild, commandName, message)
         message.channel.send(`:ok_hand: Executing code...`).then((msg) => {msg.delete({timeout: 5000})})
 
         exec.exec(args.join(" "), (error, stdout) => {
@@ -1071,8 +1066,6 @@ client.on('message', async (message) => {
         })
     }
     if(commandName === "av"){
-        let z = await checkPerms(commandName, message)
-        if(z === false) return noPerms(guild, commandName, message)
         let user = message.mentions.members.first() || message.guild.members.cache.get(args[0]) || message.guild.members.cache.find(member => member.user.tag === args.join(" ").replace("\n", "")) || message.guild.members.cache.find(member => member.user.username.toLowerCase() === args.join(" ").replace("\n", "").toLowerCase()) || message.author
     if (!user) {
         let embed = new Discord.MessageEmbed().setDescription(':warning: Invalid User')
@@ -1100,8 +1093,6 @@ client.on('message', async (message) => {
 
     }
     if(commandName === "whitelist"){
-        let z = await checkPerms(commandName, message)
-        if(z === false) return noPerms(guild, commandName, message)
         if(!args[0]){
             getUserByDiscord(message.author.id).then((user) => {
                             //console.log(user)
@@ -1235,8 +1226,6 @@ client.on('message', async (message) => {
         }
     }
     if(commandName === "flist"){
-        let z = await checkPerms(commandName, message)
-        if(z === false) return noPerms(guild, commandName, message)
         bot.chat("/f list")
         bot.sudoon = true
     setTimeout(()=> {
@@ -1264,8 +1253,6 @@ client.on('message', async (message) => {
 
     }
     if(commandName === "sudo"){
-        let z = await checkPerms(commandName, message)
-        if(z === false) return noPerms(guild, commandName, message)
         let sudocommand = args.join(" ");
 
     bot.chat(`${sudocommand}`)
@@ -1298,8 +1285,6 @@ client.on('message', async (message) => {
 
     }
     if(commandName === "ftop"){
-        let z = await checkPerms(commandName, message)
-        if(z === false) return noPerms(guild, commandName, message)
         bot.chat(`/f top`)
     bot.ftopon = true
 
@@ -1335,8 +1320,6 @@ client.on('message', async (message) => {
     }, 750)
     }
     if(commandName === "fwho"){
-        let z = await checkPerms(commandName, message)
-        if(z === false) return noPerms(guild, commandName, message)
         if(!args[0]){
             bot.chat("/f who")
             bot.sudoon = true
@@ -1409,8 +1392,6 @@ client.on('message', async (message) => {
         }
     }
     if(commandName === "wtop"){
-        let z = await checkPerms(commandName, message)
-        if(z === false) return noPerms(guild, commandName, message)
         let whitelisted = []
         let description = []
         let field2 = []
@@ -1481,8 +1462,6 @@ client.on('message', async (message) => {
         })
     }
     if(commandName === "btop"){
-        let z = await checkPerms(commandName, message)
-        if(z === false) return noPerms(guild, commandName, message)
         let whitelisted = []
         let description = []
         let field2 = []
@@ -1553,8 +1532,6 @@ client.on('message', async (message) => {
         })
     }
     if(commandName === "rtop"){
-        let z = await checkPerms(commandName, message)
-        if(z === false) return noPerms(guild, commandName, message)
         let whitelisted = []
         let description = []
         let field2 = []
@@ -1625,8 +1602,6 @@ client.on('message', async (message) => {
         })
     }
     if(commandName === "settings"){
-        let z = await checkPerms(commandName, message)
-        if(z === false) return noPerms(guild, commandName, message)
         getGuild(message.guild.id).then((res) => {
             if(!args[0]){
                 let mapped = []
@@ -1689,8 +1664,6 @@ client.on('message', async (message) => {
         }).catch((err) => {console.log(err)})
     }
     if(commandName === "members"){
-        let z = await checkPerms(commandName, message)
-        if(z === false) return noPerms(guild, commandName, message)
         var arr2 = []
         //let members = message.guild.roles.fetch().then(lol => lol.cache.forEach(c=> console.log(`${c.name} : ${message.guild.roles.fetch(c.id).members}`)))
         let role = message.guild.roles.cache.get(args[0]) || message.guild.roles.cache.find(role => role.name.toLowerCase() === args.join(" ").toLowerCase()) || message.guild.roles.cache.find(role => role.name.toLowerCase().includes(args[0].toLowerCase())) ||message.guild.roles.cache.get(args[0].replace("<@&", "").replace(">", "")) || message.guild.roles.everyone
@@ -1769,8 +1742,6 @@ client.on('message', async (message) => {
         
     }
     if(commandName === "dm"){
-        let z = await checkPerms(commandName, message)
-        if(z === false) return noPerms(guild, commandName, message)
         if(!args[0]){
             let embed = new Discord.MessageEmbed()
             .setDescription(`:warning: Incorrect usage for the ${commandName} command. Proper usage: \`.dm <role> <message>\``)
@@ -1818,8 +1789,6 @@ client.on('message', async (message) => {
         })
     }
     if(commandName === "perm"){
-        let z = await checkPerms(commandName, message)
-        if(z === false) return noPerms(guild, commandName, message)
         if(!args[0]){
             let embed = new Discord.MessageEmbed()
             .setDescription(`:warning: Incorrect usage for the ${commandName} command. Proper usage: \`.perm <command name> [role/user/permission]\``)
@@ -1920,8 +1889,6 @@ client.on('message', async (message) => {
         })
     }
     if(commandName === "setign"){
-        let z = await checkPerms(commandName, message)
-        if(z === false) return noPerms(guild, commandName, message)
         let user = message.mentions.members.first() || message.guild.members.cache.get(args[0]) || message.guild.members.cache.find(member => member.user.tag === args.join(" ").replace("\n", "")) || message.guild.members.cache.find(member => member.user.username.toLowerCase() === args.join(" ").replace("\n", "").toLowerCase())
         if(!user){
             let embed = new Discord.MessageEmbed()
@@ -1992,8 +1959,6 @@ client.on('message', async (message) => {
 
     }
     if(commandName === "update" || commandName === "git" && args[0] === "pull"){
-        let z = await checkPerms(commandName, message)
-        if(z === false) return noPerms(guild, commandName, message)
         result("git pull", function(err, response){
             if(!err){
                 message.channel.send(`\`\`\`${response}\`\`\``)
@@ -2010,8 +1975,6 @@ client.on('message', async (message) => {
 
     }
     if(commandName === "restart"){
-        let z = await checkPerms(commandName, message)
-        if(z === false) return noPerms(guild, commandName, message)
         let embed = new Discord.MessageEmbed()
         .setColor(guild.embedColor)
         .setTimestamp()
