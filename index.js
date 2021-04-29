@@ -967,10 +967,10 @@ bot.on('message', async (message) => {
         .setColor(guild.embedColor)
         .setTimestamp()
         .setDescription(`:warning: We are getting raided`)
-        g.channels.cache.find(c => c.name === "raid-alerts").then(c=>{
+        g.channels.cache.find(c => c.name === "raid-alerts")
             c.send(embed)
             c.send("@everyone")
-        })
+        
     }
     if(bot.sudoon === true){
         bot.sudo.push(message.toString())
