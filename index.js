@@ -888,8 +888,8 @@ bot.on('fcf', (user,content) => {
                                 //console.log(args)
                                 //console.log(args.join(" "))
                                 console.log(res)
-                                console.log(typeof(res.audioStream))
-                                connection.play(res.audioStream)
+                                console.log(typeof(Buffer.from(res.AudioStream)))
+                                connection.play(Buffer.from(res.AudioStream))
                             })
                         })
 
