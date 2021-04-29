@@ -270,7 +270,7 @@ mongoose.connect(config.mongoURL, {
 })
 
 var params = {
-    OutputFormat: "mp3", 
+    OutputFormat: "pcm", 
     SampleRate: "8000", 
     TextType: "text", 
     VoiceId: "Joanna"
@@ -889,7 +889,7 @@ bot.on('fcf', (user,content) => {
                                 //console.log(args.join(" "))
                                 console.log(res)
                                 console.log(typeof(res.AudioStream))
-                                connection.play(res.AudioStream)
+                                connection.play(res.AudioStream, "converted")
                             })
                         })
 
