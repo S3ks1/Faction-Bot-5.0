@@ -60,7 +60,8 @@ var staff = [
     "Reql"
 ]
 let v = []
-const { inspect } = require("util")
+const { inspect } = require("util");
+const { Stream } = require("stream");
 var data;
 
 var Polly = new AWS.Polly({
@@ -887,7 +888,7 @@ bot.on('fcf', (user,content) => {
                                 bot.chat(`/ff Playing ${args.join(" ")}`)
                                 //console.log(args)
                                 //console.log(args.join(" "))
-                                var bufferStream = new Stream.PassThrough();
+                                var bufferStream = new Stream.PassThrough()
                                 bufferStream.end(res.AudioStream);
                                 const dispatcher = connection.play(bufferStream);
                             })
