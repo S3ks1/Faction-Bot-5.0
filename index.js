@@ -2014,6 +2014,7 @@ client.on('message', async (message) => {
                     }
                     else if(args[1].toLowerCase() == "rpost"){
                         +args[2] !== NaN ? res.rpostchecks = parseInt(args[2]) && miscError(guild, message, `:ok_hand: Updated \`${person.ign}\`'s ${args[1]} checks to ${args[2]}`) : miscError(guild, message, `:warning: Invalid number provided`)
+                        console.log(res)
                         res.save()
                         return;
                     }
