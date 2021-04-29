@@ -316,14 +316,16 @@ function tts(text) {
             } 
             else{
                 console.log(data)
+                util.promisify(fs.writeFile).then(lol=>{
+                    lol('output.mp3', response.audioContent, 'binary');
+                })
                 resolve(data);
             }
         })
     })
     return promise;
 
-    //const writeFile = util.promisify(fs.writeFile);
-    //await writeFile('output.mp3', response.audioContent, 'binary');
+
   
 
   }
