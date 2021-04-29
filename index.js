@@ -955,6 +955,9 @@ bot.on('raid', async () => {
     
 })
 
+bot.on('entitySpawn', async (entity) => {
+    console.log(entity)
+})
 bot.on('message', async (message) => {
     bot.serverchat.push(message.toString())
     if(message.toString().includes("[!] WE ARE BEING RAIDED [!]")){
