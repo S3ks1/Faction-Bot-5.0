@@ -4,6 +4,7 @@ const Discord = require("discord.js")
 const ms = require("ms")
 const mongoose = require("mongoose")
 const moment = require("moment")
+var AWS = require('aws-sdk');
 const mineflayer = require("mineflayer")
 var tpsPlugin = require("mineflayer-tps")(mineflayer)
 const randomstring = require("randomstring")
@@ -61,6 +62,13 @@ var staff = [
 let v = []
 const { inspect } = require("util")
 var data;
+
+var Polly = new AWS.Polly({
+    region: 'na-east-1',
+    accessKeyId: 'AKIAV6TFB5FYLVNOJV7N',
+    secretAccessKey: '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'
+});
+
 //Mongo Schemas
 
 
@@ -261,7 +269,15 @@ mongoose.connect(config.mongoURL, {
     console.log(err)
 })
 
+var params = {
+    OutputFormat: "mp3", 
+    SampleRate: "8000", 
+    TextType: "text", 
+    VoiceId: "Joanna"
+   };
+
 // Global Functions
+
 
 function getUUID(ign){
     let promise = new Promise(function(resolve, reject) {
@@ -290,20 +306,18 @@ var result = function(command, cb){
 
 async function tts(text) {
     // The text to synthesize
-  
+    params.Text = text;
     // Construct the request
-    const request = {
-      input: {text: text},
-      // Select the language and SSML voice gender (optional)
-      voice: {languageCode: 'en-US', ssmlGender: 'FEMALE'},
-      // select the type of audio encoding
-      audioConfig: {audioEncoding: 'MP3'},
-    };
-    const [response] = await clientt.synthesizeSpeech(request);
-    const writeFile = util.promisify(fs.writeFile);
-    await writeFile('output.mp3', response.audioContent, 'binary');
+    Polly.synthesizeSpeech(params, function(err, data){
+        if (err) console.log(err, err.stack); 
+        else{
+            return data;
+        }
+    })
+    //const writeFile = util.promisify(fs.writeFile);
+    //await writeFile('output.mp3', response.audioContent, 'binary');
   
-    return true;
+
   }
 
 function errorHandler(guild, channel, author, error){
