@@ -2160,7 +2160,21 @@ client.on('message', async (message) => {
     if(commandName === "ttsvoice"){
         Polly.describeVoices(function(err, data){
             if(err) console.log(err)
-            if(data) console.log(data)
+            else{
+                let out = []
+                data.Voices.forEach(v=>{
+                    if(v.LanguageName == "English"){
+                        out.push(`**Voice: ${v.Id} - Gender ${v.Gender}**`)
+                    }
+                })
+                let embed = new Discord.MessageEmbed()
+                .setColor(guild.embedColor)
+                .setTimestamp()
+                .setTitle(`TTS Voice options`)
+                .setDescription(out.join("\n"))
+                message.channel.send(embed)
+
+            }
         })
     }
 
