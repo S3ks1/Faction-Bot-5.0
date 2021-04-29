@@ -887,6 +887,7 @@ bot.on('fcf', (user,content) => {
                                 bot.chat(`/ff Playing ${args.join(" ")}`)
                                 //console.log(args)
                                 //console.log(args.join(" "))
+                                console.log(res)
                                 connection.play(res)
                             })
                         })
