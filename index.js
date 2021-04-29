@@ -64,7 +64,7 @@ const { inspect } = require("util")
 var data;
 
 var Polly = new AWS.Polly({
-    region: 'na-east-1',
+    region: 'us-east-1',
     accessKeyId: 'AKIAV6TFB5FYLVNOJV7N',
     secretAccessKey: '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'
 });
