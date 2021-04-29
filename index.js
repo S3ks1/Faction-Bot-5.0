@@ -1997,8 +1997,24 @@ client.on('message', async (message) => {
                     miscError(guild, message, `:warning: Invalid User`)
                 }
                 else{
-                    if(res[args[1]]){
-                        console.log("success")
+                    person = res
+                    if(args[1].toLowerCase() == "walls"){
+                        args[2]+num !== NaN ? res.wallchecks = args[2] : miscError(guild, message, `:warning: Invalid number provided`)
+                        res.save()
+                        return;
+                    }
+                    else if(args[1].toLowerCase() == "buffers"){
+                        args[2]+num !== NaN ? res.bufferchecks = args[2] : miscError(guild, message, `:warning: Invalid number provided`)
+                        res.save()
+                        return;
+                    }
+                    else if(args[1].toLowerCase() == "rpost"){
+                        args[2]+num !== NaN ? res.rpostchecks = args[2] : miscError(guild, message, `:warning: Invalid number provided`)
+                        res.save()
+                        return;
+                    }
+                    else{
+                        miscError(guild, message, `:warning: Invalid syntax, use the command like this: \`${guild.prefix}setstats <user/IGN> <walls/buffers/rpost> <number>\``)
                     }
                 }
             })
@@ -2009,8 +2025,24 @@ client.on('message', async (message) => {
                     miscError(guild, message, `:warning: Invalid User`)
                 }
                 else{
-                    if(res[args[1]]){
-                        console.log("success")
+                    person = res
+                    if(args[1].toLowerCase() == "walls"){
+                        args[2]+num !== NaN ? res.wallchecks = args[2] : miscError(guild, message, `:warning: Invalid number provided`)
+                        res.save()
+                        return;
+                    }
+                    else if(args[1].toLowerCase() == "buffers"){
+                        args[2]+num !== NaN ? res.bufferchecks = args[2] : miscError(guild, message, `:warning: Invalid number provided`)
+                        res.save()
+                        return;
+                    }
+                    else if(args[1].toLowerCase() == "rpost"){
+                        args[2]+num !== NaN ? res.rpostchecks = args[2] : miscError(guild, message, `:warning: Invalid number provided`)
+                        res.save()
+                        return;
+                    }
+                    else{
+                        miscError(guild, message, `:warning: Invalid syntax, use the command like this: \`${guild.prefix}setstats <user/IGN> <walls/buffers/rpost> <number>\``)
                     }
                 }
             })
