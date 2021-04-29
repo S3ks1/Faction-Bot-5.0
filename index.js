@@ -956,7 +956,9 @@ bot.on('raid', async () => {
 })
 
 bot.on('entitySpawn', async (entity) => {
-    console.log(entity)
+    if(entity.mobType === "Creeper"){
+        bot.chat(`/ff [!] Creeper detected at X: ${entity.position.x} Y: ${entity.position.y} Z: ${entity.position.z}`)
+    }
 })
 bot.on('message', async (message) => {
     bot.serverchat.push(message.toString())
