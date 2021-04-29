@@ -304,7 +304,7 @@ var result = function(command, cb){
     });
 }
 
-async function tts(text) {
+function tts(text) {
     // The text to synthesize
     let promise = new Promise(function(resolve, reject) {
         params.Text = text;
