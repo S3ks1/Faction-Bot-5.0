@@ -1780,6 +1780,7 @@ client.on('message', async (message) => {
                 miscError(guild, message, ":warning: Invalid role provided")
             }
             else{
+                console.log(membersfetch)
                 let embed = new Discord.MessageEmbed()
                 .setColor(guild.embedColor)
                 .setTimestamp()
@@ -2000,6 +2001,8 @@ client.on('message', async (message) => {
 
     }
     if(commandName === "restart"){
+        let z = await checkPerms(commandName, message)
+        if(z === false) return noPerms(guild, commandName, message)
         let embed = new Discord.MessageEmbed()
         .setColor(guild.embedColor)
         .setTimestamp()
