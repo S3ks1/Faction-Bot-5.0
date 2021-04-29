@@ -890,7 +890,8 @@ bot.on('fcf', (user,content) => {
                                 //console.log(args.join(" "))
                                 var bufferStream = new Stream.PassThrough()
                                 bufferStream.end(res.AudioStream);
-                                const dispatcher = connection.play(bufferStream);
+                                broadcast.play(bufferStream);
+                                connection.play(broadcast)
                             })
                         })
 
