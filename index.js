@@ -315,7 +315,7 @@ function tts(text) {
                 console.log(err)
             } 
             else{
-                resolve(res)
+                resolve(data)
             }
         })
     })
