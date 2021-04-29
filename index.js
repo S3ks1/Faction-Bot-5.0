@@ -1964,7 +1964,6 @@ client.on('message', async (message) => {
                 }
                 else{
                     person = res;
-                    
                     getUUID(person.ign).then(ress => {
                         let ntime = new Date().getTime()/1000
                         let embed = new Discord.MessageEmbed()
@@ -1974,14 +1973,12 @@ client.on('message', async (message) => {
                         .addField(`Wall Checks`, person.wallchecks, true)
                         .addField(`Buffer Checks`, person.bufferchecks, true)
                         .addField(`RPost Checks`, person.rpostchecks, true)
-                        .addField(`Last Wall Check`, `${person.wallchecks !== 0 ? ms((ntime-person.lastwallcheck)*1000 + "ago", { long: true }) : "N/A"}`, true)
-                        .addField(`Last Buffer Check`, `${person.bufferchecks !== 0 ? ms((ntime-person.lastbuffercheck)*1000 + "ago", { long: true }) : "N/A"}`, true)
-                        .addField(`Last RPost Check`, `${person.rpostchecks !== 0 ? ms((ntime-person.lastrpostcheck)*1000 + "ago", { long: true }) : "N/A"}`, true)
+                        .addField(`Last Wall Check`, `${ms((ntime-person.lastwallcheck)*1000, { long: true })} ago`, true)
+                        .addField(`Last Buffer Check`, `${ms((ntime-person.lastbuffercheck)*1000, { long: true })} ago`, true)
+                        .addField(`Last RPost Check`, `${ms((ntime-person.lastrpostcheck)*1000, { long: true })} ago`, true)
                         .setThumbnail(`https://crafatar.com/avatars/${ress.id}.png`, true)
                         message.channel.send(embed)
                     })
-                    
-
                 }
             })
         }
