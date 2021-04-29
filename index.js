@@ -888,7 +888,7 @@ bot.on('fcf', (user,content) => {
                                 //console.log(args)
                                 //console.log(args.join(" "))
                                 console.log(res)
-                                connection.play(res)
+                                broadcast.play(res)
                             })
                         })
 
