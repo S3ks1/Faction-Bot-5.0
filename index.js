@@ -612,41 +612,45 @@ function delPermPermission(cmdname, permission){
 async function checkPerms(cmdname, message){
     let promise = new Promise(function(resolve,reject){
         getPerm(cmdname).then((cmd) => {
-            let final = []
-            if(cmd.roles.length !== 0){
-                cmd.roles.forEach(r=>{
-                    if(message.member.roles.cache.has(r)){
-                        final.push("cmd")
-                    }
-                })
-            }
-    
-            if(cmd.users.length !== 0){
-                cmd.users.forEach(u=>{
-                    if(message.author.id === u){
-                        final.push("cmd")
-                    }
-                })
-            }
-    
-            if(cmd.permissions.length !== 0){
-                cmd.permissions.forEach(p=>{
-                    if(message.member.hasPermission(p)){
-                        final.push("cmd")
-                    }
-                })
-            }
-            if(final.length !== 0){
-                resolve(true)
+            if(cmd === null){
+                createPerm(cmdname)
             }
             else{
-                resolve(false)
-            }
-        })
+                let final = []
+                if(cmd.roles.length !== 0){
+                    cmd.roles.forEach(r=>{
+                        if(message.member.roles.cache.has(r)){
+                            final.push("cmd")
+                        }
+                    })
+                }
         
+                if(cmd.users.length !== 0){
+                    cmd.users.forEach(u=>{
+                        if(message.author.id === u){
+                            final.push("cmd")
+                        }
+                    })
+                }
+        
+                if(cmd.permissions.length !== 0){
+                    cmd.permissions.forEach(p=>{
+                        if(message.member.hasPermission(p)){
+                            final.push("cmd")
+                        }
+                    })
+                }
+                if(final.length !== 0){
+                    resolve(true)
+                }
+                else{
+                    resolve(false)
+                }
+            }
     })
     return promise;
 
+})
 }
 
 function noPerms(g, cmdname, message){
@@ -1002,7 +1006,7 @@ client.on('ready', async function() {
         }
     })
 });
-let commands = ["help", "eval", "exec", "av", "whitelist", "flist", "ftop", "sudo", "ftop", "fwho", "wtop", "btop", "settings", "members", "dm", "perm", "setign", "update", "restart"]
+let commands = ["help", "eval", "exec", "av", "whitelist", "flist", "ftop", "sudo", "ftop", "fwho", "wtop", "btop", "settings", "members", "dm", "perm", "setign", "update", "restart", "stats", "setstats"]
 client.on('message', async (message) => {
     if(message.author.bot) return;
     if(message.channel.type == "dm") return;
