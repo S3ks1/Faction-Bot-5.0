@@ -315,7 +315,7 @@ function tts(text) {
                 console.log(err)
             } 
             else{
-                resolve(data);
+                resolve(res)
             }
         })
     })
@@ -887,9 +887,9 @@ bot.on('fcf', (user,content) => {
                                 bot.chat(`/ff Playing ${args.join(" ")}`)
                                 //console.log(args)
                                 //console.log(args.join(" "))
-                                console.log(res)
-                                console.log(typeof(res.AudioStream))
-                                connection.play(res.AudioStream, "converted")
+                                var bufferStream = new Stream.PassThrough();
+                                bufferStream.end(res.AudioStream);
+                                const dispatcher = connection.play(bufferStream);
                             })
                         })
 
