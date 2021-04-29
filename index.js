@@ -312,8 +312,10 @@ async function tts(text) {
         Polly.synthesizeSpeech(params, function(err, data){
             if (err){
                 resolve(false)
+                console.log(err)
             } 
             else{
+                console.log(data)
                 resolve(data);
             }
         })
