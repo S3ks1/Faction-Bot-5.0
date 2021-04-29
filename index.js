@@ -1988,6 +1988,34 @@ client.on('message', async (message) => {
 
 
     }
+    if(commandName === "setstats"){
+        var user = message.mentions.members.first() || message.guild.members.cache.get(args[0]) || message.guild.members.cache.find(member => member.user.tag === args.join(" ").replace("\n", "")) || message.guild.members.cache.find(member => member.user.username.toLowerCase() === args.join(" ").replace("\n", "").toLowerCase())
+        let person = "";
+        if(!user){
+            getUserByIGN(args[0]).then((res) => {
+                if(res === false){
+                    miscError(guild, message, `:warning: Invalid User`)
+                }
+                else{
+                    if(res[args[1]]){
+                        console.log("success")
+                    }
+                }
+            })
+        }
+        else{
+            getUserByDiscord(user.id).then((res) => {
+                if(res === false){
+                    miscError(guild, message, `:warning: Invalid User`)
+                }
+                else{
+                    if(res[args[1]]){
+                        console.log("success")
+                    }
+                }
+            })
+        }
+    }
 
     
 })
