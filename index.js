@@ -318,6 +318,7 @@ async function tts(text) {
             }
         })
     })
+    return promise;
 
     //const writeFile = util.promisify(fs.writeFile);
     //await writeFile('output.mp3', response.audioContent, 'binary');
