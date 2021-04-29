@@ -670,9 +670,10 @@ async function checkPerms(cmdname, message){
                 }
             }
     })
+    })
     return promise;
 
-})
+
 }
 
 function noPerms(g, cmdname, message){
