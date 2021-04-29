@@ -2157,6 +2157,12 @@ client.on('message', async (message) => {
             })
         }
     }
+    if(commandName === "ttsvoice"){
+        Polly.describeVoices(function(err, data){
+            if(err) console.log(err)
+            if(data) console.log(data)
+        })
+    }
 
     
 })
