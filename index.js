@@ -2029,6 +2029,7 @@ client.on('message', async (message) => {
                     miscError(guild, message, `:warning: Invalid User`)
                 }
                 else{
+                    console.log(res)
                     person = res
                     if(!args[1]){
                         miscError(guild, message, `:warning: Invalid syntax, use the command like this: \`${guild.prefix}setstats <user/IGN> <walls/buffers/rpost> <number>\``)
