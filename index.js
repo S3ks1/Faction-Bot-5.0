@@ -1780,20 +1780,17 @@ client.on('message', async (message) => {
                 miscError(guild, message, ":warning: Invalid role provided")
             }
             else{
-                console.log(membersfetch)
-                let embed = new Discord.MessageEmbed()
-                .setColor(guild.embedColor)
-                .setTimestamp()
-                .setDescription(`:ok_hand: Sent the following message to ${membersfetch.size} users with the ${role} role\n\`\`\`${args.slice(1).join(" ")}\`\`\``)
-                message.channel.send(embed)
+                let arr = []
+
 
                 membersfetch.forEach((member) => {
                     if(member.roles.cache.find(r=> r.id === role.id)){
+                        arr.push(member)
                         let embed = new Discord.MessageEmbed()
                         .setColor(guild.embedColor)
                         .setTitle(`Announcement in ${message.guild.name} from ${message.author.tag}`)
                         .setDescription(`\`\`\`${args.slice(1).join(" ")}\`\`\``)
-                        .setFooter(`Announcement sent to all members with the ${role.name} role(${membersfetch.size})`)
+                        .setFooter(`Announcement sent to all members with the ${role.name} role(${arr.length})`)
                         .setTimestamp()
                         member.send(embed).catch((err) => {
                             let embed = new Discord.MessageEmbed()
@@ -1804,6 +1801,13 @@ client.on('message', async (message) => {
                         })
                     }
                 });
+                let embed = new Discord.MessageEmbed()
+                .setColor(guild.embedColor)
+                .setTimestamp()
+                .setDescription(`:ok_hand: Sent the following message to ${arr.length} users with the ${role} role\n\`\`\`${args.slice(1).join(" ")}\`\`\``)
+                message.channel.send(embed)
+                arr = []
+                
             }
 
         })
