@@ -306,14 +306,19 @@ var result = function(command, cb){
 
 async function tts(text) {
     // The text to synthesize
-    params.Text = text;
-    // Construct the request
-    Polly.synthesizeSpeech(params, function(err, data){
-        if (err) console.log(err, err.stack); 
-        else{
-            return data;
-        }
+    let promise = new Promise(function(resolve, reject) {
+        params.Text = text;
+        // Construct the request
+        Polly.synthesizeSpeech(params, function(err, data){
+            if (err){
+                resolve(false)
+            } 
+            else{
+                resolve(data);
+            }
+        })
     })
+
     //const writeFile = util.promisify(fs.writeFile);
     //await writeFile('output.mp3', response.audioContent, 'binary');
   
