@@ -1015,6 +1015,14 @@ bot.on('fcf', (user,content) => {
                         }
                     }).catch((err) => {console.log(err)})
                     break;
+                case "penis":
+                    let random = Math.floor(Math.random() * (1000 - 100) + 100) / 100;
+                    if(!args[0]){
+                        bot.chat(`/ff (!) Your penis is ${random} inches long`)
+                    }
+                    else{
+                        bot.chat(`/ff (!) ${args[0]}'s pensis is ${random} inches long`)
+                    }
                 
                     
     
