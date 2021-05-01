@@ -971,7 +971,7 @@ bot.on('fcf', (user,content) => {
                     
                     if(!memberz.hasPermission("ADMINISTRATOR")) return bot.chat(`/ff [!] You don't have permission to run this command`)
                     getGuild(config.guildId).then((res) => {
-                        console.log(res._doc)
+                        console.log(res)
                         if(!args[0]){
                             let mapped = []
                             Object.keys(res._doc).forEach(k=> {
