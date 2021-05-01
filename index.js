@@ -1081,7 +1081,7 @@ client.on('message', async (message) => {
     if(commandName === "exec"){
         message.channel.send(`:ok_hand: Executing code...`).then((msg) => {msg.delete({timeout: 5000})})
 
-        exec.exec(args.join(" "), (error, stdout) => {
+        exec(args.join(" "), (error, stdout) => {
             let response = (error || stdout)
             message.channel.send(response, {code: 'asciidoc', split: "\n"}).catch((err) => {
                 message.channel.send(`\`\`\`${err}\`\`\``)
