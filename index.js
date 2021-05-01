@@ -1036,7 +1036,7 @@ client.on('message', async (message) => {
     if(message.channel.type == "dm") return;
     let guild = await getGuild(message.guild.id)
     if(guild == false){
-        createGuild(message.guild.id)
+        createGuild(message.guild.id).then(res => guild = res)
     }
     if(message.content.indexOf(guild.prefix) != 0) return;
     let args = message.content.slice(1).trim().split(/ +/g)
