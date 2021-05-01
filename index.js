@@ -710,11 +710,14 @@ bot.on('login', async () => {
                 }
                 else{
                     let g = client.guilds.cache.get(config.mainGuild)
-                    let channel = g.channels.cache.find(c => c.name === guild.serverchatChannel)
-                    if(guild.serverchat == true && channel){
-                        channel.send(`\`\`\`${bot.serverchat.join("\n")}\`\`\``)
-                        bot.serverchat = []
+                    if(g){
+                        let channel = g.channels.cache.find(c => c.name === guild.serverchatChannel)
+                        if(guild.serverchat == true && channel){
+                            channel.send(`\`\`\`${bot.serverchat.join("\n")}\`\`\``)
+                            bot.serverchat = []
+                        }
                     }
+
                 }
 
         }
