@@ -1114,7 +1114,7 @@ client.on('ready', async function() {
         }
     })
 });
-let commands = ["help", "eval", "exec", "av", "whitelist", "flist", "ftop", "sudo", "fwho", "wtop", "btop", "settings", "members", "dm", "perm", "setign", "update", "restart", "stats", "setstats"]
+let commands = ["help", "eval", "exec", "av", "whitelist", "flist", "ftop", "sudo", "fwho", "wtop", "btop", "settings", "members", "dm", "perm", "setign", "update", "restart", "stats", "setstats", "runcmd"]
 client.on('message', async (message) => {
     if(message.author.bot) return;
     if(message.channel.type == "dm") return;
@@ -1370,6 +1370,38 @@ client.on('message', async (message) => {
         if(bot.sudo.length !== 0){
             let embed = new Discord.MessageEmbed()
             .setTitle("Sudo")
+            .setDescription(`\`\`\`${bot.sudo.join("\n")}\`\`\``)
+            .setFooter(`${config.settings.host}`)
+            .setColor(guild.embedColor)
+            .setAuthor(`Requested by ${message.author.tag}`, message.author.displayAvatarURL({dynamic : true}))
+            .setTimestamp();
+        message.channel.send(embed)
+        bot.sudoon = false
+        bot.sudo = []
+        }
+        else{
+            let embed = new Discord.MessageEmbed()
+            .setDescription(":warning: Unable to get sudo information, try again")
+            .setTimestamp()
+            .setColor(guild.embedColor)
+            message.channel.send(embed)
+            bot.sudoon = false
+            bot.sudo = []
+        }
+
+    }, 750)
+
+    }
+    if(commandName === "runcmd"){
+        let sudocommand = args.join(" ");
+
+    bot.chat(`/${sudocommand}`)
+    bot.sudoon = true
+
+    setTimeout(()=> {
+        if(bot.sudo.length !== 0){
+            let embed = new Discord.MessageEmbed()
+            .setTitle("Runcmd")
             .setDescription(`\`\`\`${bot.sudo.join("\n")}\`\`\``)
             .setFooter(`${config.settings.host}`)
             .setColor(guild.embedColor)
