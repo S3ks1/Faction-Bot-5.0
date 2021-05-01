@@ -1113,7 +1113,7 @@ client.on('ready', async function() {
         }
     })
 });
-let commands = ["help", "eval", "exec", "av", "whitelist", "flist", "ftop", "sudo", "ftop", "fwho", "wtop", "btop", "settings", "members", "dm", "perm", "setign", "update", "restart", "stats", "setstats"]
+let commands = ["help", "eval", "exec", "av", "whitelist", "flist", "ftop", "sudo", "fwho", "wtop", "btop", "settings", "members", "dm", "perm", "setign", "update", "restart", "stats", "setstats"]
 client.on('message', async (message) => {
     if(message.author.bot) return;
     if(message.channel.type == "dm") return;
@@ -1391,26 +1391,20 @@ client.on('message', async (message) => {
     }
     if(commandName === "ftop"){
         bot.chat(`/f top`)
-    bot.ftopon = true
+    bot.sudoon = true
 
     setTimeout(()=> {
-        if(bot.ftop.names.length !== 0){
+        if(bot.sudo.length !== 0){
             let embed = new Discord.MessageEmbed()
             .setTitle("Faction Top")
-            .addField("Name", bot.ftop.names.join("\n"), true)
-            .addField("Value", bot.ftop.ftop.join("\n"), true)
-            .addField("Potential", bot.ftop.ptop.join("\n"), true)
+            .setDescription(`\`\`\`${bot.sudo.join('\n')}\`\`\``)
             .setColor(guild.embedColor)
             .setFooter(`${config.settings.host}`)
             .setAuthor(`Requested by ${message.author.tag}`, message.author.displayAvatarURL({dynamic : true}))
             .setTimestamp();
         message.channel.send(embed)
-        bot.ftopon = false
-        bot.ftop = {
-            names:[],
-            ftop:[],
-            ptop:[]
-        }
+        bot.sudoon = false
+        bot.sudo = []
         }
         else{
             let embed = new Discord.MessageEmbed()
@@ -1418,8 +1412,8 @@ client.on('message', async (message) => {
             .setColor(guild.embedColor)
             .setTimestamp()
             message.channel.send(embed)
-            bot.ftopon = false
-            bot.ftop = []
+            bot.sudoon = false
+            bot.sudo = []
         }
 
     }, 750)
