@@ -917,7 +917,7 @@ bot.on('fcf', (user,content) => {
                     bot.chat(`/ff Fetching vanish information, please wait....`)
                     for(let i=0;i<=staff.length;i++){
                         setTimeout(() => {
-                            bot.tabComplete(`/mcore click /minecraft:tell ${staff[i]}`,function(matches){
+                            bot.tabComplete(`/f f  ${staff[i]}`,function(matches){
                                 return;
                             },false,false).then(res=>{
                                 if(res.length !== 0){
@@ -930,7 +930,7 @@ bot.on('fcf', (user,content) => {
                                 bot.chat(`/ff Vanish(${v.length}): ${v.length !== 0 ? v.join(", ") : "No staff online"}`)
                                 v=[]
                             }
-                        }, i*250)
+                        }, i*500)
                     }
                     break;
                 case "tp":
