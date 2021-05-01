@@ -1471,9 +1471,11 @@ client.on('message', async (message) => {
                             onlineindex = bot.sudo.indexOf(q)
                         }
                     })
-                    for(let i=onlineindex;i++;i<offlineindex){
-                       console.log(bot.sudo[i])
-                    }
+                    console.log(offlineindex)
+                    console.log(onlineindex)
+                    /*for(let i=onlineindex;i++;i<offlineindex){
+                      
+                    }*/
                     let description = bot.sudo.join("\n")
                     const split = description.match(/[\s\S]{1,2000}/g);
             
