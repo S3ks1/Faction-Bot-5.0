@@ -1473,8 +1473,8 @@ client.on('message', async (message) => {
                     })
                     console.log(offlineindex)
                     console.log(onlineindex)
-                    let i = onlineindex
-                    for(i++;i<offlineindex;){
+                    
+                    for(let i = onlineindex;i++;i<offlineindex;){
                         console.log(i)
                     }
                     
