@@ -33,7 +33,7 @@ bot.ftop = {
     ftop:[],
     ptop:[]
 }
-bot.chatAddPattern(/^\[\[(?:[^ ]*)] ([^ ]*) -> me\] (.*)$/, "dm", "archon dm") 
+bot.chatAddPattern(/^\[\[(?:[^ ]*)] ([^ ]*) (?:[^]*| )-> me\] (.*)$/, "dm", "archon dm") 
 bot.chatAddPattern(/^\[(?:[^ ]*)] \(([^ ]*) ➥ me\) (.*)$/, "dm", "archon dm")
 
 bot.chatAddPattern(/^(?:[*+]{1,3}|[^ ]*)(?: |)(?:[ ]{0,1})([^ ]*): (.*)$/, "fcf", "archon fcf")
