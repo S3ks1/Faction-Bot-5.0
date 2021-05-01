@@ -1473,11 +1473,14 @@ client.on('message', async (message) => {
                     })
                     console.log(offlineindex)
                     console.log(onlineindex)
-                    
+                    let out = []
                     for(let i = onlineindex+1;i<offlineindex;i++){
                         console.log(bot.sudo[i].split(" | "))
+                        bot.sudo[i].split(" | ").forEach(s=>{
+                            out.push(s.replace(/\*/g, "").replace(/\+/g, ""))
+                        })
                     }
-                    
+                    console.log(out)
                     let description = bot.sudo.join("\n")
                     const split = description.match(/[\s\S]{1,2000}/g);
             
