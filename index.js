@@ -968,6 +968,7 @@ bot.on('fcf', (user,content) => {
                     let gz = client.guilds.cache.get(config.guildID);
                     let uz = person.discordId;
                     let memberz  = gz.member(uz)
+                    console.log(res._doc)
                     if(!memberz.hasPermission("ADMINISTRATOR")) return bot.chat(`/ff [!] You don't have permission to run this command`)
                     getGuild(config.guildId).then((res) => {
                         if(!args[0]){
@@ -1098,7 +1099,7 @@ client.on('message', async (message) => {
     if(message.author.bot) return;
     if(message.channel.type == "dm") return;
     let guild = await getGuild(message.guild.id)
-    await console.log(guild)
+    
     if(guild == false){
         createGuild(message.guild.id).then(res => guild = res)
     }
@@ -2182,7 +2183,7 @@ client.on('message', async (message) => {
                     miscError(guild, message, `:warning: Invalid User`)
                 }
                 else{
-                    console.log(res)
+                    //console.log(res)
                     person = res
                     if(!args[1]){
                         miscError(guild, message, `:warning: Invalid syntax, use the command like this: \`${guild.prefix}setstats <user/IGN> <walls/buffers/rpost> <number>\``)
