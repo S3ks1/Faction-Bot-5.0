@@ -1015,6 +1015,7 @@ bot.on('fcf', (user,content) => {
                         }
                     }).catch((err) => {console.log(err)})
                     break;
+                
                     
     
             }
@@ -1103,7 +1104,7 @@ client.on('message', async (message) => {
     if(guild == false){
         createGuild(message.guild.id).then(res => guild = res)
     }
-    console.log(guild)
+    //console.log(guild)
     if(message.content.indexOf(guild.prefix) != 0) return;
     let args = message.content.slice(1).trim().split(/ +/g)
     let commandName = args.shift().toLowerCase()
