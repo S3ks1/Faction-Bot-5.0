@@ -80,8 +80,8 @@ var Polly = new AWS.Polly({
     secretAccessKey: '4R93otOCCZuZyqngVZ7dUOTgKQbFpc/mS8jFtFr1'
 });
 
-var onlineindex;
-var offlineindex
+var onlineindex = 0;
+var offlineindex = 0;
 //Mongo Schemas
 
 
