@@ -36,7 +36,7 @@ bot.ftop = {
 bot.chatAddPattern(/^\[\[(?:[^ ]*)] ([^ ]*) (?:[^]*| )-> me\] (.*)$/, "dm", "archon dm") 
 bot.chatAddPattern(/^\[(?:[^ ]*)] \(([^ ]*) ➥ me\) (.*)$/, "dm", "archon dm")
 
-bot.chatAddPattern(/^(?:[*+]{1,3}|[^ ]*)(?: |)(?:[ ]{0,1})([^ ]*): (.*)$/, "fcf", "archon fcf")
+bot.chatAddPattern(/^(?:[*+-]{1,3}|[^ ]*)(?: |)(?:[ ]{0,1})([^ ]*): (.*)$/, "fcf", "archon fcf")
 bot.chatAddPattern(/\[!] WE ARE GETTING RAIDED \[!]/, "raid", "archon raid alerts")
 const vec3 = require('vec3')
 
