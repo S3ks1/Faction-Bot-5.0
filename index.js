@@ -1463,7 +1463,7 @@ client.on('message', async (message) => {
                 if(bot.sudo.length !== 0){
                     console.log(bot.sudo)
                     bot.sudo.forEach(q=>{
-                        console.log(q)
+                        
                         if(q.includes("Members Offline")){
                             offlineindex = bot.sudo.indexOf(q)
                         }
