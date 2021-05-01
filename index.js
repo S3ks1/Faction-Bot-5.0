@@ -1475,7 +1475,7 @@ client.on('message', async (message) => {
                     console.log(onlineindex)
                     
                     for(let i = onlineindex+1;i<offlineindex;i++){
-                        console.log(bot.sudo.indexOf(i).split(" | "))
+                        console.log(bot.sudo[i].split(" | "))
                     }
                     
                     let description = bot.sudo.join("\n")
