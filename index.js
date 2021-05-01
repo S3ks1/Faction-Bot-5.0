@@ -2312,7 +2312,7 @@ client.on('message', async (message) => {
             .setTimestamp()
             return message.channel.send(embed)
         }
-        console.log(message.content.match(/<a:.+?:\d+>|<:.+?:\d+>/|/(\\u00a9|\\u00ae|\[\\u2000-\\u3300\]|\\ud83c\[\\ud000-\\udfff\]|\\ud83d\[\\ud000-\\udfff\]|\\ud83e\[\\ud000-\\udfff\])/))
+        console.log(args[0].match(/<a:.+?:\d+>|<:.+?:\d+>/|/(\\u00a9|\\u00ae|\[\\u2000-\\u3300\]|\\ud83c\[\\ud000-\\udfff\]|\\ud83d\[\\ud000-\\udfff\]|\\ud83e\[\\ud000-\\udfff\])/))
         message.guild.emojis.create(message.content.match(/<a:.+?:\d+>|<:.+?:\d+>/|/(\\u00a9|\\u00ae|\[\\u2000-\\u3300\]|\\ud83c\[\\ud000-\\udfff\]|\\ud83d\[\\ud000-\\udfff\]|\\ud83e\[\\ud000-\\udfff\])/)[0], args[1]).then(done=>{
             let embed = new Discord.MessageEmbed()
             .setColor(guild.embedColor)
