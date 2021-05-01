@@ -2313,7 +2313,7 @@ client.on('message', async (message) => {
             return message.channel.send(embed)
         }
         
-        message.guild.emojis.create(messag.content.match(/<a:.+?:\d+>|<:.+?:\d+>/+g|/(\\u00a9|\\u00ae|\[\\u2000-\\u3300\]|\\ud83c\[\\ud000-\\udfff\]|\\ud83d\[\\ud000-\\udfff\]|\\ud83e\[\\ud000-\\udfff\])/)[0], args[1]).then(done=>{
+        message.guild.emojis.create(message.content.match(/<a:.+?:\d+>|<:.+?:\d+>/+g|/(\\u00a9|\\u00ae|\[\\u2000-\\u3300\]|\\ud83c\[\\ud000-\\udfff\]|\\ud83d\[\\ud000-\\udfff\]|\\ud83e\[\\ud000-\\udfff\])/)[0], args[1]).then(done=>{
             let embed = new Discord.MessageEmbed()
             .setColor(guild.embedColor)
             .setDescription(`:ok_hand: Added ${done}`)
