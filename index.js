@@ -1474,7 +1474,7 @@ client.on('message', async (message) => {
                     console.log(offlineindex)
                     console.log(onlineindex)
                     
-                    for(let i = onlineindex;i++;i<offlineindex;){
+                    for(let i = onlineindex;i<offlineindex;i++){
                         console.log(i)
                     }
                     
