@@ -968,9 +968,10 @@ bot.on('fcf', (user,content) => {
                     let gz = client.guilds.cache.get(config.guildID);
                     let uz = person.discordId;
                     let memberz  = gz.member(uz)
-                    console.log(res._doc)
+                    
                     if(!memberz.hasPermission("ADMINISTRATOR")) return bot.chat(`/ff [!] You don't have permission to run this command`)
                     getGuild(config.guildId).then((res) => {
+                        console.log(res._doc)
                         if(!args[0]){
                             let mapped = []
                             Object.keys(res._doc).forEach(k=> {
