@@ -80,6 +80,8 @@ var Polly = new AWS.Polly({
     secretAccessKey: '4R93otOCCZuZyqngVZ7dUOTgKQbFpc/mS8jFtFr1'
 });
 
+var onlineindex;
+var offlineindex
 //Mongo Schemas
 
 
@@ -1459,6 +1461,18 @@ client.on('message', async (message) => {
             bot.sudoon = true
             setTimeout(()=> {
                 if(bot.sudo.length !== 0){
+
+                    bot.sudo.forEach(q=>{
+                        if(q.includes("Members Offline")){
+                            offlineindex = bot.sudo.indexOf(q)
+                        }
+                        if(q.includes("Members Online")){
+                            onlineindex = bot.sudo.indexOf(q)
+                        }
+                    })
+                    for(let i=onlineindex;i++;i<onlineindex){
+                        console.log(bot.sudo[i])
+                    }
                     let description = bot.sudo.join("\n")
                     const split = description.match(/[\s\S]{1,2000}/g);
             
