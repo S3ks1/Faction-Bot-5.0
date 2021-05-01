@@ -507,6 +507,7 @@ async function getGuild(g){
             }
             else
             {
+                console.log(res)
                 resolve(res)
             }
         }).catch((err) => console.log(err))
