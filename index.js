@@ -2305,27 +2305,20 @@ client.on('message', async (message) => {
             .setTimestamp()
             return message.channel.send(embed)
         }
-        if(!args[1]){
-            let embed = new Discord.MessageEmbed()
-            .setColor(guild.embedColor)
-            .setDescription(`:warning: Include a name for the new emoji`)
-            .setTimestamp()
-            return message.channel.send(embed)
-        }
-        console.log(args[0].match(/<a:.+?:\d+>|<:.+?:\d+>/|/(\\u00a9|\\u00ae|\[\\u2000-\\u3300\]|\\ud83c\[\\ud000-\\udfff\]|\\ud83d\[\\ud000-\\udfff\]|\\ud83e\[\\ud000-\\udfff\])/))
-        message.guild.emojis.create(message.content.match(/<a:.+?:\d+>|<:.+?:\d+>/|/(\\u00a9|\\u00ae|\[\\u2000-\\u3300\]|\\ud83c\[\\ud000-\\udfff\]|\\ud83d\[\\ud000-\\udfff\]|\\ud83e\[\\ud000-\\udfff\])/)[0], args[1]).then(done=>{
-            let embed = new Discord.MessageEmbed()
-            .setColor(guild.embedColor)
-            .setDescription(`:ok_hand: Added ${done}`)
-            .setTimestamp()
-            return message.channel.send(embed)
-        }).catch((err) => {
-            let embed = new Discord.MessageEmbed()
-            .setColor(guild.embedColor)
-            .setDescription(`:warning: ${err}`)
-            .setTimestamp()
-            return message.channel.send(embed)
-        })
+       let parsedEmoji = Discord.Util.parseEmoji(args[0])
+       if(parsedEmoji.id){
+           const extension = parsedEmoji.animated ? ".gif" : ".png"
+           const url = `https://cdn.discordapp.com/emojis/${parsedEmoji.id + extension}`
+           message.guild.emojis.create(url, args[1] !== undefined ? args[1] : parsedEmoji.name)
+           let embed = new Discord.MessageEmbed()
+           .setColor(guild.embedColor)
+           .setDescription(`:ok_hand: Added ${args[1] !== undefined ? args[1] : parsedEmoji.name}`)
+           .setTimestamp()
+           return message.channel.send(embed)
+       }
+       else{
+            message.channel.send(`:warning: Invalid emoji`)
+       }
     }
     
 })
