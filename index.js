@@ -965,11 +965,11 @@ bot.on('fcf', (user,content) => {
                     }
                     break;
                 case "settings":
-                    let g = client.guilds.cache.get(config.guildID);
+                    g = client.guilds.cache.get(config.guildID);
                     let u = person.discordId;
                     let member  = g.member(u)
                     if(!member.hasPermission("ADMINISTRATOR")) return bot.chat(`/ff [!] You don't have permission to run this command`)
-                    getGuild(message.guild.id).then((res) => {
+                    getGuild(config.guildId).then((res) => {
                         if(!args[0]){
                             let mapped = []
                             Object.keys(res._doc).forEach(k=> {
@@ -1000,7 +1000,7 @@ bot.on('fcf', (user,content) => {
                             }
                             
                 
-                            Guild.updateOne({ guildId: message.guild.id }, 
+                            Guild.updateOne({ guildId: config.guildID }, 
                                 res._doc
                             ).then((xd) => {})
                 
