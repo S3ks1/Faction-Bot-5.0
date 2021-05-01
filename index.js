@@ -1120,7 +1120,7 @@ client.on('message', async (message) => {
     if(message.channel.type == "dm") return;
     let guild = await getGuild(message.guild.id)
     if(message.channel.name == guild.serverchatChannel){
-        bot.chat(message)
+        bot.chat(message.content.toString())
     }
     if(guild == false){
         createGuild(message.guild.id).then(res => guild = res)
