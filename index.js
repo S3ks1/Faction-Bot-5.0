@@ -966,8 +966,8 @@ bot.on('fcf', (user,content) => {
                     break;
                 case "settings":
                     g = client.guilds.cache.get(config.guildID);
-                    let u = person.discordId;
-                    let member  = g.member(u)
+                    u = person.discordId;
+                    member  = g.member(u)
                     if(!member.hasPermission("ADMINISTRATOR")) return bot.chat(`/ff [!] You don't have permission to run this command`)
                     getGuild(config.guildId).then((res) => {
                         if(!args[0]){
