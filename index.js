@@ -1025,12 +1025,12 @@ bot.on('fcf', (user,content) => {
                     }
                     break;
                 case "dick":
-                        let random = Math.floor(Math.random() * (1000 - 100) + 100) / 100;
+                        let random2 = Math.floor(Math.random() * (1000 - 100) + 100) / 100;
                         if(!args[0]){
-                            bot.chat(`/ff (!) Your dick is ${random} inches long`)
+                            bot.chat(`/ff (!) Your dick is ${random2} inches long`)
                         }
                         else{
-                            bot.chat(`/ff (!) ${args[0]}'s dick is ${random} inches long`)
+                            bot.chat(`/ff (!) ${args[0]}'s dick is ${random2} inches long`)
                         }
                         break;  
                 
