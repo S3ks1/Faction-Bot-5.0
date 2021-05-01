@@ -963,6 +963,57 @@ bot.on('fcf', (user,content) => {
                     if(!args[0]){
                         bot.chat(`/ff Avaliable Commands: ${guild.rpostCommand}, ${guild.wallCommand}, ${guild.bufferCommand}, tts, v, flick, fire, whois, tp, tts`)
                     }
+                    break;
+                case "settings":
+                    let g = client.guilds.cache.get(config.guildID);
+                    let u = person.discordId;
+                    let member  = g.member(u)
+                    if(!member.hasPermission("ADMINISTRATOR")) return bot.chat(`/ff [!] You don't have permission to run this command`)
+                    getGuild(message.guild.id).then((res) => {
+                        if(!args[0]){
+                            let mapped = []
+                            Object.keys(res._doc).forEach(k=> {
+                                mapped.push(`${k}:${res._doc[k]}`)
+                            })
+                            bot.chat(`/ff ${mapped.join(", ")}`)
+                        }
+                        else if(Object.keys(res._doc).indexOf(args[0]) !== -1){
+                            //message.channel.send(`*saving* ${msgargs[1]}`)
+                            //console.log(typeOf(res._doc[args[0]]))
+                            if(typeOf(res._doc[args[0]]) == "number"){
+                                res._doc[args[0]] = Number(args.slice(1).join(" "))
+                            }
+                            else if(typeOf(res._doc[args[0]]) == "boolean"){
+                                if(args[1] == "true" || args[1] == "1"){
+                                    res._doc[args[0]] = true
+                                }
+                                else if(args[1] == "false" || args[1] == 0){
+                                    res._doc[args[0]] = false
+                                }
+                                else{
+                                    bot.chat(`/ff [!] Invalid Key provided`)
+                                    return;
+                                }
+                            }
+                            else{
+                                res._doc[args[0]] = args.slice(1).join(" ")
+                            }
+                            
+                
+                            Guild.updateOne({ guildId: message.guild.id }, 
+                                res._doc
+                            ).then((xd) => {})
+                
+
+                            bot.chat(`/ff (!) Saved ${args.slice(1).join(" ")} as a new value for ${args[0]}`)
+
+                            return;
+                        }
+                        else{
+                            bot.chat(`/ff [!] Invalid key ${args[0]} provided`)
+                        }
+                    }).catch((err) => {console.log(err)})
+                    break;
                     
     
             }
