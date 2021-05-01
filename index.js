@@ -1034,330 +1034,366 @@ let commands = ["help", "eval", "exec", "av", "whitelist", "flist", "ftop", "sud
 client.on('message', async (message) => {
     if(message.author.bot) return;
     if(message.channel.type == "dm") return;
-    getGuild(message.guild.id).then((guild) => {
-        if(guild == false){
-            createGuild(message.guild.id).then(res => guild = res)
-        }
-        console.log(guild)
-        if(message.content.indexOf(guild.prefix) != 0) return;
-        let args = message.content.slice(1).trim().split(/ +/g)
-        let commandName = args.shift().toLowerCase()
-        if(commands.indexOf(commandName) !== -1){
-            let perms = await getPerm(commandName)
-            if(perms == false){
-                await createPerm(commandName)
-            }
-            else{
-                let z = await checkPerms(commandName, message)
-                if(z === false) return noPerms(guild, commandName, message)
-            }
-        }
-        if(commandName === "help"){
-            let lol = []
-            commands.forEach(c=>lol.push(`\`${c}\``))
-            let embed = new Discord.MessageEmbed()
-            .setTitle("Help Menu")
-            .setColor(guild.embedColor)
-            .setDescription(`**Prefix:** ${guild.prefix}\n${lol.join(", ")}`)
-            .setTimestamp()
-            message.channel.send(embed)
-        }
-        if(commandName === "eval"){
-            const code = args.join(" ")
-            try{
-                const result = await eval(code)
-                let output = result
-                if(typeof result !== 'string'){
-                    output = inspect(result)
-                }
-                message.channel.send(`\`\`\`${output}\`\`\``)
-            }
-            catch(err) {
-                message.channel.send(`:warning: ${err}`)
-            }
-        }
-        if(commandName === "exec"){
-            message.channel.send(`:ok_hand: Executing code...`).then((msg) => {msg.delete({timeout: 5000})})
-    
-            exec.exec(args.join(" "), (error, stdout) => {
-                let response = (error || stdout)
-                message.channel.send(response, {code: 'asciidoc', split: "\n"}).catch((err) => {
-                    message.channel.send(`\`\`\`${err}\`\`\``)
-                })
-            })
-        }
-        if(commandName === "av"){
-            let user = message.mentions.members.first() || message.guild.members.cache.get(args[0]) || message.guild.members.cache.find(member => member.user.tag === args.join(" ").replace("\n", "")) || message.guild.members.cache.find(member => member.user.username.toLowerCase() === args.join(" ").replace("\n", "").toLowerCase()) || message.author
-        if (!user) {
-            let embed = new Discord.MessageEmbed().setDescription(':warning: Invalid User')
-            message.channel.send(embed)
-            return;
-        }
-        if(!user.user){
-            const avatarEmbed = new Discord.MessageEmbed().setAuthor(`${user.username}'s Avatar`).setImage(user.displayAvatarURL({
-                dynamic: true,
-                size: 1024
-            }))
-            .setColor(guild.embedColor)
-            .setTimestamp()
-            message.channel.send(avatarEmbed);
+    let guild = await getGuild(message.guild.id)
+    await console.log(guild)
+    if(guild == false){
+        createGuild(message.guild.id).then(res => guild = res)
+    }
+    console.log(guild)
+    if(message.content.indexOf(guild.prefix) != 0) return;
+    let args = message.content.slice(1).trim().split(/ +/g)
+    let commandName = args.shift().toLowerCase()
+    if(commands.indexOf(commandName) !== -1){
+        let perms = await getPerm(commandName)
+        if(perms == false){
+            await createPerm(commandName)
         }
         else{
-            const avatarEmbed = new Discord.MessageEmbed().setAuthor(`${user.user.username}'s Avatar`).setImage(user.user.displayAvatarURL({
-                dynamic: true,
-                size: 1024
-            }))
-            .setColor(guild.embedColor)
-            .setTimestamp()
-            message.channel.send(avatarEmbed);
+            let z = await checkPerms(commandName, message)
+            if(z === false) return noPerms(guild, commandName, message)
         }
-    
+    }
+    if(commandName === "help"){
+        let lol = []
+        commands.forEach(c=>lol.push(`\`${c}\``))
+        let embed = new Discord.MessageEmbed()
+        .setTitle("Help Menu")
+        .setColor(guild.embedColor)
+        .setDescription(`**Prefix:** ${guild.prefix}\n${lol.join(", ")}`)
+        .setTimestamp()
+        message.channel.send(embed)
+    }
+    if(commandName === "eval"){
+        const code = args.join(" ")
+        try{
+            const result = await eval(code)
+            let output = result
+            if(typeof result !== 'string'){
+                output = inspect(result)
+            }
+            message.channel.send(`\`\`\`${output}\`\`\``)
         }
-        if(commandName === "whitelist"){
-            if(!args[0]){
-                getUserByDiscord(message.author.id).then((user) => {
-                                //console.log(user)
-                if(user !== false) return miscError(guild, message, ":warning: You are already whitelisted")
-                createUser(message.author.id, "not set").then((res) => {
-                    let embed = new Discord.MessageEmbed()
-                    .setColor(guild.embedColor)
-                    .setTimestamp()
-                    .setDescription(":ok_hand: Check your DMs for a verification code")
-                    message.channel.send(embed).then((msg) => {
-                            let dembed = new Discord.MessageEmbed()
+        catch(err) {
+            message.channel.send(`:warning: ${err}`)
+        }
+    }
+    if(commandName === "exec"){
+        message.channel.send(`:ok_hand: Executing code...`).then((msg) => {msg.delete({timeout: 5000})})
+
+        exec.exec(args.join(" "), (error, stdout) => {
+            let response = (error || stdout)
+            message.channel.send(response, {code: 'asciidoc', split: "\n"}).catch((err) => {
+                message.channel.send(`\`\`\`${err}\`\`\``)
+            })
+        })
+    }
+    if(commandName === "av"){
+        let user = message.mentions.members.first() || message.guild.members.cache.get(args[0]) || message.guild.members.cache.find(member => member.user.tag === args.join(" ").replace("\n", "")) || message.guild.members.cache.find(member => member.user.username.toLowerCase() === args.join(" ").replace("\n", "").toLowerCase()) || message.author
+    if (!user) {
+        let embed = new Discord.MessageEmbed().setDescription(':warning: Invalid User')
+        message.channel.send(embed)
+        return;
+    }
+    if(!user.user){
+        const avatarEmbed = new Discord.MessageEmbed().setAuthor(`${user.username}'s Avatar`).setImage(user.displayAvatarURL({
+            dynamic: true,
+            size: 1024
+        }))
+        .setColor(guild.embedColor)
+        .setTimestamp()
+        message.channel.send(avatarEmbed);
+    }
+    else{
+        const avatarEmbed = new Discord.MessageEmbed().setAuthor(`${user.user.username}'s Avatar`).setImage(user.user.displayAvatarURL({
+            dynamic: true,
+            size: 1024
+        }))
+        .setColor(guild.embedColor)
+        .setTimestamp()
+        message.channel.send(avatarEmbed);
+    }
+
+    }
+    if(commandName === "whitelist"){
+        if(!args[0]){
+            getUserByDiscord(message.author.id).then((user) => {
+                            //console.log(user)
+            if(user !== false) return miscError(guild, message, ":warning: You are already whitelisted")
+            createUser(message.author.id, "not set").then((res) => {
+                let embed = new Discord.MessageEmbed()
+                .setColor(guild.embedColor)
+                .setTimestamp()
+                .setDescription(":ok_hand: Check your DMs for a verification code")
+                message.channel.send(embed).then((msg) => {
+                        let dembed = new Discord.MessageEmbed()
+                        .setColor(guild.embedColor)
+                        .setTimestamp()
+                        .setFooter(config.settings.host)
+                        .setTitle("__WHITELIST__")
+                        .addField("Server", bot._client.socket._host, true)
+                        .addField("Code", res.c, true)
+                        .addField("Bot Username", bot.username, true)
+                        .addField("Example", `/msg ${bot.username} ${res.c}`)
+                        message.author.send(dembed).catch((err) => {
+                            let embed = new Discord.MessageEmbed()
                             .setColor(guild.embedColor)
                             .setTimestamp()
                             .setFooter(config.settings.host)
-                            .setTitle("__WHITELIST__")
-                            .addField("Server", bot._client.socket._host, true)
-                            .addField("Code", res.c, true)
-                            .addField("Bot Username", bot.username, true)
-                            .addField("Example", `/msg ${bot.username} ${res.c}`)
-                            message.author.send(dembed).catch((err) => {
-                                let embed = new Discord.MessageEmbed()
-                                .setColor(guild.embedColor)
-                                .setTimestamp()
-                                .setFooter(config.settings.host)
-                                .setDescription(":warning: Couldn't message you, please enable Direct Messages")
-                                msg.edit(embed)
-                                deleteUserByDiscord(message.author.id)
-                            })
-    
-                    })
-    
-    
-                    
-                    //console.log(res)
-                })
-                })
-    
-            }
-            else if(args[0] === "list"){
-                getUsers().then((result) => {
-                    if(result == false){
-                        return miscError(guild, message, `:warning: There are no whitelisted users`)
-                    }
-                    let whitelisted = []
-                    let description = []
-                    let field2 = []
-                    result.forEach(user => {
-                        whitelisted.push({
-                            "id": user.discordId,
-                            "ign": user.ign
+                            .setDescription(":warning: Couldn't message you, please enable Direct Messages")
+                            msg.edit(embed)
+                            deleteUserByDiscord(message.author.id)
                         })
-                        if (whitelisted.length === result.length) {
-                            whitelisted.forEach(person => {
-                                field2.push(`**${person.ign}**`)
-                                if(client.users.cache.get(person.id)){
-                                    description.push(`**${client.users.cache.get(person.id)} (ID: ${person.id})**`)
-                                }
-                                else{
-                                    description.push(`**Unknown User (ID: ${person.id})**`)
-                                }
-                            })
-                        }
-                    })
-                    const generateEmbed = start => {
-                        var n = description.slice(start, start + 10)
-                        var n2 = field2.slice(start,start + 10)
-                        var embed = new Discord.MessageEmbed()
-                            .setTimestamp()
-                            .setTitle(`Whitelisted Users`)
-                        if(n.length > 0 && n2.length >0){
-                            embed.addField("**Discord**", n.join("\n"), true)
-                            embed.setColor(guild.embedColor)
-                            embed.addField("**IGN**", n2.join("\n"), true)
-                            embed.setFooter(`Page ${Math.floor(start/10) + Math.ceil(n.length/10)}/${Math.ceil(description.length/10)}`)
-                        }
-                        else{
-                            embed.setDescription(":warning: No whitelisted users")
-                        }
-            
-                        return embed
-                    }
-            
-                    const author = message.author
-                    message.channel.send(generateEmbed(0)).then(message2 => {
-                        if (description.length <= 10) return
-                        message2.react('◀️')
-                        message2.react('▶️')
-                        const collector = message2.createReactionCollector(
-                            (reaction, user) => ['◀️', '▶️'].includes(reaction.emoji.name) && user.id === author.id, {
-                                time: 180000
-                            }
-                        )
-            
-                        let currentIndex = 0
-                        collector.on('collect', async (reaction, user) => {
-                            reaction.users.remove(message.author.id)
-                            if (reaction.emoji.name === "◀️" && currentIndex > 9) {
-                                currentIndex = currentIndex - 10
-                            }
-                            if (reaction.emoji.name === "▶️" && currentIndex + 10 < description.length) {
-                                currentIndex = currentIndex + 10
-                            }
-            
-                            message2.edit(generateEmbed(currentIndex))
-            
-                        })
-                    })
+
                 })
-            }
-            else if(args[0] === "remove"){
-                let user = message.mentions.members.first() || message.guild.members.cache.get(args[0]) || message.guild.members.cache.find(member => member.user.tag === args.join(" ").replace("\n", "")) || message.guild.members.cache.find(member => member.user.username.toLowerCase() === args.join(" ").replace("\n", "").toLowerCase())
-                if(!user){
-                    deleteUserByIGN(args[1]).then((res) => {
-                        let embed = new Discord.MessageEmbed()
-                        .setColor(guild.embedColor)
-                        .setDescription(`:ok_hand: Removed all users with the ign \`${args[1]}\` from the whitelist`)
-                        .setTimestamp()
-                        message.channel.send(embed)
-                        return;
-                    })
-                }
-                else{
-                    deleteUserByDiscord(user.id).then((res) => {
-                        let embed = new Discord.MessageEmbed()
-                        .setColor(guild.embedColor)
-                        .setDescription(`:ok_hand: Removed ${user} from the whitelist`)
-                        .setTimestamp()
-                        message.channel.send(embed)
-                    })
-                }
-            }
+
+
+                
+                //console.log(res)
+            })
+            })
+
         }
-        if(commandName === "flist"){
-            bot.chat("/f list")
-            bot.sudoon = true
-        setTimeout(()=> {
-            if(bot.sudo.length !== 0){
-                let embed = new Discord.MessageEmbed()
-                .setDescription(`\`\`\`${bot.sudo.join("\n")}\`\`\``)
-                .setAuthor(`Requested by ${message.author.tag}`, message.author.displayAvatarURL({dynamic : true}))
-                .setTimestamp()
-                .setColor(guild.embedColor)
-            message.channel.send(embed)
-            bot.sudo = []
-            bot.sudoon = false
+        else if(args[0] === "list"){
+            getUsers().then((result) => {
+                if(result == false){
+                    return miscError(guild, message, `:warning: There are no whitelisted users`)
+                }
+                let whitelisted = []
+                let description = []
+                let field2 = []
+                result.forEach(user => {
+                    whitelisted.push({
+                        "id": user.discordId,
+                        "ign": user.ign
+                    })
+                    if (whitelisted.length === result.length) {
+                        whitelisted.forEach(person => {
+                            field2.push(`**${person.ign}**`)
+                            if(client.users.cache.get(person.id)){
+                                description.push(`**${client.users.cache.get(person.id)} (ID: ${person.id})**`)
+                            }
+                            else{
+                                description.push(`**Unknown User (ID: ${person.id})**`)
+                            }
+                        })
+                    }
+                })
+                const generateEmbed = start => {
+                    var n = description.slice(start, start + 10)
+                    var n2 = field2.slice(start,start + 10)
+                    var embed = new Discord.MessageEmbed()
+                        .setTimestamp()
+                        .setTitle(`Whitelisted Users`)
+                    if(n.length > 0 && n2.length >0){
+                        embed.addField("**Discord**", n.join("\n"), true)
+                        embed.setColor(guild.embedColor)
+                        embed.addField("**IGN**", n2.join("\n"), true)
+                        embed.setFooter(`Page ${Math.floor(start/10) + Math.ceil(n.length/10)}/${Math.ceil(description.length/10)}`)
+                    }
+                    else{
+                        embed.setDescription(":warning: No whitelisted users")
+                    }
+        
+                    return embed
+                }
+        
+                const author = message.author
+                message.channel.send(generateEmbed(0)).then(message2 => {
+                    if (description.length <= 10) return
+                    message2.react('◀️')
+                    message2.react('▶️')
+                    const collector = message2.createReactionCollector(
+                        (reaction, user) => ['◀️', '▶️'].includes(reaction.emoji.name) && user.id === author.id, {
+                            time: 180000
+                        }
+                    )
+        
+                    let currentIndex = 0
+                    collector.on('collect', async (reaction, user) => {
+                        reaction.users.remove(message.author.id)
+                        if (reaction.emoji.name === "◀️" && currentIndex > 9) {
+                            currentIndex = currentIndex - 10
+                        }
+                        if (reaction.emoji.name === "▶️" && currentIndex + 10 < description.length) {
+                            currentIndex = currentIndex + 10
+                        }
+        
+                        message2.edit(generateEmbed(currentIndex))
+        
+                    })
+                })
+            })
+        }
+        else if(args[0] === "remove"){
+            let user = message.mentions.members.first() || message.guild.members.cache.get(args[0]) || message.guild.members.cache.find(member => member.user.tag === args.join(" ").replace("\n", "")) || message.guild.members.cache.find(member => member.user.username.toLowerCase() === args.join(" ").replace("\n", "").toLowerCase())
+            if(!user){
+                deleteUserByIGN(args[1]).then((res) => {
+                    let embed = new Discord.MessageEmbed()
+                    .setColor(guild.embedColor)
+                    .setDescription(`:ok_hand: Removed all users with the ign \`${args[1]}\` from the whitelist`)
+                    .setTimestamp()
+                    message.channel.send(embed)
+                    return;
+                })
             }
             else{
-                let embed = new Discord.MessageEmbed()
-                .setDescription(":warning: Unable to get /f list information, try again")
-                .setTimestamp()
-                .setColor(guild.embedColor)
-                message.channel.send(embed)
-                bot.sudoon = false
-                bot.sudo = []
+                deleteUserByDiscord(user.id).then((res) => {
+                    let embed = new Discord.MessageEmbed()
+                    .setColor(guild.embedColor)
+                    .setDescription(`:ok_hand: Removed ${user} from the whitelist`)
+                    .setTimestamp()
+                    message.channel.send(embed)
+                })
             }
-    
-        }, 750)
-    
         }
-        if(commandName === "sudo"){
-            let sudocommand = args.join(" ");
-    
-        bot.chat(`${sudocommand}`)
+    }
+    if(commandName === "flist"){
+        bot.chat("/f list")
         bot.sudoon = true
-    
-        setTimeout(()=> {
-            if(bot.sudo.length !== 0){
-                let embed = new Discord.MessageEmbed()
-                .setTitle("Sudo")
-                .setDescription(`\`\`\`${bot.sudo.join("\n")}\`\`\``)
-                .setFooter(`${config.settings.host}`)
-                .setColor(guild.embedColor)
-                .setAuthor(`Requested by ${message.author.tag}`, message.author.displayAvatarURL({dynamic : true}))
-                .setTimestamp();
+    setTimeout(()=> {
+        if(bot.sudo.length !== 0){
+            let embed = new Discord.MessageEmbed()
+            .setDescription(`\`\`\`${bot.sudo.join("\n")}\`\`\``)
+            .setAuthor(`Requested by ${message.author.tag}`, message.author.displayAvatarURL({dynamic : true}))
+            .setTimestamp()
+            .setColor(guild.embedColor)
+        message.channel.send(embed)
+        bot.sudo = []
+        bot.sudoon = false
+        }
+        else{
+            let embed = new Discord.MessageEmbed()
+            .setDescription(":warning: Unable to get /f list information, try again")
+            .setTimestamp()
+            .setColor(guild.embedColor)
             message.channel.send(embed)
             bot.sudoon = false
             bot.sudo = []
-            }
-            else{
-                let embed = new Discord.MessageEmbed()
-                .setDescription(":warning: Unable to get sudo information, try again")
-                .setTimestamp()
-                .setColor(guild.embedColor)
-                message.channel.send(embed)
-                bot.sudoon = false
-                bot.sudo = []
-            }
-    
-        }, 750)
-    
         }
-        if(commandName === "ftop"){
-            bot.chat(`/f top`)
-        bot.ftopon = true
-    
-        setTimeout(()=> {
-            if(bot.ftop.names.length !== 0){
-                let embed = new Discord.MessageEmbed()
-                .setTitle("Faction Top")
-                .addField("Name", bot.ftop.names.join("\n"), true)
-                .addField("Value", bot.ftop.ftop.join("\n"), true)
-                .addField("Potential", bot.ftop.ptop.join("\n"), true)
-                .setColor(guild.embedColor)
-                .setFooter(`${config.settings.host}`)
-                .setAuthor(`Requested by ${message.author.tag}`, message.author.displayAvatarURL({dynamic : true}))
-                .setTimestamp();
+
+    }, 750)
+
+    }
+    if(commandName === "sudo"){
+        let sudocommand = args.join(" ");
+
+    bot.chat(`${sudocommand}`)
+    bot.sudoon = true
+
+    setTimeout(()=> {
+        if(bot.sudo.length !== 0){
+            let embed = new Discord.MessageEmbed()
+            .setTitle("Sudo")
+            .setDescription(`\`\`\`${bot.sudo.join("\n")}\`\`\``)
+            .setFooter(`${config.settings.host}`)
+            .setColor(guild.embedColor)
+            .setAuthor(`Requested by ${message.author.tag}`, message.author.displayAvatarURL({dynamic : true}))
+            .setTimestamp();
+        message.channel.send(embed)
+        bot.sudoon = false
+        bot.sudo = []
+        }
+        else{
+            let embed = new Discord.MessageEmbed()
+            .setDescription(":warning: Unable to get sudo information, try again")
+            .setTimestamp()
+            .setColor(guild.embedColor)
+            message.channel.send(embed)
+            bot.sudoon = false
+            bot.sudo = []
+        }
+
+    }, 750)
+
+    }
+    if(commandName === "ftop"){
+        bot.chat(`/f top`)
+    bot.ftopon = true
+
+    setTimeout(()=> {
+        if(bot.ftop.names.length !== 0){
+            let embed = new Discord.MessageEmbed()
+            .setTitle("Faction Top")
+            .addField("Name", bot.ftop.names.join("\n"), true)
+            .addField("Value", bot.ftop.ftop.join("\n"), true)
+            .addField("Potential", bot.ftop.ptop.join("\n"), true)
+            .setColor(guild.embedColor)
+            .setFooter(`${config.settings.host}`)
+            .setAuthor(`Requested by ${message.author.tag}`, message.author.displayAvatarURL({dynamic : true}))
+            .setTimestamp();
+        message.channel.send(embed)
+        bot.ftopon = false
+        bot.ftop = {
+            names:[],
+            ftop:[],
+            ptop:[]
+        }
+        }
+        else{
+            let embed = new Discord.MessageEmbed()
+            .setDescription(":warning: Unable to get sudo information, try again")
+            .setColor(guild.embedColor)
+            .setTimestamp()
             message.channel.send(embed)
             bot.ftopon = false
-            bot.ftop = {
-                names:[],
-                ftop:[],
-                ptop:[]
-            }
-            }
-            else{
-                let embed = new Discord.MessageEmbed()
-                .setDescription(":warning: Unable to get sudo information, try again")
-                .setColor(guild.embedColor)
-                .setTimestamp()
-                message.channel.send(embed)
-                bot.ftopon = false
-                bot.ftop = []
-            }
-    
-        }, 750)
+            bot.ftop = []
         }
-        if(commandName === "fwho"){
-            if(!args[0]){
-                bot.chat("/f who")
+
+    }, 750)
+    }
+    if(commandName === "fwho"){
+        if(!args[0]){
+            bot.chat("/f who")
+            bot.sudoon = true
+            setTimeout(()=> {
+                if(bot.sudo.length !== 0){
+                    let description = bot.sudo.join("\n")
+                    const split = description.match(/[\s\S]{1,2000}/g);
+            
+                    for (let i = 0; i < split.length; i++) {
+                        let desc = split[i].split("*").join("⋆").split("_").join("-")
+                        let embed = new Discord.MessageEmbed()
+                          .setDescription(desc)
+                          .setTitle(`Faction Who`)
+                          .setFooter(`${config.settings.host}`)
+                    .setAuthor(`Requested by ${message.author.tag}`, message.author.displayAvatarURL({dynamic : true}))
+                    .setTimestamp()
+                    .setColor(guild.embedColor)
+                        message.channel.send(embed) // Async context needed to use 'await.'
+                          .catch(console.error);  
+                      }
+                      bot.sudo = []
+                      bot.sudoon = false
+                }
+                else{
+                    let embed = new Discord.MessageEmbed()
+                    .setDescription(":warning: Unable to get /f who information, try again")
+                    .setTimestamp()
+                    .setColor(guild.embedColor)
+                    message.channel.send(embed)
+                    bot.sudo = []
+                    bot.sudoon = false
+                }
+        
+            }, 500)
+        }
+        else{
+                bot.chat(`/f who ${args[0]}`)
                 bot.sudoon = true
                 setTimeout(()=> {
                     if(bot.sudo.length !== 0){
                         let description = bot.sudo.join("\n")
-                        const split = description.match(/[\s\S]{1,2000}/g);
+                        const split = description.match(/[\s\S]{1,2048}/g);
                 
                         for (let i = 0; i < split.length; i++) {
                             let desc = split[i].split("*").join("⋆").split("_").join("-")
                             let embed = new Discord.MessageEmbed()
                               .setDescription(desc)
-                              .setTitle(`Faction Who`)
+                              .setTitle(`${args[0]}`)
+                              .setColor(guild.embedColor)
                               .setFooter(`${config.settings.host}`)
                         .setAuthor(`Requested by ${message.author.tag}`, message.author.displayAvatarURL({dynamic : true}))
-                        .setTimestamp()
-                        .setColor(guild.embedColor)
+                        .setTimestamp();
                             message.channel.send(embed) // Async context needed to use 'await.'
                               .catch(console.error);  
                           }
@@ -1375,816 +1411,782 @@ client.on('message', async (message) => {
                     }
             
                 }, 500)
+        }
+    }
+    if(commandName === "wtop"){
+        let whitelisted = []
+        let description = []
+        let field2 = []
+        getUsers().then((result) => {
+            result.forEach(user => {
+                whitelisted.push({
+                    "id": user.discordId,
+                    "ign": user.ign,
+                    "checks": user.wallchecks
+                })
+                if (whitelisted.length === result.length) {
+                    let sorted = whitelisted.slice().sort((a, b) => b.checks - a.checks)
+                    sorted.forEach(person => {
+                        field2.push(`**${person.checks}**`)
+                        if(client.users.cache.get(person.id)){
+                            description.push(`**${client.users.cache.get(person.id)} (${person.ign})**`)
+                        }
+                        else{
+                            description.push(`**Unknown User (ID: ${person.id})**`)
+                        }
+                    })
+                }
+            })
+            const generateEmbed = start => {
+                var n = description.slice(start, start + 10)
+                var n2 = field2.slice(start,start + 10)
+                var embed = new Discord.MessageEmbed()
+                    .setTimestamp()
+                    .setTitle(`Top wall checks`)
+                    .setColor(guild.embedColor)
+                if(n.length > 0 && n2.length >0){
+                    embed.addField("**Discord**", n.join("\n"), true)
+                    embed.addField("**Checks**", n2.join("\n"), true)
+                    embed.setFooter(`Page ${Math.floor(start/10) + Math.ceil(n.length/10)}/${Math.ceil(description.length/10)}`)
+                }
+                else{
+                    embed.setDescription(":warning: No whitelisted users")
+                }
+    
+                return embed
+            }
+    
+            const author = message.author
+            message.channel.send(generateEmbed(0)).then(message2 => {
+                if (description.length <= 10) return
+                message2.react('◀️')
+                message2.react('▶️')
+                const collector = message2.createReactionCollector(
+                    (reaction, user) => ['◀️', '▶️'].includes(reaction.emoji.name) && user.id === author.id, {
+                        time: 180000
+                    }
+                )
+    
+                let currentIndex = 0
+                collector.on('collect', async (reaction, user) => {
+                    reaction.users.remove(message.author.id)
+                    if (reaction.emoji.name === "◀️" && currentIndex > 9) {
+                        currentIndex = currentIndex - 10
+                    }
+                    if (reaction.emoji.name === "▶️" && currentIndex + 10 < description.length) {
+                        currentIndex = currentIndex + 10
+                    }
+    
+                    message2.edit(generateEmbed(currentIndex))
+    
+                })
+            })
+        })
+    }
+    if(commandName === "btop"){
+        let whitelisted = []
+        let description = []
+        let field2 = []
+        getUsers().then((result) => {
+            result.forEach(user => {
+                whitelisted.push({
+                    "id": user.discordId,
+                    "ign": user.ign,
+                    "checks": user.bufferchecks
+                })
+                if (whitelisted.length === result.length) {
+                    let sorted = whitelisted.slice().sort((a, b) => b.checks - a.checks)
+                    sorted.forEach(person => {
+                        field2.push(`**${person.checks}**`)
+                        if(client.users.cache.get(person.id)){
+                            description.push(`**${client.users.cache.get(person.id)} (${person.ign})**`)
+                        }
+                        else{
+                            description.push(`**Unknown User (ID: ${person.id})**`)
+                        }
+                    })
+                }
+            })
+            const generateEmbed = start => {
+                var n = description.slice(start, start + 10)
+                var n2 = field2.slice(start,start + 10)
+                var embed = new Discord.MessageEmbed()
+                    .setTimestamp()
+                    .setTitle(`Top Buffer checks`)
+                    .setColor(guild.embedColor)
+                if(n.length > 0 && n2.length >0){
+                    embed.addField("**Discord**", n.join("\n"), true)
+                    embed.addField("**Checks**", n2.join("\n"), true)
+                    embed.setFooter(`Page ${Math.floor(start/10) + Math.ceil(n.length/10)}/${Math.ceil(description.length/10)}`)
+                }
+                else{
+                    embed.setDescription(":warning: No whitelisted users")
+                }
+    
+                return embed
+            }
+    
+            const author = message.author
+            message.channel.send(generateEmbed(0)).then(message2 => {
+                if (description.length <= 10) return
+                message2.react('◀️')
+                message2.react('▶️')
+                const collector = message2.createReactionCollector(
+                    (reaction, user) => ['◀️', '▶️'].includes(reaction.emoji.name) && user.id === author.id, {
+                        time: 180000
+                    }
+                )
+    
+                let currentIndex = 0
+                collector.on('collect', async (reaction, user) => {
+                    reaction.users.remove(message.author.id)
+                    if (reaction.emoji.name === "◀️" && currentIndex > 9) {
+                        currentIndex = currentIndex - 10
+                    }
+                    if (reaction.emoji.name === "▶️" && currentIndex + 10 < description.length) {
+                        currentIndex = currentIndex + 10
+                    }
+    
+                    message2.edit(generateEmbed(currentIndex))
+    
+                })
+            })
+        })
+    }
+    if(commandName === "rtop"){
+        let whitelisted = []
+        let description = []
+        let field2 = []
+        getUsers().then((result) => {
+            result.forEach(user => {
+                whitelisted.push({
+                    "id": user.discordId,
+                    "ign": user.ign,
+                    "checks": user.rpostchecks
+                })
+                if (whitelisted.length === result.length) {
+                    let sorted = whitelisted.slice().sort((a, b) => b.checks - a.checks)
+                    sorted.forEach(person => {
+                        field2.push(`**${person.checks}**`)
+                        if(client.users.cache.get(person.id)){
+                            description.push(`**${client.users.cache.get(person.id)} (${person.ign})**`)
+                        }
+                        else{
+                            description.push(`**Unknown User (ID: ${person.id})**`)
+                        }
+                    })
+                }
+            })
+            const generateEmbed = start => {
+                var n = description.slice(start, start + 10)
+                var n2 = field2.slice(start,start + 10)
+                var embed = new Discord.MessageEmbed()
+                    .setTimestamp()
+                    .setTitle(`Top RPost checks`)
+                    .setColor(guild.embedColor)
+                if(n.length > 0 && n2.length >0){
+                    embed.addField("**Discord**", n.join("\n"), true)
+                    embed.addField("**Checks**", n2.join("\n"), true)
+                    embed.setFooter(`Page ${Math.floor(start/10) + Math.ceil(n.length/10)}/${Math.ceil(description.length/10)}`)
+                }
+                else{
+                    embed.setDescription(":warning: No whitelisted users")
+                }
+    
+                return embed
+            }
+    
+            const author = message.author
+            message.channel.send(generateEmbed(0)).then(message2 => {
+                if (description.length <= 10) return
+                message2.react('◀️')
+                message2.react('▶️')
+                const collector = message2.createReactionCollector(
+                    (reaction, user) => ['◀️', '▶️'].includes(reaction.emoji.name) && user.id === author.id, {
+                        time: 180000
+                    }
+                )
+    
+                let currentIndex = 0
+                collector.on('collect', async (reaction, user) => {
+                    reaction.users.remove(message.author.id)
+                    if (reaction.emoji.name === "◀️" && currentIndex > 9) {
+                        currentIndex = currentIndex - 10
+                    }
+                    if (reaction.emoji.name === "▶️" && currentIndex + 10 < description.length) {
+                        currentIndex = currentIndex + 10
+                    }
+    
+                    message2.edit(generateEmbed(currentIndex))
+    
+                })
+            })
+        })
+    }
+    if(commandName === "settings"){
+        getGuild(message.guild.id).then((res) => {
+            if(!args[0]){
+                let mapped = []
+                Object.keys(res._doc).forEach(k=> {
+                    mapped.push(`${k} : ${res._doc[k]}`)
+                })
+                let embed = new Discord.MessageEmbed()
+                .setTitle(`Settings for ${message.guild.name}`)
+                .setDescription(`\`\`\`${mapped.join("\n")}\`\`\``)
+                .setTimestamp()
+                .setColor(guild.embedColor)
+                message.channel.send(embed)
+            }
+            else if(Object.keys(res._doc).indexOf(args[0]) !== -1){
+                //message.channel.send(`*saving* ${msgargs[1]}`)
+                //console.log(typeOf(res._doc[args[0]]))
+                if(typeOf(res._doc[args[0]]) == "number"){
+                    res._doc[args[0]] = Number(args.slice(1).join(" "))
+                }
+                else if(typeOf(res._doc[args[0]]) == "boolean"){
+                    if(args[1] == "true" || args[1] == "1"){
+                        res._doc[args[0]] = true
+                    }
+                    else if(args[1] == "false" || args[1] == 0){
+                        res._doc[args[0]] = false
+                    }
+                    else{
+                        let embed = new Discord.MessageEmbed()
+                        .setDescription(`:warning: Invalid key ${args[0]} provided`)
+                        .setColor(guild.embedColor)
+                        .setTimestamp()
+                        message.channel.send(embed)
+                        return;
+                    }
+                }
+                else{
+                    res._doc[args[0]] = args.slice(1).join(" ")
+                }
+                
+    
+                Guild.updateOne({ guildId: message.guild.id }, 
+                    res._doc
+                ).then((xd) => {})
+    
+                let embed = new Discord.MessageEmbed()
+                .setDescription(`:ok_hand: Saved ${args.slice(1).join(" ")} as a new value for ${args[0]}`)
+                .setColor(guild.embedColor)
+                .setTimestamp()
+                message.channel.send(embed)
+                return;
             }
             else{
-                    bot.chat(`/f who ${args[0]}`)
-                    bot.sudoon = true
-                    setTimeout(()=> {
-                        if(bot.sudo.length !== 0){
-                            let description = bot.sudo.join("\n")
-                            const split = description.match(/[\s\S]{1,2048}/g);
-                    
-                            for (let i = 0; i < split.length; i++) {
-                                let desc = split[i].split("*").join("⋆").split("_").join("-")
-                                let embed = new Discord.MessageEmbed()
-                                  .setDescription(desc)
-                                  .setTitle(`${args[0]}`)
-                                  .setColor(guild.embedColor)
-                                  .setFooter(`${config.settings.host}`)
-                            .setAuthor(`Requested by ${message.author.tag}`, message.author.displayAvatarURL({dynamic : true}))
-                            .setTimestamp();
-                                message.channel.send(embed) // Async context needed to use 'await.'
-                                  .catch(console.error);  
-                              }
-                              bot.sudo = []
-                              bot.sudoon = false
-                        }
-                        else{
-                            let embed = new Discord.MessageEmbed()
-                            .setDescription(":warning: Unable to get /f who information, try again")
-                            .setTimestamp()
-                            .setColor(guild.embedColor)
-                            message.channel.send(embed)
-                            bot.sudo = []
-                            bot.sudoon = false
-                        }
-                
-                    }, 500)
+                let embed = new Discord.MessageEmbed()
+                .setDescription(`:warning: Invalid key ${args[0]} provided`)
+                .setColor(guild.embedColor)
+                .setTimestamp()
+                message.channel.send(embed)
+                return;
             }
-        }
-        if(commandName === "wtop"){
-            let whitelisted = []
-            let description = []
-            let field2 = []
-            getUsers().then((result) => {
-                result.forEach(user => {
-                    whitelisted.push({
-                        "id": user.discordId,
-                        "ign": user.ign,
-                        "checks": user.wallchecks
-                    })
-                    if (whitelisted.length === result.length) {
-                        let sorted = whitelisted.slice().sort((a, b) => b.checks - a.checks)
-                        sorted.forEach(person => {
-                            field2.push(`**${person.checks}**`)
-                            if(client.users.cache.get(person.id)){
-                                description.push(`**${client.users.cache.get(person.id)} (${person.ign})**`)
-                            }
-                            else{
-                                description.push(`**Unknown User (ID: ${person.id})**`)
-                            }
-                        })
-                    }
-                })
-                const generateEmbed = start => {
-                    var n = description.slice(start, start + 10)
-                    var n2 = field2.slice(start,start + 10)
-                    var embed = new Discord.MessageEmbed()
-                        .setTimestamp()
-                        .setTitle(`Top wall checks`)
-                        .setColor(guild.embedColor)
-                    if(n.length > 0 && n2.length >0){
-                        embed.addField("**Discord**", n.join("\n"), true)
-                        embed.addField("**Checks**", n2.join("\n"), true)
-                        embed.setFooter(`Page ${Math.floor(start/10) + Math.ceil(n.length/10)}/${Math.ceil(description.length/10)}`)
-                    }
-                    else{
-                        embed.setDescription(":warning: No whitelisted users")
-                    }
-        
-                    return embed
-                }
-        
-                const author = message.author
-                message.channel.send(generateEmbed(0)).then(message2 => {
-                    if (description.length <= 10) return
-                    message2.react('◀️')
-                    message2.react('▶️')
-                    const collector = message2.createReactionCollector(
-                        (reaction, user) => ['◀️', '▶️'].includes(reaction.emoji.name) && user.id === author.id, {
-                            time: 180000
-                        }
-                    )
-        
-                    let currentIndex = 0
-                    collector.on('collect', async (reaction, user) => {
-                        reaction.users.remove(message.author.id)
-                        if (reaction.emoji.name === "◀️" && currentIndex > 9) {
-                            currentIndex = currentIndex - 10
-                        }
-                        if (reaction.emoji.name === "▶️" && currentIndex + 10 < description.length) {
-                            currentIndex = currentIndex + 10
-                        }
-        
-                        message2.edit(generateEmbed(currentIndex))
-        
-                    })
-                })
-            })
-        }
-        if(commandName === "btop"){
-            let whitelisted = []
-            let description = []
-            let field2 = []
-            getUsers().then((result) => {
-                result.forEach(user => {
-                    whitelisted.push({
-                        "id": user.discordId,
-                        "ign": user.ign,
-                        "checks": user.bufferchecks
-                    })
-                    if (whitelisted.length === result.length) {
-                        let sorted = whitelisted.slice().sort((a, b) => b.checks - a.checks)
-                        sorted.forEach(person => {
-                            field2.push(`**${person.checks}**`)
-                            if(client.users.cache.get(person.id)){
-                                description.push(`**${client.users.cache.get(person.id)} (${person.ign})**`)
-                            }
-                            else{
-                                description.push(`**Unknown User (ID: ${person.id})**`)
-                            }
-                        })
-                    }
-                })
-                const generateEmbed = start => {
-                    var n = description.slice(start, start + 10)
-                    var n2 = field2.slice(start,start + 10)
-                    var embed = new Discord.MessageEmbed()
-                        .setTimestamp()
-                        .setTitle(`Top Buffer checks`)
-                        .setColor(guild.embedColor)
-                    if(n.length > 0 && n2.length >0){
-                        embed.addField("**Discord**", n.join("\n"), true)
-                        embed.addField("**Checks**", n2.join("\n"), true)
-                        embed.setFooter(`Page ${Math.floor(start/10) + Math.ceil(n.length/10)}/${Math.ceil(description.length/10)}`)
-                    }
-                    else{
-                        embed.setDescription(":warning: No whitelisted users")
-                    }
-        
-                    return embed
-                }
-        
-                const author = message.author
-                message.channel.send(generateEmbed(0)).then(message2 => {
-                    if (description.length <= 10) return
-                    message2.react('◀️')
-                    message2.react('▶️')
-                    const collector = message2.createReactionCollector(
-                        (reaction, user) => ['◀️', '▶️'].includes(reaction.emoji.name) && user.id === author.id, {
-                            time: 180000
-                        }
-                    )
-        
-                    let currentIndex = 0
-                    collector.on('collect', async (reaction, user) => {
-                        reaction.users.remove(message.author.id)
-                        if (reaction.emoji.name === "◀️" && currentIndex > 9) {
-                            currentIndex = currentIndex - 10
-                        }
-                        if (reaction.emoji.name === "▶️" && currentIndex + 10 < description.length) {
-                            currentIndex = currentIndex + 10
-                        }
-        
-                        message2.edit(generateEmbed(currentIndex))
-        
-                    })
-                })
-            })
-        }
-        if(commandName === "rtop"){
-            let whitelisted = []
-            let description = []
-            let field2 = []
-            getUsers().then((result) => {
-                result.forEach(user => {
-                    whitelisted.push({
-                        "id": user.discordId,
-                        "ign": user.ign,
-                        "checks": user.rpostchecks
-                    })
-                    if (whitelisted.length === result.length) {
-                        let sorted = whitelisted.slice().sort((a, b) => b.checks - a.checks)
-                        sorted.forEach(person => {
-                            field2.push(`**${person.checks}**`)
-                            if(client.users.cache.get(person.id)){
-                                description.push(`**${client.users.cache.get(person.id)} (${person.ign})**`)
-                            }
-                            else{
-                                description.push(`**Unknown User (ID: ${person.id})**`)
-                            }
-                        })
-                    }
-                })
-                const generateEmbed = start => {
-                    var n = description.slice(start, start + 10)
-                    var n2 = field2.slice(start,start + 10)
-                    var embed = new Discord.MessageEmbed()
-                        .setTimestamp()
-                        .setTitle(`Top RPost checks`)
-                        .setColor(guild.embedColor)
-                    if(n.length > 0 && n2.length >0){
-                        embed.addField("**Discord**", n.join("\n"), true)
-                        embed.addField("**Checks**", n2.join("\n"), true)
-                        embed.setFooter(`Page ${Math.floor(start/10) + Math.ceil(n.length/10)}/${Math.ceil(description.length/10)}`)
-                    }
-                    else{
-                        embed.setDescription(":warning: No whitelisted users")
-                    }
-        
-                    return embed
-                }
-        
-                const author = message.author
-                message.channel.send(generateEmbed(0)).then(message2 => {
-                    if (description.length <= 10) return
-                    message2.react('◀️')
-                    message2.react('▶️')
-                    const collector = message2.createReactionCollector(
-                        (reaction, user) => ['◀️', '▶️'].includes(reaction.emoji.name) && user.id === author.id, {
-                            time: 180000
-                        }
-                    )
-        
-                    let currentIndex = 0
-                    collector.on('collect', async (reaction, user) => {
-                        reaction.users.remove(message.author.id)
-                        if (reaction.emoji.name === "◀️" && currentIndex > 9) {
-                            currentIndex = currentIndex - 10
-                        }
-                        if (reaction.emoji.name === "▶️" && currentIndex + 10 < description.length) {
-                            currentIndex = currentIndex + 10
-                        }
-        
-                        message2.edit(generateEmbed(currentIndex))
-        
-                    })
-                })
-            })
-        }
-        if(commandName === "settings"){
-            getGuild(message.guild.id).then((res) => {
-                if(!args[0]){
-                    let mapped = []
-                    Object.keys(res._doc).forEach(k=> {
-                        mapped.push(`${k} : ${res._doc[k]}`)
-                    })
-                    let embed = new Discord.MessageEmbed()
-                    .setTitle(`Settings for ${message.guild.name}`)
-                    .setDescription(`\`\`\`${mapped.join("\n")}\`\`\``)
-                    .setTimestamp()
-                    .setColor(guild.embedColor)
-                    message.channel.send(embed)
-                }
-                else if(Object.keys(res._doc).indexOf(args[0]) !== -1){
-                    //message.channel.send(`*saving* ${msgargs[1]}`)
-                    //console.log(typeOf(res._doc[args[0]]))
-                    if(typeOf(res._doc[args[0]]) == "number"){
-                        res._doc[args[0]] = Number(args.slice(1).join(" "))
-                    }
-                    else if(typeOf(res._doc[args[0]]) == "boolean"){
-                        if(args[1] == "true" || args[1] == "1"){
-                            res._doc[args[0]] = true
-                        }
-                        else if(args[1] == "false" || args[1] == 0){
-                            res._doc[args[0]] = false
-                        }
-                        else{
-                            let embed = new Discord.MessageEmbed()
-                            .setDescription(`:warning: Invalid key ${args[0]} provided`)
-                            .setColor(guild.embedColor)
-                            .setTimestamp()
-                            message.channel.send(embed)
-                            return;
-                        }
-                    }
-                    else{
-                        res._doc[args[0]] = args.slice(1).join(" ")
-                    }
+        }).catch((err) => {console.log(err)})
+    }
+    if(commandName === "members"){
+        var arr2 = []
+        //let members = message.guild.roles.fetch().then(lol => lol.cache.forEach(c=> console.log(`${c.name} : ${message.guild.roles.fetch(c.id).members}`)))
+        let role = message.guild.roles.cache.get(args[0]) || message.guild.roles.cache.find(role => role.name.toLowerCase() === args.join(" ").toLowerCase()) || message.guild.roles.cache.find(role => role.name.toLowerCase().includes(args[0].toLowerCase())) ||message.guild.roles.cache.get(args[0].replace("<@&", "").replace(">", "")) || message.guild.roles.everyone
+    
+        let lol = message.guild.members.fetch({force: true}).then(membersfetch => {
+            membersfetch.forEach((member) => {
+                if(member.roles.cache.find(r=> r.id === role.id)){
+                    arr2.push(member.user.tag)
                     
-        
-                    Guild.updateOne({ guildId: message.guild.id }, 
-                        res._doc
-                    ).then((xd) => {})
-        
-                    let embed = new Discord.MessageEmbed()
-                    .setDescription(`:ok_hand: Saved ${args.slice(1).join(" ")} as a new value for ${args[0]}`)
-                    .setColor(guild.embedColor)
+                }
+            });
+        })
+        setTimeout(() => {
+            let whitelisted = []
+            let description = []
+            let field2 = []
+            let field3 = []
+            
+            //console.log(userObj)
+            arr2.forEach(user => {
+                whitelisted.push({
+                    "tag": user
+                })
+                if (whitelisted.length === arr2.length) {
+                    let sorted = whitelisted
+                    sorted.forEach(person => {
+                            description.push(`**${person.tag}**`)
+                    })
+                }
+            })
+            const generateEmbed = start => {
+                var n = description.slice(start, start + 10)
+                var embed = new Discord.MessageEmbed()
                     .setTimestamp()
-                    message.channel.send(embed)
-                    return;
+                    .setTitle(`Members of ${role.name} (${arr2.length})`)
+                    .setColor(guild.embedColor)
+                //console.log(Math.ceil(nigger.length / 10))
+                if(n.length > 0){
+                    embed.setDescription(n.join("\n"))
+                    embed.setFooter(`Page ${Math.floor(start/10) + Math.ceil(n.length/10)}/${Math.ceil(description.length/10)}`)
                 }
                 else{
-                    let embed = new Discord.MessageEmbed()
-                    .setDescription(`:warning: Invalid key ${args[0]} provided`)
-                    .setColor(guild.embedColor)
-                    .setTimestamp()
-                    message.channel.send(embed)
-                    return;
+                    embed.setDescription(":warning: No members")
                 }
-            }).catch((err) => {console.log(err)})
-        }
-        if(commandName === "members"){
-            var arr2 = []
-            //let members = message.guild.roles.fetch().then(lol => lol.cache.forEach(c=> console.log(`${c.name} : ${message.guild.roles.fetch(c.id).members}`)))
-            let role = message.guild.roles.cache.get(args[0]) || message.guild.roles.cache.find(role => role.name.toLowerCase() === args.join(" ").toLowerCase()) || message.guild.roles.cache.find(role => role.name.toLowerCase().includes(args[0].toLowerCase())) ||message.guild.roles.cache.get(args[0].replace("<@&", "").replace(">", "")) || message.guild.roles.everyone
+    
+                return embed
+            }
+    
+            const author = message.author
+            message.channel.send(generateEmbed(0)).then(message2 => {
+                if (description.length <= 10) return
+                message2.react('◀️')
+                message2.react('▶️')
+                const collector = message2.createReactionCollector(
+                    (reaction, user) => ['◀️', '▶️'].includes(reaction.emoji.name) && user.id === author.id, {
+                        time: 180000
+                    }
+                )
+    
+                let currentIndex = 0
+                collector.on('collect', async (reaction, user) => {
+                    reaction.users.remove(message.author.id)
+                    if (reaction.emoji.name === "◀️" && currentIndex > 9) {
+                        currentIndex = currentIndex - 10
+                    }
+                    if (reaction.emoji.name === "▶️" && currentIndex + 10 < description.length) {
+                        currentIndex = currentIndex + 10
+                    }
+    
+                    message2.edit(generateEmbed(currentIndex))
+    
+                })
+            })
         
-            let lol = message.guild.members.fetch({force: true}).then(membersfetch => {
+        }, 500)
+        
+    }
+    if(commandName === "dm"){
+        if(!args[0]){
+            let embed = new Discord.MessageEmbed()
+            .setDescription(`:warning: Incorrect usage for the ${commandName} command. Proper usage: \`.dm <role> <message>\``)
+            .setColor(guild.embedColor)
+            .setTimestamp()
+            return message.channel.send(embed)
+        }
+        let role = message.guild.roles.cache.get(args[0]) || message.guild.roles.cache.find(role => role.name.toLowerCase() === args.join(" ").toLowerCase()) || message.guild.roles.cache.find(role => role.name.toLowerCase().includes(args[0].toLowerCase())) ||message.guild.roles.cache.get(args[0].replace("<@&", "").replace(">", "")) || message.guild.roles.everyone
+
+        message.guild.members.fetch({force: true}).then(membersfetch => {
+            if(!role){
+                miscError(guild, message, ":warning: Invalid role provided")
+            }
+            else{
+                let arr = []
+
+
                 membersfetch.forEach((member) => {
                     if(member.roles.cache.find(r=> r.id === role.id)){
-                        arr2.push(member.user.tag)
-                        
-                    }
-                });
-            })
-            setTimeout(() => {
-                let whitelisted = []
-                let description = []
-                let field2 = []
-                let field3 = []
-                
-                //console.log(userObj)
-                arr2.forEach(user => {
-                    whitelisted.push({
-                        "tag": user
-                    })
-                    if (whitelisted.length === arr2.length) {
-                        let sorted = whitelisted
-                        sorted.forEach(person => {
-                                description.push(`**${person.tag}**`)
-                        })
-                    }
-                })
-                const generateEmbed = start => {
-                    var n = description.slice(start, start + 10)
-                    var embed = new Discord.MessageEmbed()
-                        .setTimestamp()
-                        .setTitle(`Members of ${role.name} (${arr2.length})`)
+                        arr.push(member)
+                        let embed = new Discord.MessageEmbed()
                         .setColor(guild.embedColor)
-                    //console.log(Math.ceil(nigger.length / 10))
-                    if(n.length > 0){
-                        embed.setDescription(n.join("\n"))
-                        embed.setFooter(`Page ${Math.floor(start/10) + Math.ceil(n.length/10)}/${Math.ceil(description.length/10)}`)
-                    }
-                    else{
-                        embed.setDescription(":warning: No members")
-                    }
-        
-                    return embed
-                }
-        
-                const author = message.author
-                message.channel.send(generateEmbed(0)).then(message2 => {
-                    if (description.length <= 10) return
-                    message2.react('◀️')
-                    message2.react('▶️')
-                    const collector = message2.createReactionCollector(
-                        (reaction, user) => ['◀️', '▶️'].includes(reaction.emoji.name) && user.id === author.id, {
-                            time: 180000
-                        }
-                    )
-        
-                    let currentIndex = 0
-                    collector.on('collect', async (reaction, user) => {
-                        reaction.users.remove(message.author.id)
-                        if (reaction.emoji.name === "◀️" && currentIndex > 9) {
-                            currentIndex = currentIndex - 10
-                        }
-                        if (reaction.emoji.name === "▶️" && currentIndex + 10 < description.length) {
-                            currentIndex = currentIndex + 10
-                        }
-        
-                        message2.edit(generateEmbed(currentIndex))
-        
-                    })
-                })
-            
-            }, 500)
-            
-        }
-        if(commandName === "dm"){
-            if(!args[0]){
-                let embed = new Discord.MessageEmbed()
-                .setDescription(`:warning: Incorrect usage for the ${commandName} command. Proper usage: \`.dm <role> <message>\``)
-                .setColor(guild.embedColor)
-                .setTimestamp()
-                return message.channel.send(embed)
-            }
-            let role = message.guild.roles.cache.get(args[0]) || message.guild.roles.cache.find(role => role.name.toLowerCase() === args.join(" ").toLowerCase()) || message.guild.roles.cache.find(role => role.name.toLowerCase().includes(args[0].toLowerCase())) ||message.guild.roles.cache.get(args[0].replace("<@&", "").replace(">", "")) || message.guild.roles.everyone
-    
-            message.guild.members.fetch({force: true}).then(membersfetch => {
-                if(!role){
-                    miscError(guild, message, ":warning: Invalid role provided")
-                }
-                else{
-                    let arr = []
-    
-    
-                    membersfetch.forEach((member) => {
-                        if(member.roles.cache.find(r=> r.id === role.id)){
-                            arr.push(member)
+                        .setTitle(`Announcement in ${message.guild.name} from ${message.author.tag}`)
+                        .setDescription(`\`\`\`${args.slice(1).join(" ")}\`\`\``)
+                        .setFooter(`Announcement sent to all members with the ${role.name} role(${arr.length})`)
+                        .setTimestamp()
+                        member.send(embed).catch((err) => {
                             let embed = new Discord.MessageEmbed()
                             .setColor(guild.embedColor)
-                            .setTitle(`Announcement in ${message.guild.name} from ${message.author.tag}`)
-                            .setDescription(`\`\`\`${args.slice(1).join(" ")}\`\`\``)
-                            .setFooter(`Announcement sent to all members with the ${role.name} role(${arr.length})`)
                             .setTimestamp()
-                            member.send(embed).catch((err) => {
-                                let embed = new Discord.MessageEmbed()
-                                .setColor(guild.embedColor)
-                                .setTimestamp()
-                                .setDescription(`:warning: Could not send your announcement to ${member}! They have either blocked the bot or turned off DMs`)
-                                message.channel.send(embed)
-                            })
-                        }
-                    });
-                    let embed = new Discord.MessageEmbed()
-                    .setColor(guild.embedColor)
-                    .setTimestamp()
-                    .setDescription(`:ok_hand: Sent the following message to ${arr.length} users with the ${role} role\n\`\`\`${args.slice(1).join(" ")}\`\`\``)
-                    message.channel.send(embed)
-                    arr = []
-                    
-                }
-    
-            })
-        }
-        if(commandName === "perm"){
-            if(!args[0]){
+                            .setDescription(`:warning: Could not send your announcement to ${member}! They have either blocked the bot or turned off DMs`)
+                            message.channel.send(embed)
+                        })
+                    }
+                });
                 let embed = new Discord.MessageEmbed()
-                .setDescription(`:warning: Incorrect usage for the ${commandName} command. Proper usage: \`.perm <command name> [role/user/permission]\``)
                 .setColor(guild.embedColor)
                 .setTimestamp()
-                return message.channel.send(embed)
+                .setDescription(`:ok_hand: Sent the following message to ${arr.length} users with the ${role} role\n\`\`\`${args.slice(1).join(" ")}\`\`\``)
+                message.channel.send(embed)
+                arr = []
+                
             }
-            let user = message.mentions.members.first() || message.guild.members.cache.get(args[0]) || message.guild.members.cache.find(member => member.user.tag === args.join(" ").replace("\n", "")) || message.guild.members.cache.find(member => member.user.username === args.join(" ").replace("\n", ""))
-            getPerms().then((p) => {
-                let names = []
-                p.forEach((perm)=> {
-                    names.push(perm.commandName)
-                    if(!args[1] && perm.commandName.toLowerCase() == args[0].toLowerCase()){
-                        let Roles = []
-                        let Users = []
-                        let Permissions = []
-                        perm.users.forEach(user => Users.push(`<@!${user}>`))
-                        perm.roles.forEach(user => Roles.push(`<@&${user}>`))
-                        perm.permissions.forEach(user => Permissions.push(user))
-                        let embed = new Discord.MessageEmbed().setTitle(`Permissions for the ${args[0].toLowerCase()} command!`).setTimestamp().setColor(guild.embedColor)
-                        if (Roles.length !== 0) {
-                            embed.addField("Roles", Roles.join(", "))
-                        }
-                        if (Users.length !== 0) {
-                            embed.addField("Users", Users.join(", "))
-                        }
-                        if (Permissions.length !== 0) {
-                            embed.addField("Discord Permissions", Permissions.join(", "))
-                        }
-                        return message.channel.send(embed)
+
+        })
+    }
+    if(commandName === "perm"){
+        if(!args[0]){
+            let embed = new Discord.MessageEmbed()
+            .setDescription(`:warning: Incorrect usage for the ${commandName} command. Proper usage: \`.perm <command name> [role/user/permission]\``)
+            .setColor(guild.embedColor)
+            .setTimestamp()
+            return message.channel.send(embed)
+        }
+        let user = message.mentions.members.first() || message.guild.members.cache.get(args[0]) || message.guild.members.cache.find(member => member.user.tag === args.join(" ").replace("\n", "")) || message.guild.members.cache.find(member => member.user.username === args.join(" ").replace("\n", ""))
+        getPerms().then((p) => {
+            let names = []
+            p.forEach((perm)=> {
+                names.push(perm.commandName)
+                if(!args[1] && perm.commandName.toLowerCase() == args[0].toLowerCase()){
+                    let Roles = []
+                    let Users = []
+                    let Permissions = []
+                    perm.users.forEach(user => Users.push(`<@!${user}>`))
+                    perm.roles.forEach(user => Roles.push(`<@&${user}>`))
+                    perm.permissions.forEach(user => Permissions.push(user))
+                    let embed = new Discord.MessageEmbed().setTitle(`Permissions for the ${args[0].toLowerCase()} command!`).setTimestamp().setColor(guild.embedColor)
+                    if (Roles.length !== 0) {
+                        embed.addField("Roles", Roles.join(", "))
                     }
-                    if (args[0] && args[1] && perm.commandName.toLowerCase() == args[0].toLowerCase()) {
-                        let user = message.mentions.members.first() || message.guild.members.cache.get(args[1]) || message.guild.members.cache.find(member => member.user.tag === args.slice(1).join(" ").replace("\n", "")) || message.guild.members.cache.find(member => member.user.username === args.slice(1).join(" ").replace("\n", ""))
-                        if (!user) {
-                            let role = message.guild.roles.cache.get(args[1]) || message.guild.roles.cache.find(role => role.name === args.slice(1).join(" ")) || message.guild.roles.cache.get(args[1].replace("<@&", "").replace(">", ""))  || message.guild.roles.cache.find(role => role.name.toLowerCase().substr(0,3) === args.slice(1).join(" ").toLowerCase().substr(0,3))
-                            if (!role) {
-                                if (perm.permissions.indexOf(args[1].toUpperCase()) == -1) {
-                                    Perm.updateOne({ commandName: args[0] }, {
-                                        $push: {
-                                            permissions: args[1].toUpperCase()
-                                        }
-                                    }, {  safe: true, upsert: true}  ).then(a =>  {})
-                                    let embed = new Discord.MessageEmbed().setTitle(`Updated Discord Permissions for the ${args[0].toLowerCase()} command!`).setDescription(`Allowed the ${args[1].toUpperCase()} permission to use the ${args[0].toLowerCase()} command!`).setTimestamp().setColor(guild.embedColor)
-                                    message.channel.send(embed)
-                                } else {
-                                    Perm.updateOne({ commandName: args[0] }, {
-                                        $pull: {
-                                            permissions: args[1].toUpperCase()
-                                        }
-                                    }, {  safe: true, upsert: true}  ).then(a =>  {})
-                                    let embed = new Discord.MessageEmbed().setTitle(`Updated Discord Permissions for the ${args[0].toLowerCase()} command!`).setDescription(`Disallowed the ${args[1].toUpperCase()} permission from using the ${args[0].toLowerCase()} command!`).setTimestamp().setColor(guild.embedColor)
-                                    message.channel.send(embed)
-                                }
-                            } else {
-                                if (perm.roles.indexOf(role.id) == -1) {
-                                    Perm.updateOne({ commandName: args[0] }, {
-                                        $push: {
-                                            roles: role.id
-                                        }
-                                    }, {  safe: true, upsert: true}  ).then(a =>  {})
-                                    let embed = new Discord.MessageEmbed().setTitle(`Updated Role Permissions for the ${args[0].toLowerCase()} command!`).setDescription(`Allowed the ${role} role to use the ${args[0].toLowerCase()} command!`).setTimestamp().setColor(guild.embedColor)
-                                    message.channel.send(embed)
-                                } else {
-                                    Perm.updateOne({ commandName: args[0] }, {
-                                        $pull: {
-                                            roles: role.id
-                                        }
-                                    }, {  safe: true, upsert: true}  ).then(a =>  {})
-                                    let embed = new Discord.MessageEmbed().setTitle(`Updated Role Permissions for the ${args[0].toLowerCase()} command!`).setDescription(`Disallowed the ${role} role from using the ${args[0].toLowerCase()} command!`).setTimestamp().setColor(guild.embedColor)
-                                    message.channel.send(embed)
-                                }
-                            }
-                        } else {
-                            if (perm.users.indexOf(user.id) == -1) {
+                    if (Users.length !== 0) {
+                        embed.addField("Users", Users.join(", "))
+                    }
+                    if (Permissions.length !== 0) {
+                        embed.addField("Discord Permissions", Permissions.join(", "))
+                    }
+                    return message.channel.send(embed)
+                }
+                if (args[0] && args[1] && perm.commandName.toLowerCase() == args[0].toLowerCase()) {
+                    let user = message.mentions.members.first() || message.guild.members.cache.get(args[1]) || message.guild.members.cache.find(member => member.user.tag === args.slice(1).join(" ").replace("\n", "")) || message.guild.members.cache.find(member => member.user.username === args.slice(1).join(" ").replace("\n", ""))
+                    if (!user) {
+                        let role = message.guild.roles.cache.get(args[1]) || message.guild.roles.cache.find(role => role.name === args.slice(1).join(" ")) || message.guild.roles.cache.get(args[1].replace("<@&", "").replace(">", ""))  || message.guild.roles.cache.find(role => role.name.toLowerCase().substr(0,3) === args.slice(1).join(" ").toLowerCase().substr(0,3))
+                        if (!role) {
+                            if (perm.permissions.indexOf(args[1].toUpperCase()) == -1) {
                                 Perm.updateOne({ commandName: args[0] }, {
                                     $push: {
-                                        users: user.id
+                                        permissions: args[1].toUpperCase()
                                     }
                                 }, {  safe: true, upsert: true}  ).then(a =>  {})
-                                let embed = new Discord.MessageEmbed().setTitle(`Updated User Permissions for the ${args[0].toLowerCase()} command!`).setDescription(`Allowed <@!${user.id}> to use the ${args[0].toLowerCase()} command!`).setTimestamp().setColor(guild.embedColor)
+                                let embed = new Discord.MessageEmbed().setTitle(`Updated Discord Permissions for the ${args[0].toLowerCase()} command!`).setDescription(`Allowed the ${args[1].toUpperCase()} permission to use the ${args[0].toLowerCase()} command!`).setTimestamp().setColor(guild.embedColor)
                                 message.channel.send(embed)
                             } else {
                                 Perm.updateOne({ commandName: args[0] }, {
                                     $pull: {
-                                        users: user.id
+                                        permissions: args[1].toUpperCase()
                                     }
                                 }, {  safe: true, upsert: true}  ).then(a =>  {})
-                                let embed = new Discord.MessageEmbed().setTitle(`Updated User Permissions for the ${args[0].toLowerCase()} command!`).setDescription(`Denied <@!${user.id}> from using the ${args[0].toLowerCase()} command!`).setTimestamp().setColor(guild.embedColor)
+                                let embed = new Discord.MessageEmbed().setTitle(`Updated Discord Permissions for the ${args[0].toLowerCase()} command!`).setDescription(`Disallowed the ${args[1].toUpperCase()} permission from using the ${args[0].toLowerCase()} command!`).setTimestamp().setColor(guild.embedColor)
+                                message.channel.send(embed)
+                            }
+                        } else {
+                            if (perm.roles.indexOf(role.id) == -1) {
+                                Perm.updateOne({ commandName: args[0] }, {
+                                    $push: {
+                                        roles: role.id
+                                    }
+                                }, {  safe: true, upsert: true}  ).then(a =>  {})
+                                let embed = new Discord.MessageEmbed().setTitle(`Updated Role Permissions for the ${args[0].toLowerCase()} command!`).setDescription(`Allowed the ${role} role to use the ${args[0].toLowerCase()} command!`).setTimestamp().setColor(guild.embedColor)
+                                message.channel.send(embed)
+                            } else {
+                                Perm.updateOne({ commandName: args[0] }, {
+                                    $pull: {
+                                        roles: role.id
+                                    }
+                                }, {  safe: true, upsert: true}  ).then(a =>  {})
+                                let embed = new Discord.MessageEmbed().setTitle(`Updated Role Permissions for the ${args[0].toLowerCase()} command!`).setDescription(`Disallowed the ${role} role from using the ${args[0].toLowerCase()} command!`).setTimestamp().setColor(guild.embedColor)
                                 message.channel.send(embed)
                             }
                         }
+                    } else {
+                        if (perm.users.indexOf(user.id) == -1) {
+                            Perm.updateOne({ commandName: args[0] }, {
+                                $push: {
+                                    users: user.id
+                                }
+                            }, {  safe: true, upsert: true}  ).then(a =>  {})
+                            let embed = new Discord.MessageEmbed().setTitle(`Updated User Permissions for the ${args[0].toLowerCase()} command!`).setDescription(`Allowed <@!${user.id}> to use the ${args[0].toLowerCase()} command!`).setTimestamp().setColor(guild.embedColor)
+                            message.channel.send(embed)
+                        } else {
+                            Perm.updateOne({ commandName: args[0] }, {
+                                $pull: {
+                                    users: user.id
+                                }
+                            }, {  safe: true, upsert: true}  ).then(a =>  {})
+                            let embed = new Discord.MessageEmbed().setTitle(`Updated User Permissions for the ${args[0].toLowerCase()} command!`).setDescription(`Denied <@!${user.id}> from using the ${args[0].toLowerCase()} command!`).setTimestamp().setColor(guild.embedColor)
+                            message.channel.send(embed)
+                        }
                     }
-                })
-                if(!names.indexOf(args[0].toLowerCase)){
-                    let embed = new Discord.MessageEmbed().setDescription(`:warning: Invalid command! Make sure to run it at least once`).setTimestamp().setColor(guild.embedColor)
-                    return message.channel.send(embed)
                 }
             })
+            if(!names.indexOf(args[0].toLowerCase)){
+                let embed = new Discord.MessageEmbed().setDescription(`:warning: Invalid command! Make sure to run it at least once`).setTimestamp().setColor(guild.embedColor)
+                return message.channel.send(embed)
+            }
+        })
+    }
+    if(commandName === "setign"){
+        let user = message.mentions.members.first() || message.guild.members.cache.get(args[0]) || message.guild.members.cache.find(member => member.user.tag === args.join(" ").replace("\n", "")) || message.guild.members.cache.find(member => member.user.username.toLowerCase() === args.join(" ").replace("\n", "").toLowerCase())
+        if(!user){
+            let embed = new Discord.MessageEmbed()
+            .setTimestamp()
+            .setColor(guild.embedColor)
+            .setDescription(`:warning: Invalid User provided`)
+            return message.channel.send(embed)
         }
-        if(commandName === "setign"){
-            let user = message.mentions.members.first() || message.guild.members.cache.get(args[0]) || message.guild.members.cache.find(member => member.user.tag === args.join(" ").replace("\n", "")) || message.guild.members.cache.find(member => member.user.username.toLowerCase() === args.join(" ").replace("\n", "").toLowerCase())
-            if(!user){
+        if(!args[0]){
+            let embed = new Discord.MessageEmbed()
+            .setTimestamp()
+            .setColor(guild.embedColor)
+            .setDescription(`:warning: No IGN provided`)
+            return message.channel.send(embed)
+        }
+        getUserByDiscord(user.id).then((res) => {
+            if(res !== false){
+                let xd = res.ign
+                res.ign = args[1]
+                res.save().then((a) => {
+                    let embed = new Discord.MessageEmbed()
+                    .setTimestamp()
+                    .setColor(guild.embedColor)
+                    .setDescription(`:ok_hand: Updated ${user}'s IGN from \`${xd}\` to \`${res.ign}\``)
+                    message.channel.send(embed)
+                })
+            }
+            else{
+                createUser(user.id, args[1])
                 let embed = new Discord.MessageEmbed()
                 .setTimestamp()
                 .setColor(guild.embedColor)
-                .setDescription(`:warning: Invalid User provided`)
-                return message.channel.send(embed)
+                .setDescription(`:ok_hand: Set ${user}'s IGN to \`${args[1]}\``)
+                message.channel.send(embed)
             }
-            if(!args[0]){
-                let embed = new Discord.MessageEmbed()
-                .setTimestamp()
-                .setColor(guild.embedColor)
-                .setDescription(`:warning: No IGN provided`)
-                return message.channel.send(embed)
-            }
-            getUserByDiscord(user.id).then((res) => {
-                if(res !== false){
-                    let xd = res.ign
-                    res.ign = args[1]
-                    res.save().then((a) => {
+        })
+    }
+    if(commandName === "vanish" || commandName === "v"){
+        let embed = new Discord.MessageEmbed()
+        .setColor(guild.embedColor)
+        .setTimestamp()
+        .setDescription(`:ok_hand: Fetching vanish information, please wait...`)
+        
+        message.channel.send(embed).then((msg) => {
+            for(let i=0;i<staff.length;i++){
+                setTimeout(() => {
+                    bot.tabComplete(`/f f ${staff[i]}`,function(matches){
+                        return;
+                    },false,false).then(res=>{
+                        if(res.length !== 0){
+                            v.push(res[0])
+                        }
+                    })
+                    
+                    if(i+1==staff.length){
+                        //console.log("xd")
                         let embed = new Discord.MessageEmbed()
-                        .setTimestamp()
                         .setColor(guild.embedColor)
-                        .setDescription(`:ok_hand: Updated ${user}'s IGN from \`${xd}\` to \`${res.ign}\``)
+                        .setTimestamp()
+                        .setTitle(`Vanished Players on ${config.settings.host}(${v.length})`)
+                        .setDescription(`Vanish(${v.length}):\n${v.length !== 0 ? v.join(", ") : "No staff online"}`)
+                        msg.edit(embed)
+                        v=[]
+                    }
+                }, i*250)
+            }
+        })
+
+    }
+    if(commandName === "update" || commandName === "git" && args[0] === "pull"){
+        result("git pull", function(err, response){
+            if(!err){
+                message.channel.send(`\`\`\`${response}\`\`\``)
+                setTimeout(() => {
+                    process.exit(0)
+                }, 1000)
+            }else {
+                message.channel.send(`\`\`\`${err}\`\`\``)
+                setTimeout(() => {
+                    process.exit(0)
+                }, 1000)
+            }
+        });
+
+    }
+    if(commandName === "restart"){
+        let embed = new Discord.MessageEmbed()
+        .setColor(guild.embedColor)
+        .setTimestamp()
+        .setDescription(`:ok_hand: Back in 5-7 seconds`)
+        message.channel.send(embed)
+        process.exit(0)
+    }
+    if(commandName === "stats"){
+        var user = message.mentions.members.first() || message.guild.members.cache.get(args[0]) || message.guild.members.cache.find(member => member.user.tag === args.join(" ").replace("\n", "")) || message.guild.members.cache.find(member => member.user.username.toLowerCase() === args.join(" ").replace("\n", "").toLowerCase())
+        let person = "";
+        if(!user){
+            getUserByIGN(args[0]).then((res) => {
+                if(res === false){
+                    miscError(guild, message, `:warning: Invalid User`)
+                }
+                else{
+                    person = res;
+                    getUUID(person.ign).then(ress => {
+                        let ntime = new Date().getTime()/1000
+                        let embed = new Discord.MessageEmbed()
+                        .setColor(guild.embedColor)
+                        .setTimestamp()
+                        .setTitle(`Ingame Statistics for ${person.ign} (${person.discordId})`)
+                        .addField(`Wall Checks`, person.wallchecks, true)
+                        .addField(`Buffer Checks`, person.bufferchecks, true)
+                        .addField(`RPost Checks`, person.rpostchecks, true)
+                        .addField(`Last Wall Check`, `${ms((ntime-person.lastwallcheck)*1000, { long: true })} ago`, true)
+                        .addField(`Last Buffer Check`, `${ms((ntime-person.lastbuffercheck)*1000, { long: true })} ago`, true)
+                        .addField(`Last RPost Check`, `${ms((ntime-person.lastrpostcheck)*1000, { long: true })} ago`, true)
+                        .setThumbnail(`https://crafatar.com/avatars/${ress.id}.png`, true)
                         message.channel.send(embed)
                     })
                 }
-                else{
-                    createUser(user.id, args[1])
-                    let embed = new Discord.MessageEmbed()
-                    .setTimestamp()
-                    .setColor(guild.embedColor)
-                    .setDescription(`:ok_hand: Set ${user}'s IGN to \`${args[1]}\``)
-                    message.channel.send(embed)
-                }
             })
         }
-        if(commandName === "vanish" || commandName === "v"){
-            let embed = new Discord.MessageEmbed()
-            .setColor(guild.embedColor)
-            .setTimestamp()
-            .setDescription(`:ok_hand: Fetching vanish information, please wait...`)
-            
-            message.channel.send(embed).then((msg) => {
-                for(let i=0;i<staff.length;i++){
-                    setTimeout(() => {
-                        bot.tabComplete(`/f f ${staff[i]}`,function(matches){
-                            return;
-                        },false,false).then(res=>{
-                            if(res.length !== 0){
-                                v.push(res[0])
-                            }
-                        })
-                        
-                        if(i+1==staff.length){
-                            //console.log("xd")
-                            let embed = new Discord.MessageEmbed()
-                            .setColor(guild.embedColor)
-                            .setTimestamp()
-                            .setTitle(`Vanished Players on ${config.settings.host}(${v.length})`)
-                            .setDescription(`Vanish(${v.length}):\n${v.length !== 0 ? v.join(", ") : "No staff online"}`)
-                            msg.edit(embed)
-                            v=[]
-                        }
-                    }, i*250)
+        else{
+            getUserByDiscord(user.id).then((res) => {
+                if(res === false){
+                    miscError(guild, message, `:warning: Invalid User`)
                 }
-            })
-    
-        }
-        if(commandName === "update" || commandName === "git" && args[0] === "pull"){
-            result("git pull", function(err, response){
-                if(!err){
-                    message.channel.send(`\`\`\`${response}\`\`\``)
-                    setTimeout(() => {
-                        process.exit(0)
-                    }, 1000)
-                }else {
-                    message.channel.send(`\`\`\`${err}\`\`\``)
-                    setTimeout(() => {
-                        process.exit(0)
-                    }, 1000)
-                }
-            });
-    
-        }
-        if(commandName === "restart"){
-            let embed = new Discord.MessageEmbed()
-            .setColor(guild.embedColor)
-            .setTimestamp()
-            .setDescription(`:ok_hand: Back in 5-7 seconds`)
-            message.channel.send(embed)
-            process.exit(0)
-        }
-        if(commandName === "stats"){
-            var user = message.mentions.members.first() || message.guild.members.cache.get(args[0]) || message.guild.members.cache.find(member => member.user.tag === args.join(" ").replace("\n", "")) || message.guild.members.cache.find(member => member.user.username.toLowerCase() === args.join(" ").replace("\n", "").toLowerCase())
-            let person = "";
-            if(!user){
-                getUserByIGN(args[0]).then((res) => {
-                    if(res === false){
-                        miscError(guild, message, `:warning: Invalid User`)
-                    }
-                    else{
-                        person = res;
-                        getUUID(person.ign).then(ress => {
-                            let ntime = new Date().getTime()/1000
-                            let embed = new Discord.MessageEmbed()
-                            .setColor(guild.embedColor)
-                            .setTimestamp()
-                            .setTitle(`Ingame Statistics for ${person.ign} (${person.discordId})`)
-                            .addField(`Wall Checks`, person.wallchecks, true)
-                            .addField(`Buffer Checks`, person.bufferchecks, true)
-                            .addField(`RPost Checks`, person.rpostchecks, true)
-                            .addField(`Last Wall Check`, `${ms((ntime-person.lastwallcheck)*1000, { long: true })} ago`, true)
-                            .addField(`Last Buffer Check`, `${ms((ntime-person.lastbuffercheck)*1000, { long: true })} ago`, true)
-                            .addField(`Last RPost Check`, `${ms((ntime-person.lastrpostcheck)*1000, { long: true })} ago`, true)
-                            .setThumbnail(`https://crafatar.com/avatars/${ress.id}.png`, true)
-                            message.channel.send(embed)
-                        })
-                    }
-                })
-            }
-            else{
-                getUserByDiscord(user.id).then((res) => {
-                    if(res === false){
-                        miscError(guild, message, `:warning: Invalid User`)
-                    }
-                    else{
-                        person = res;
-                        getUUID(person.ign).then(ress => {
-                            let ntime = new Date().getTime()/1000
-                            let embed = new Discord.MessageEmbed()
-                            .setColor(guild.embedColor)
-                            .setTimestamp()
-                            .setTitle(`Ingame Statistics for ${person.ign} (${person.discordId})`)
-                            .addField(`Wall Checks`, person.wallchecks, true)
-                            .addField(`Buffer Checks`, person.bufferchecks, true)
-                            .addField(`RPost Checks`, person.rpostchecks, true)
-                            .addField(`Last Wall Check`, `${ms((ntime-person.lastwallcheck)*1000, { long: true })} ago`, true)
-                            .addField(`Last Buffer Check`, `${ms((ntime-person.lastbuffercheck)*1000, { long: true })} ago`, true)
-                            .addField(`Last RPost Check`, `${ms((ntime-person.lastrpostcheck)*1000, { long: true })} ago`, true)
-                            .setThumbnail(`https://crafatar.com/avatars/${ress.id}.png`, true)
-                            message.channel.send(embed)
-                        })
-                    }
-                })
-            }
-    
-    
-        }
-        if(commandName === "setstats"){
-            var user = message.mentions.members.first() || message.guild.members.cache.get(args[0]) || message.guild.members.cache.find(member => member.user.tag === args.join(" ").replace("\n", "")) || message.guild.members.cache.find(member => member.user.username.toLowerCase() === args.join(" ").replace("\n", "").toLowerCase())
-            let person = "";
-            if(!user){
-                getUserByIGN(args[0]).then((res) => {
-                    if(res === false){
-                        miscError(guild, message, `:warning: Invalid User`)
-                    }
-                    else{
-                        person = res
-                        if(!args[1]){
-                            miscError(guild, message, `:warning: Invalid syntax, use the command like this: \`${guild.prefix}setstats <user/IGN> <walls/buffers/rpost> <number>\``)
-                            return;
-                        }
-                        if(args[1].toLowerCase() == "walls"){
-                            if(+args[2] !== NaN){
-                                res.wallchecks = parseInt(args[2]) 
-                                miscError(guild, message, `:ok_hand: Updated \`${person.ign}\`'s ${args[1]} checks to ${args[2]}`) 
-                                res.save()
-                            }
-                            else{
-                                miscError(guild, message, `:warning: Invalid number provided`)
-                            } 
-                            return;
-                        }
-                        else if(args[1].toLowerCase() == "buffers"){
-                            if(+args[2] !== NaN){
-                                res.bufferchecks = parseInt(args[2]) 
-                                miscError(guild, message, `:ok_hand: Updated \`${person.ign}\`'s ${args[1]} checks to ${args[2]}`) 
-                                res.save()
-                            }
-                            else{
-                                miscError(guild, message, `:warning: Invalid number provided`)
-                            } 
-                            return;
-                        }
-                        else if(args[1].toLowerCase() == "rpost"){
-                            if(+args[2] !== NaN){
-                                res.rpostchecks = parseInt(args[2]) 
-                                miscError(guild, message, `:ok_hand: Updated \`${person.ign}\`'s ${args[1]} checks to ${args[2]}`) 
-                                res.save()
-                            }
-                            else{
-                                miscError(guild, message, `:warning: Invalid number provided`)
-                            } 
-                            return;
-                        }
-                        else{
-                            miscError(guild, message, `:warning: Invalid syntax, use the command like this: \`${guild.prefix}setstats <user/IGN> <walls/buffers/rpost> <number>\``)
-                        }
-                    }
-                })
-            }
-            else{
-                getUserByDiscord(user.id).then((res) => {
-                    if(res === false){
-                        miscError(guild, message, `:warning: Invalid User`)
-                    }
-                    else{
-                        console.log(res)
-                        person = res
-                        if(!args[1]){
-                            miscError(guild, message, `:warning: Invalid syntax, use the command like this: \`${guild.prefix}setstats <user/IGN> <walls/buffers/rpost> <number>\``)
-                            return;
-                        }
-                        if(args[1].toLowerCase() == "walls"){
-                            if(+args[2] !== NaN){
-                                res.wallchecks = parseInt(args[2]) 
-                                miscError(guild, message, `:ok_hand: Updated \`${person.ign}\`'s ${args[1]} checks to ${args[2]}`) 
-                                res.save()
-                            }
-                            else{
-                                miscError(guild, message, `:warning: Invalid number provided`)
-                            } 
-                            return;
-                        }
-                        else if(args[1].toLowerCase() == "buffers"){
-                            if(+args[2] !== NaN){
-                                res.bufferchecks = parseInt(args[2]) 
-                                miscError(guild, message, `:ok_hand: Updated \`${person.ign}\`'s ${args[1]} checks to ${args[2]}`) 
-                                res.save()
-                            }
-                            else{
-                                miscError(guild, message, `:warning: Invalid number provided`)
-                            } 
-                            return;
-                        }
-                        else if(args[1].toLowerCase() == "rpost"){
-                            if(+args[2] !== NaN){
-                                res.rpostchecks = parseInt(args[2]) 
-                                miscError(guild, message, `:ok_hand: Updated \`${person.ign}\`'s ${args[1]} checks to ${args[2]}`) 
-                                res.save()
-                            }
-                            else{
-                                miscError(guild, message, `:warning: Invalid number provided`)
-                            } 
-                            return;
-                        }
-                        else{
-                            miscError(guild, message, `:warning: Invalid syntax, use the command like this: \`${guild.prefix}setstats <user/IGN> <walls/buffers/rpost> <number>\``)
-                        }
-                    }
-                })
-            }
-        }
-        if(commandName === "ttsvoice"){
-            Polly.describeVoices(function(err, data){
-                if(err) console.log(err)
                 else{
-                    let out = []
-                    data.Voices.forEach(v=>{
-                        if(v.LanguageName == "English"){
-                            out.push(`**Voice: ${v.Id} - Gender ${v.Gender}**`)
-                        }
+                    person = res;
+                    getUUID(person.ign).then(ress => {
+                        let ntime = new Date().getTime()/1000
+                        let embed = new Discord.MessageEmbed()
+                        .setColor(guild.embedColor)
+                        .setTimestamp()
+                        .setTitle(`Ingame Statistics for ${person.ign} (${person.discordId})`)
+                        .addField(`Wall Checks`, person.wallchecks, true)
+                        .addField(`Buffer Checks`, person.bufferchecks, true)
+                        .addField(`RPost Checks`, person.rpostchecks, true)
+                        .addField(`Last Wall Check`, `${ms((ntime-person.lastwallcheck)*1000, { long: true })} ago`, true)
+                        .addField(`Last Buffer Check`, `${ms((ntime-person.lastbuffercheck)*1000, { long: true })} ago`, true)
+                        .addField(`Last RPost Check`, `${ms((ntime-person.lastrpostcheck)*1000, { long: true })} ago`, true)
+                        .setThumbnail(`https://crafatar.com/avatars/${ress.id}.png`, true)
+                        message.channel.send(embed)
                     })
-                    let embed = new Discord.MessageEmbed()
-                    .setColor(guild.embedColor)
-                    .setTimestamp()
-                    .setTitle(`TTS Voice options`)
-                    .setDescription(out.join("\n"))
-                    message.channel.send(embed)
-    
                 }
             })
         }
-    })
+
+
+    }
+    if(commandName === "setstats"){
+        var user = message.mentions.members.first() || message.guild.members.cache.get(args[0]) || message.guild.members.cache.find(member => member.user.tag === args.join(" ").replace("\n", "")) || message.guild.members.cache.find(member => member.user.username.toLowerCase() === args.join(" ").replace("\n", "").toLowerCase())
+        let person = "";
+        if(!user){
+            getUserByIGN(args[0]).then((res) => {
+                if(res === false){
+                    miscError(guild, message, `:warning: Invalid User`)
+                }
+                else{
+                    person = res
+                    if(!args[1]){
+                        miscError(guild, message, `:warning: Invalid syntax, use the command like this: \`${guild.prefix}setstats <user/IGN> <walls/buffers/rpost> <number>\``)
+                        return;
+                    }
+                    if(args[1].toLowerCase() == "walls"){
+                        if(+args[2] !== NaN){
+                            res.wallchecks = parseInt(args[2]) 
+                            miscError(guild, message, `:ok_hand: Updated \`${person.ign}\`'s ${args[1]} checks to ${args[2]}`) 
+                            res.save()
+                        }
+                        else{
+                            miscError(guild, message, `:warning: Invalid number provided`)
+                        } 
+                        return;
+                    }
+                    else if(args[1].toLowerCase() == "buffers"){
+                        if(+args[2] !== NaN){
+                            res.bufferchecks = parseInt(args[2]) 
+                            miscError(guild, message, `:ok_hand: Updated \`${person.ign}\`'s ${args[1]} checks to ${args[2]}`) 
+                            res.save()
+                        }
+                        else{
+                            miscError(guild, message, `:warning: Invalid number provided`)
+                        } 
+                        return;
+                    }
+                    else if(args[1].toLowerCase() == "rpost"){
+                        if(+args[2] !== NaN){
+                            res.rpostchecks = parseInt(args[2]) 
+                            miscError(guild, message, `:ok_hand: Updated \`${person.ign}\`'s ${args[1]} checks to ${args[2]}`) 
+                            res.save()
+                        }
+                        else{
+                            miscError(guild, message, `:warning: Invalid number provided`)
+                        } 
+                        return;
+                    }
+                    else{
+                        miscError(guild, message, `:warning: Invalid syntax, use the command like this: \`${guild.prefix}setstats <user/IGN> <walls/buffers/rpost> <number>\``)
+                    }
+                }
+            })
+        }
+        else{
+            getUserByDiscord(user.id).then((res) => {
+                if(res === false){
+                    miscError(guild, message, `:warning: Invalid User`)
+                }
+                else{
+                    console.log(res)
+                    person = res
+                    if(!args[1]){
+                        miscError(guild, message, `:warning: Invalid syntax, use the command like this: \`${guild.prefix}setstats <user/IGN> <walls/buffers/rpost> <number>\``)
+                        return;
+                    }
+                    if(args[1].toLowerCase() == "walls"){
+                        if(+args[2] !== NaN){
+                            res.wallchecks = parseInt(args[2]) 
+                            miscError(guild, message, `:ok_hand: Updated \`${person.ign}\`'s ${args[1]} checks to ${args[2]}`) 
+                            res.save()
+                        }
+                        else{
+                            miscError(guild, message, `:warning: Invalid number provided`)
+                        } 
+                        return;
+                    }
+                    else if(args[1].toLowerCase() == "buffers"){
+                        if(+args[2] !== NaN){
+                            res.bufferchecks = parseInt(args[2]) 
+                            miscError(guild, message, `:ok_hand: Updated \`${person.ign}\`'s ${args[1]} checks to ${args[2]}`) 
+                            res.save()
+                        }
+                        else{
+                            miscError(guild, message, `:warning: Invalid number provided`)
+                        } 
+                        return;
+                    }
+                    else if(args[1].toLowerCase() == "rpost"){
+                        if(+args[2] !== NaN){
+                            res.rpostchecks = parseInt(args[2]) 
+                            miscError(guild, message, `:ok_hand: Updated \`${person.ign}\`'s ${args[1]} checks to ${args[2]}`) 
+                            res.save()
+                        }
+                        else{
+                            miscError(guild, message, `:warning: Invalid number provided`)
+                        } 
+                        return;
+                    }
+                    else{
+                        miscError(guild, message, `:warning: Invalid syntax, use the command like this: \`${guild.prefix}setstats <user/IGN> <walls/buffers/rpost> <number>\``)
+                    }
+                }
+            })
+        }
+    }
+    if(commandName === "ttsvoice"){
+        Polly.describeVoices(function(err, data){
+            if(err) console.log(err)
+            else{
+                let out = []
+                data.Voices.forEach(v=>{
+                    if(v.LanguageName == "English"){
+                        out.push(`**Voice: ${v.Id} - Gender ${v.Gender}**`)
+                    }
+                })
+                let embed = new Discord.MessageEmbed()
+                .setColor(guild.embedColor)
+                .setTimestamp()
+                .setTitle(`TTS Voice options`)
+                .setDescription(out.join("\n"))
+                message.channel.send(embed)
+
+            }
+        })
+    }
+
+    
 })
 
 
