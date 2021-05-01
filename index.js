@@ -965,10 +965,10 @@ bot.on('fcf', (user,content) => {
                     }
                     break;
                 case "settings":
-                    g = client.guilds.cache.get(config.guildID);
-                    u = person.discordId;
-                    member  = g.member(u)
-                    if(!member.hasPermission("ADMINISTRATOR")) return bot.chat(`/ff [!] You don't have permission to run this command`)
+                    let gz = client.guilds.cache.get(config.guildID);
+                    let uz = person.discordId;
+                    let memberz  = g.member(uz)
+                    if(!memberz.hasPermission("ADMINISTRATOR")) return bot.chat(`/ff [!] You don't have permission to run this command`)
                     getGuild(config.guildId).then((res) => {
                         if(!args[0]){
                             let mapped = []
