@@ -2297,7 +2297,36 @@ client.on('message', async (message) => {
             }
         })
     }
-
+    if(commandName === "steal"){
+        if(!args[0]){
+            let embed = new Discord.MessageEmbed()
+            .setColor(guild.embedColor)
+            .setDescription(`:warning: Include an emoji to steal`)
+            .setTimestamp()
+            return message.channel.send(embed)
+        }
+        if(!args[1]){
+            let embed = new Discord.MessageEmbed()
+            .setColor(guild.embedColor)
+            .setDescription(`:warning: Include a name for the new emoji`)
+            .setTimestamp()
+            return message.channel.send(embed)
+        }
+        
+        message.guild.emojis.create(message.content.match(/<:.+?:\d+>/g)[0], args[1]).then(done=>{
+            let embed = new Discord.MessageEmbed()
+            .setColor(guild.embedColor)
+            .setDescription(`:ok_hand: Added ${done}`)
+            .setTimestamp()
+            return message.channel.send(embed)
+        }).catch((err) => {
+            let embed = new Discord.MessageEmbed()
+            .setColor(guild.embedColor)
+            .setDescription(`:warning: ${err}`)
+            .setTimestamp()
+            return message.channel.send(embed)
+        })
+    }
     
 })
 
