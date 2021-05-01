@@ -914,7 +914,8 @@ bot.on('fcf', (user,content) => {
                     }
                     break;
                 case "v":
-                    bot.chat(`/ff Fetching vanish information, please wait....`)
+                    bot.chat(`/ff [!] Vanish disabled on ${config.settings.host}! Please refer to the help manual.`)
+                    /*
                     for(let i=0;i<=staff.length;i++){
                         setTimeout(() => {
                             bot.tabComplete(`/f f  ${staff[i]}`,function(matches){
@@ -932,6 +933,7 @@ bot.on('fcf', (user,content) => {
                             }
                         }, i*500)
                     }
+                    */
                     break;
                 case "tp":
                     bot.chat(`/tpa ${person.ign}`)
