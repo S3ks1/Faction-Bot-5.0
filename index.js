@@ -1461,7 +1461,7 @@ client.on('message', async (message) => {
             bot.sudoon = true
             setTimeout(()=> {
                 if(bot.sudo.length !== 0){
-
+                    console.log(bot.sudo)
                     bot.sudo.forEach(q=>{
                         console.log(q)
                         if(q.includes("Members Offline")){
