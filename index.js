@@ -11,7 +11,7 @@ const randomstring = require("randomstring")
 const config = require("./config")
 const axios = require('axios')
 const request = require("request")
-const { help, typeOf, i } = require("mathjs")
+const { help, typeOf, i, null } = require("mathjs")
 const fs = require("fs")
 const util = require("util")
 const textToSpeech = require('@google-cloud/text-to-speech');
@@ -502,12 +502,12 @@ function getPerms(){
 async function getGuild(g){
     let promise = new Promise(function(resolve, reject) {
         Guild.findOne({guildId: g}).then((res) => {
-            if(Array.isArray(res) && res.length === 0){
+            if(Array.isArray(res) && res.length === 0 || res == null || res == undefined){
                 resolve(false)
             }
             else
             {
-                console.log(res)
+                
                 resolve(res)
             }
         }).catch((err) => console.log(err))
