@@ -1472,7 +1472,7 @@ client.on('message', async (message) => {
                         }
                     })
                     for(let i=onlineindex;i++;i<onlineindex){
-                        console.log(bot.sudo[i])
+                       // console.log(bot.sudo[i])
                     }
                     let description = bot.sudo.join("\n")
                     const split = description.match(/[\s\S]{1,2000}/g);
