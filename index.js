@@ -330,7 +330,7 @@ function tts(text, voice) {
         if(err) console.log(err)
         else{
                 data.Voices.forEach(v=>{
-                console.log(v.SupportedEngines)
+                //console.log(v.SupportedEngines)
                 if(v.SupportedEngines.indexOf("neural")!== -1){
                     n.push(v.Name)
                 }
