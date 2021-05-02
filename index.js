@@ -322,10 +322,11 @@ var result = function(command, cb){
     });
 }
 
-function tts(text) {
+function tts(text, voice) {
     // The text to synthesize
     let promise = new Promise(function(resolve, reject) {
         params.Text = text;
+        params.VoiceId = voice;
         // Construct the request
         Polly.synthesizeSpeech(params, function(err, data){
             if (err){
@@ -905,7 +906,8 @@ bot.on('fcf', (user,content) => {
                         var c = client.channels.cache.get(member.voice.channelID)
                         c.join().then(connection=>{
                             //console.log(args)
-                            tts(args.join(" ")).then((res) => {
+                            
+                            tts(args.join(" "), person.ttsVoice).then((res) => {
                                 bot.chat(`/ff Playing ${args.join(" ")}`)
                                 //console.log(args)
                                 //console.log(args.join(" "))
