@@ -2312,19 +2312,44 @@ client.on('message', async (message) => {
             Polly.describeVoices(function(err, data){
                 if(err) console.log(err)
                 else{
-                    let out = []
-                    data.Voices.forEach(v=>{
-                        if(v.LanguageName.includes("English")){
-                            out.push(`**Voice: ${v.Id} - Gender ${v.Gender}**`)
+                    if(!args[0]){
+                        let out = []
+                        data.Voices.forEach(v=>{
+                            if(v.LanguageName.includes("English")){
+                                out.push(`**Voice: ${v.Id} - Gender ${v.Gender}**`)
+                            }
+                        })
+                        let embed = new Discord.MessageEmbed()
+                        .setColor(guild.embedColor)
+                        .setTimestamp()
+                        .setTitle(`Your current voice: ${res.ttsVoice}`)
+                        .setDescription(out.join("\n"))
+                        message.channel.send(embed)
+                    }
+                    else{
+                        let voices = []
+                        data.Voices.forEach(v=>{
+                            if(v.LanguageName.includes("English")){
+                                voices.push(v.Name)
+                            }
+                        })
+                        if(voices.indexOf(args[0])!== -1){
+                            res.ttsVoice = args[0]
+                            res.save()
+                            let embed = new Discord.MessageEmbed()
+                            .setColor(guild.embedColor)
+                            .setTimestamp()
+                            .setDescription(`:ok_hand: Successfully set your preffered TTS voice to \`${args[0]}\`!`)
+                            message.channel.send(embed)
                         }
-                    })
-                    let embed = new Discord.MessageEmbed()
-                    .setColor(guild.embedColor)
-                    .setTimestamp()
-                    .setTitle(`Your current voice: ${res.ttsVoice}`)
-                    .setDescription(out.join("\n"))
-                    message.channel.send(embed)
-    
+                        else{
+                            let embed = new Discord.MessageEmbed()
+                            .setColor(guild.embedColor)
+                            .setDescription(`:warning: Invalid voice provided`)
+                            .setTimestamp()
+                            message.channel.send(embed)
+                        }
+                    }
                 }
             })
         })
