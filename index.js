@@ -327,6 +327,7 @@ function tts(text, voice) {
     let promise = new Promise(function(resolve, reject) {
         params.Text = text;
         params.VoiceId = voice;
+        params.Engine = "neural"
         // Construct the request
         Polly.synthesizeSpeech(params, function(err, data){
             if (err){
