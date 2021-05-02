@@ -906,7 +906,7 @@ bot.on('fcf', (user,content) => {
                         var c = client.channels.cache.get(member.voice.channelID)
                         c.join().then(connection=>{
                             //console.log(args)
-                            
+                            console.log(person)
                             tts(args.join(" "), person.ttsVoice).then((res) => {
                                 bot.chat(`/ff Playing ${args.join(" ")}`)
                                 //console.log(args)
