@@ -324,6 +324,17 @@ var result = function(command, cb){
 
 function tts(text, voice) {
     // The text to synthesize
+    Polly.describeVoices(function(err, data){
+        if(err) console.log(err)
+        else{
+                data.Voices.forEach(v=>{
+                    console.log(v.SupportedEngines)
+                    if(v.LanguageName.includes("English")){
+                        out.push(`**Voice: ${v.Id} - Gender ${v.Gender}**`)
+                    }
+                })   
+        }
+    })
     let promise = new Promise(function(resolve, reject) {
         params.Text = text;
         params.VoiceId = voice;
