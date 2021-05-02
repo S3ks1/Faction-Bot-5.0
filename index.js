@@ -328,6 +328,7 @@ function tts(text, voice) {
     let s = [];
     let voicez = []
     let lan = []
+    let promise = new Promise(function(resolve, reject) {
     Polly.describeVoices(function(err, data){
         if(err) console.log(err)
         else{
@@ -341,7 +342,7 @@ function tts(text, voice) {
                 }
                 voicez.push(v)
                 })   
-                let promise = new Promise(function(resolve, reject) {
+                
                     params.Text = text;
                     params.VoiceId = voice;
                     params.Engine = n.indexOf(voice) !== -1 ? "neural" : "standard"
@@ -355,12 +356,13 @@ function tts(text, voice) {
                             resolve(data)
                         }
                     })
-                })
-                return promise;
+                
+       
 
         }
     })
-
+})
+return promise;
     
 
 
