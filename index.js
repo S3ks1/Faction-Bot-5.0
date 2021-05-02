@@ -2308,9 +2308,7 @@ client.on('message', async (message) => {
             else{
                 let out = []
                 data.Voices.forEach(v=>{
-                    if(v.LanguageName == "English"){
                         out.push(`**Voice: ${v.Id} - Gender ${v.Gender}**`)
-                    }
                 })
                 let embed = new Discord.MessageEmbed()
                 .setColor(guild.embedColor)
