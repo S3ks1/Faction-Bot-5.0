@@ -2322,7 +2322,6 @@ client.on('message', async (message) => {
                     .setColor(guild.embedColor)
                     .setTimestamp()
                     .setTitle(`Your current voice: ${res.ttsVoice}`)
-                    .setTitle(`TTS Voice options`)
                     .setDescription(out.join("\n"))
                     message.channel.send(embed)
     
