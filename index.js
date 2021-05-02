@@ -1146,7 +1146,7 @@ client.on('ready', async function() {
         }
     })
 });
-let commands = ["help", "eval", "exec", "av", "whitelist", "flist", "ftop", "steal", "sudo", "fwho", "wtop", "btop", "settings", "members", "dm", "perm", "setign", "update", "restart", "stats", "setstats", "runcmd"]
+let commands = ["help", "eval", "exec", "av", "whitelist", "flist", "tts", "ftop", "steal", "sudo", "fwho", "wtop", "btop", "settings", "members", "dm", "perm", "setign", "update", "restart", "stats", "setstats", "runcmd"]
 client.on('message', async (message) => {
     if(message.author.bot) return;
     if(message.channel.type == "dm") return;
@@ -2402,6 +2402,36 @@ client.on('message', async (message) => {
        else{
             message.channel.send(`:warning: Invalid emoji`)
        }
+    }
+    if(commandName === "tts"){
+        if(!message.member.voice.channel){
+            bot.chat("/ff [X] You aren't in a voice channel")
+        }
+        else if(message.guild.me.voice.channel && message.member.voice.channel.id !== message.guild.me.voice.channel.id){
+            bot.chat("/ff [X] You aren't in the same voice channel as I am")
+        }
+        else if(message.member.hasPermission("SEND_MESSAGES") && used == 0){
+            const broadcast = client.voice.createBroadcast()
+            
+            var c = client.channels.cache.get(message.member.voice.channelID)
+            c.join().then(connection=>{
+                //console.log(args)
+               // console.log(person)
+                tts(args.join(" "), person.ttsVoice).then((res) => {
+                    message.channel.send(`:ok_hand: Playing ${args.join(" ")} as ${person.ttsVoice}!`)
+                    //console.log(args)
+                    //console.log(args.join(" "))
+                    var bufferStream = new Stream.PassThrough()
+                    bufferStream.end(res.AudioStream);
+                    broadcast.play(bufferStream);
+                    connection.play(broadcast, {volume:2})
+                })
+            })
+
+        }
+        else{
+            return bot.chat("/ff [X] Another broadcast is playing");
+        }
     }
     
 })
