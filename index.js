@@ -915,7 +915,7 @@ bot.on('fcf', (user,content) => {
                                 var bufferStream = new Stream.PassThrough()
                                 bufferStream.end(res.AudioStream);
                                 broadcast.play(bufferStream);
-                                connection.play(broadcast)
+                                connection.play(broadcast, {volume:2})
                             })
                         })
 
