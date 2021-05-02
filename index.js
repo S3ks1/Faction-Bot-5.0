@@ -339,7 +339,7 @@ function tts(text, voice) {
                 }
                 })   
         }
-    }).then(done => {
+    })
         let promise = new Promise(function(resolve, reject) {
             params.Text = text;
             params.VoiceId = voice;
@@ -356,7 +356,7 @@ function tts(text, voice) {
             })
         })
         return promise;
-    })
+    
 
 
 
