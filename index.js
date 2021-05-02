@@ -324,33 +324,40 @@ var result = function(command, cb){
 
 function tts(text, voice) {
     // The text to synthesize
+    let n = [];
+    let s = [];
     Polly.describeVoices(function(err, data){
         if(err) console.log(err)
         else{
                 data.Voices.forEach(v=>{
-                    console.log(v.SupportedEngines)
-                    if(v.LanguageName.includes("English")){
-                        out.push(`**Voice: ${v.Id} - Gender ${v.Gender}**`)
-                    }
+                console.log(v.SupportedEngines)
+                if(v.SupportedEngines.indexOf("neural")!== -1){
+                    n.push(v.Name)
+                }
+                if(v.SupportedEngines.indexOf("standard") !== -1){
+                    s.push(v.name)
+                }
                 })   
         }
-    })
-    let promise = new Promise(function(resolve, reject) {
-        params.Text = text;
-        params.VoiceId = voice;
-        params.Engine = "neural"
-        // Construct the request
-        Polly.synthesizeSpeech(params, function(err, data){
-            if (err){
-                resolve(false)
-                console.log(err)
-            } 
-            else{
-                resolve(data)
-            }
+    }).then(done => {
+        let promise = new Promise(function(resolve, reject) {
+            params.Text = text;
+            params.VoiceId = voice;
+            params.Engine = n.indexOf(VoiceId) !== -1 ? "neural" : "standard"
+            // Construct the request
+            Polly.synthesizeSpeech(params, function(err, data){
+                if (err){
+                    resolve(false)
+                    console.log(err)
+                } 
+                else{
+                    resolve(data)
+                }
+            })
         })
+        return promise;
     })
-    return promise;
+
 
 
   
