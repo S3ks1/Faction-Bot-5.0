@@ -125,6 +125,11 @@ const userSchema = new mongoose.Schema({
     lastbuffercheck:{
         type: Number,
         required: false
+    },
+    ttsVoice:{
+        type: String,
+        required: false,
+        default: "Matthew"
     }
 }, { timestamps: true});
 const User = mongoose.model("User", userSchema)
@@ -2303,22 +2308,28 @@ client.on('message', async (message) => {
         }
     }
     if(commandName === "ttsvoice"){
-        Polly.describeVoices(function(err, data){
-            if(err) console.log(err)
-            else{
-                let out = []
-                data.Voices.forEach(v=>{
-                        out.push(`**Voice: ${v.Id} - Gender ${v.Gender}**`)
-                })
-                let embed = new Discord.MessageEmbed()
-                .setColor(guild.embedColor)
-                .setTimestamp()
-                .setTitle(`TTS Voice options`)
-                .setDescription(out.join("\n"))
-                message.channel.send(embed)
-
-            }
+        getUserByDiscord(message.author.id).then((res) => {
+            Polly.describeVoices(function(err, data){
+                if(err) console.log(err)
+                else{
+                    let out = []
+                    data.Voices.forEach(v=>{
+                        if(v.LanguageName.includes("English")){
+                            out.push(`**Voice: ${v.Id} - Gender ${v.Gender}**`)
+                        }
+                    })
+                    let embed = new Discord.MessageEmbed()
+                    .setColor(guild.embedColor)
+                    .setTimestamp()
+                    .setTitle(`Your current voice: ${res.ttsVoice}`)
+                    .setTitle(`TTS Voice options`)
+                    .setDescription(out.join("\n"))
+                    message.channel.send(embed)
+    
+                }
+            })
         })
+
     }
     if(commandName === "steal"){
         if(!args[0]){
