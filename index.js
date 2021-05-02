@@ -289,7 +289,7 @@ mongoose.connect(config.mongoURL, {
 
 var params = {
     OutputFormat: "mp3", 
-    SampleRate: "8000", 
+    SampleRate: "24000", 
     TextType: "text", 
     VoiceId: "Matthew"
    };
