@@ -341,14 +341,12 @@ function tts(text, voice) {
                 }
                 voicez.push(v)
                 })   
-                lan.push(data.Voices[voicez.indexOf(voice)].LanguageCode)
 
         }
     })
         let promise = new Promise(function(resolve, reject) {
             params.Text = text;
             params.VoiceId = voice;
-            params.LanguageCode = lan[0];
             params.Engine = n.indexOf(voice) !== -1 ? "neural" : s.indexOf(voice) !== -1 ? "standard" : "neural"
             // Construct the request
             Polly.synthesizeSpeech(params, function(err, data){
