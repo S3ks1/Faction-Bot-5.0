@@ -787,7 +787,8 @@ bot.on('login', async () => {
                 console.log(time-Math.max(rpost))
                 console.log(rpost)
                 if((time-Math.max(...walls)) % guild.wallAlert == 0 && guild.walls === true){
-                    let c = client.channels.cache.get(guild.wallChannel)
+                    let g = client.guilds.cache.get(config.mainGuild)
+                    let c = g.channels.cache.find(c => c.name === guild.wallsChannel)
                     bot.chat(`/ff Walls have not been checked in ${ms((time-Math.max(...walls))*1000, { long: true })}! Check now and type ${guild.prefix}${guild.wallCommand}`)
                     if(c){
                         let embed = new Discord.MessageEmbed()
@@ -799,7 +800,8 @@ bot.on('login', async () => {
                     }
                 }
                 if((time-Math.max(...buffers)) % guild.bufferAlert == 0 && guild.buffers === true){
-                    let c = client.channels.cache.get(guild.bufferChannel)
+                    let g = client.guilds.cache.get(config.mainGuild)
+                    let c = g.channels.cache.find(c => c.name === guild.bufferChannel)
                     bot.chat(`/ff Buffers have not been checked in ${ms((time-Math.max(walls))*1000, { long: true })}! Check now and type ${guild.prefix}${guild.bufferCommand}`)
                     if(c){
                         let embed = new Discord.MessageEmbed()
@@ -811,7 +813,8 @@ bot.on('login', async () => {
                 }
                 if((time-Math.max(rpost)) % guild.rpostAlert == 0 && guild.rpost === true){
                     console.log("lol")
-                    let c = client.channels.cache.get(guild.rpostChannel)
+                    let g = client.guilds.cache.get(config.mainGuild)
+                    let c = g.channels.cache.find(c => c.name === guild.rpostChannel)
                     bot.chat(`/ff RPost walls have not been checked in ${ms((time-Math.max(rpost))*1000, { long: true })}! Check now and type ${guild.prefix}${guild.rpostCommand}`)
                     if(c){
                         let embed = new Discord.MessageEmbed()
