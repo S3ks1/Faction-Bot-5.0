@@ -921,7 +921,7 @@ bot.on('fcf', (user,content) => {
                                     }
                                     person.bufferchecks++
                                     bot.chat(`/ff ${person.ign} checked buffers! Time since last check: ${ms((time-Math.max(...db))*1000, { long: true })}! Total Checks: ${person.bufferchecks}`)
-                                    person.lastwallcheck = time
+                                    person.lastbuffercheck = time
                                     person.save()
                                     return;
                             });
@@ -963,7 +963,7 @@ bot.on('fcf', (user,content) => {
                                     }
                                     person.rpostchecks++
                                     bot.chat(`/ff ${person.ign} checked RPost walls! Time since last check: ${ms((time-Math.max(...db))*1000, { long: true })}! Total Checks: ${person.rpostchecks}`)
-                                    person.lastwallcheck = time
+                                    person.lastrpostcheck = time
                                     person.save()
                                     return;
                             });
