@@ -806,14 +806,15 @@ bot.on('login', async () => {
                         c.send(embed)
                     }
                 }
-                if((time-Math.max(...rpost)) % guild.rpostAlert == 0 && guild.rpost === true){
+                if((time-Math.max(rpost)) % guild.rpostAlert == 0 && guild.rpost === true){
+                    console.log("lol")
                     let c = client.channels.cache.get(guild.rpostChannel)
-                    bot.chat(`/ff RPost walls have not been checked in ${ms((time-Math.max(walls))*1000, { long: true })}! Check now and type ${guild.prefix}${guild.rpostCommand}`)
+                    bot.chat(`/ff RPost walls have not been checked in ${ms((time-Math.max(rpost))*1000, { long: true })}! Check now and type ${guild.prefix}${guild.rpostCommand}`)
                     if(c){
                         let embed = new Discord.MessageEmbed()
                         .setColor(guild.embedColor)
                         .setTimestamp()
-                        .setDescription(`:warning: RPost walls have been unchecked for ${ms((time-Math.max(...rpost))*1000, { long: true })}! Check now by typing ${guild.prefix}${guild.rpostCommand}`)
+                        .setDescription(`:warning: RPost walls have been unchecked for ${ms((time-Math.max(rpost))*1000, { long: true })}! Check now by typing ${guild.prefix}${guild.rpostCommand}`)
                         c.send(embed)
                     }
                 }
