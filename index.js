@@ -767,7 +767,7 @@ bot.on('login', async () => {
 
         }
     }, 5000)
-    let now = new Date()  
+    let now = new Date()    
     let time = Math.round(now.getTime() / 1000)
     let walls = []
     let buffers = []
@@ -779,6 +779,8 @@ bot.on('login', async () => {
                 return;
             }
             else{
+                console.log(time-Math.max(rpost))
+                console.log(rpost)
                 res.forEach((u) => {
                     if(u.lastwallcheck) walls.push(u.lastwallcheck)
                     if(u.lastbuffercheck) buffers.push(u.buffercheck)
