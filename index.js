@@ -770,7 +770,7 @@ bot.on('login', async () => {
 })
 
 bot.on('end', () => {
-    
+    process.exit(0)
 })
 
 bot.on('fcf', (user,content) => {
@@ -1215,6 +1215,7 @@ client.on('message', async (message) => {
         message.channel.send(embed)
         return;
     }
+    
     if(!user.user){
         const avatarEmbed = new Discord.MessageEmbed().setAuthor(`${user.username}'s Avatar`).setImage(user.displayAvatarURL({
             dynamic: true,
