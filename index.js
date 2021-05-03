@@ -2571,7 +2571,7 @@ client.on('message', async (message) => {
     
         }, 750)
     }
-    if(commandName === "canetop"){
+    if(commandName === "cane"){
         if(!args[0]){
             let embed = new Discord.MessageEmbed()
             .setDescription(`:warning: Provide a player`)
