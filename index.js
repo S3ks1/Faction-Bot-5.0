@@ -779,13 +779,13 @@ bot.on('login', async () => {
                 return;
             }
             else{
-                console.log(time-Math.max(rpost))
-                console.log(rpost)
                 res.forEach((u) => {
                     if(u.lastwallcheck) walls.push(u.lastwallcheck)
                     if(u.lastbuffercheck) buffers.push(u.lastbuffercheck)
                     if(u.lastrpostcheck) rpost.push(u.lastrpostcheck)
                 })
+                console.log(time-Math.max(rpost))
+                console.log(rpost)
                 if((time-Math.max(...walls)) % guild.wallAlert == 0 && guild.walls === true){
                     let c = client.channels.cache.get(guild.wallChannel)
                     bot.chat(`/ff Walls have not been checked in ${ms((time-Math.max(...walls))*1000, { long: true })}! Check now and type ${guild.prefix}${guild.wallCommand}`)
