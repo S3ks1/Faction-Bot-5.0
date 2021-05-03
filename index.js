@@ -784,8 +784,6 @@ bot.on('login', async () => {
                     if(u.lastbuffercheck) buffers.push(u.lastbuffercheck)
                     if(u.lastrpostcheck) rpost.push(u.lastrpostcheck)
                 })
-                console.log(time-Math.max(rpost))
-                console.log(rpost)
                 if((time-Math.max(...walls)) % guild.wallAlert == 0 && guild.walls === true){
                     let g = client.guilds.cache.get(config.mainGuild)
                     let c = g.channels.cache.find(c => c.name === guild.wallsChannel)
@@ -812,7 +810,6 @@ bot.on('login', async () => {
                     }
                 }
                 if((time-Math.max(rpost)) % guild.rpostAlert == 0 && guild.rpost === true){
-                    console.log("lol")
                     let g = client.guilds.cache.get(config.mainGuild)
                     let c = g.channels.cache.find(c => c.name === guild.rpostChannel)
                     bot.chat(`/ff RPost walls have not been checked in ${ms((time-Math.max(rpost))*1000, { long: true })}! Check now and type ${guild.prefix}${guild.rpostCommand}`)
@@ -1129,7 +1126,8 @@ bot.on('fcf', (user,content) => {
                             bot.chat(`/ff (!) ${args[0]}'s dick is ${random2} inches long`)
                         }
                         break;  
-                
+                case "tps":
+                    bot.chat(`/ff (!) Current TPS: `+ bot.getTps())
                     
     
             }
@@ -1209,7 +1207,7 @@ client.on('ready', async function() {
         }
     })
 });
-let commands = ["help", "eval", "exec", "av", "whitelist", "flist", "tts", "ftop", "steal", "sudo", "fwho", "wtop", "btop", "settings", "members", "dm", "perm", "setign", "update", "restart", "stats", "setstats", "runcmd"]
+let commands = ["help", "eval", "exec", "av", "whitelist", "flist", "tts", "ftop", "steal", "sudo", "rpost", "tps", "ttsvoice", "fwho", "wtop", "btop", "settings", "members", "dm", "perm", "setign", "update", "restart", "stats", "setstats", "runcmd"]
 client.on('message', async (message) => {
     if(message.author.bot) return;
     if(message.channel.type == "dm") return;
@@ -2499,6 +2497,42 @@ client.on('message', async (message) => {
             }
         })
         
+    }
+    if(commandName === "rpost"){
+        bot.chat(`/routpost top`)
+        bot.sudoon = true
+    
+        setTimeout(()=> {
+            if(bot.sudo.length !== 0){
+                let embed = new Discord.MessageEmbed()
+                .setTitle("Raiding Outpost Status")
+                .setDescription(`\`\`\`${bot.sudo.join("\n")}\`\`\``)
+                .setFooter(`${config.settings.host}`)
+                .setColor(guild.embedColor)
+                .setAuthor(`Requested by ${message.author.tag}`, message.author.displayAvatarURL({dynamic : true}))
+                .setTimestamp();
+            message.channel.send(embed)
+            bot.sudoon = false
+            bot.sudo = []
+            }
+            else{
+                let embed = new Discord.MessageEmbed()
+                .setDescription(":warning: Unable to get RPost information, try again")
+                .setTimestamp()
+                .setColor(guild.embedColor)
+                message.channel.send(embed)
+                bot.sudoon = false
+                bot.sudo = []
+            }
+    
+        }, 750)
+    }
+    if(commandName === "tps"){
+        let embed = new Discord.MessageEmbed()
+        .setColor(guild.embedColor)
+        .setDescription(`:ok_hand: Current TPS: ${bot.getTps()}`)
+        .setTimestamp()
+        message.channel.send(embed)
     }
     
 })
