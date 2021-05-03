@@ -2536,6 +2536,81 @@ client.on('message', async (message) => {
         .setTimestamp()
         message.channel.send(embed)
     }
+    if(commandName === "canetop"){
+        if(!args[0]){
+            bot.chat(`/canetop`)
+        }
+        else{
+            bot.chat(`/canetop ${args[0]}`)
+        }
+
+        bot.sudoon = true
+    
+        setTimeout(()=> {
+            if(bot.sudo.length !== 0){
+                let embed = new Discord.MessageEmbed()
+                .setTitle("Canetop")
+                .setDescription(`\`\`\`${bot.sudo.join("\n")}\`\`\``)
+                .setFooter(`${config.settings.host}`)
+                .setColor(guild.embedColor)
+                .setAuthor(`Requested by ${message.author.tag}`, message.author.displayAvatarURL({dynamic : true}))
+                .setTimestamp();
+            message.channel.send(embed)
+            bot.sudoon = false
+            bot.sudo = []
+            }
+            else{
+                let embed = new Discord.MessageEmbed()
+                .setDescription(":warning: Unable to get Canetop information, try again")
+                .setTimestamp()
+                .setColor(guild.embedColor)
+                message.channel.send(embed)
+                bot.sudoon = false
+                bot.sudo = []
+            }
+    
+        }, 750)
+    }
+    if(commandName === "canetop"){
+        if(!args[0]){
+            let embed = new Discord.MessageEmbed()
+            .setDescription(`:warning: Provide a player`)
+            .setColor(guild.embedColor)
+            .setTimestamp()
+            message.channel.send(embed)
+        }
+        else{
+            bot.chat(`/cane ${args[0]}`)
+        }
+
+        bot.sudoon = true
+    
+        setTimeout(()=> {
+            if(bot.sudo.length !== 0){
+                let embed = new Discord.MessageEmbed()
+                .setTitle(`Cane for ${args[0]}`)
+                .setDescription(`\`\`\`${bot.sudo.join("\n")}\`\`\``)
+                .setFooter(`${config.settings.host}`)
+                .setColor(guild.embedColor)
+                .setAuthor(`Requested by ${message.author.tag}`, message.author.displayAvatarURL({dynamic : true}))
+                .setTimestamp();
+            message.channel.send(embed)
+            bot.sudoon = false
+            bot.sudo = []
+            }
+            else{
+                let embed = new Discord.MessageEmbed()
+                .setDescription(":warning: Unable to get Cane information, try again")
+                .setTimestamp()
+                .setColor(guild.embedColor)
+                message.channel.send(embed)
+                bot.sudoon = false
+                bot.sudo = []
+            }
+    
+        }, 750)
+    }
+    
     
 })
 
