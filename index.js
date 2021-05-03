@@ -840,7 +840,9 @@ bot.on('fcf', (user,content) => {
             //console.log(person)
             //      console.log(person)
             if (content.indexOf(guild.prefix) != 0) return;
-            if(person === false) return console.log("false");
+            if(person === false){
+                bot.chat(`/ff [!] You must be verified to the bot to use ingame commands! Verify with .whitelist`)
+            }
             let args = content.slice(1).trim().split(/ +/g)
             //console.log(args)
             let commandName = args.shift().toLowerCase()
