@@ -767,12 +767,12 @@ bot.on('login', async () => {
 
         }
     }, 5000)
-    let now = new Date()    
-    let time = Math.round(now.getTime() / 1000)
-    let walls = []
-    let buffers = []
-    let rpost = []
     setInterval(async () => {
+        let now = new Date()    
+        let time = Math.round(now.getTime() / 1000)
+        let walls = []
+        let buffers = []
+        let rpost = []
         let guild = await getGuild(config.mainGuild)
         getUsers().then((res) => {
             if(res == false || res == []){
@@ -783,8 +783,8 @@ bot.on('login', async () => {
                 console.log(rpost)
                 res.forEach((u) => {
                     if(u.lastwallcheck) walls.push(u.lastwallcheck)
-                    if(u.lastbuffercheck) buffers.push(u.buffercheck)
-                    if(u.lastrpostcheck) rpost.push(u.rpostcheck)
+                    if(u.lastbuffercheck) buffers.push(u.lastbuffercheck)
+                    if(u.lastrpostcheck) rpost.push(u.lastrpostcheck)
                 })
                 if((time-Math.max(...walls)) % guild.wallAlert == 0 && guild.walls === true){
                     let c = client.channels.cache.get(guild.wallChannel)
@@ -795,6 +795,7 @@ bot.on('login', async () => {
                         .setTimestamp()
                         .setDescription(`:warning: Walls have been unchecked for ${ms((time-Math.max(...walls))*1000, { long: true })}! Check now by typing ${guild.prefix}${guild.wallCommand}`)
                         c.send(embed)
+                        walls
                     }
                 }
                 if((time-Math.max(...buffers)) % guild.bufferAlert == 0 && guild.buffers === true){
