@@ -784,8 +784,6 @@ bot.on('login', async () => {
                     if(u.lastbuffercheck) buffers.push(u.lastbuffercheck)
                     if(u.lastrpostcheck) rpost.push(u.lastrpostcheck)
                 })
-                console.log(walls)
-                console.log(rpost)
                 if((time-Math.max(...walls)) % guild.wallAlert == 0 && guild.walls === true){
                     
                     let g = client.guilds.cache.get(config.mainGuild)
