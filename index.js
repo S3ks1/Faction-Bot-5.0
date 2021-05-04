@@ -784,7 +784,10 @@ bot.on('login', async () => {
                     if(u.lastbuffercheck) buffers.push(u.lastbuffercheck)
                     if(u.lastrpostcheck) rpost.push(u.lastrpostcheck)
                 })
+                console.log(walls)
+                console.log(rpost)
                 if((time-Math.max(...walls)) % guild.wallAlert == 0 && guild.walls === true){
+                    
                     let g = client.guilds.cache.get(config.mainGuild)
                     let c = g.channels.cache.find(c => c.name === guild.wallsChannel)
                     bot.chat(`/ff Walls have not been checked in ${ms((time-Math.max(...walls))*1000, { long: true })}! Check now and type ${guild.prefix}${guild.wallCommand}`)
@@ -2610,7 +2613,58 @@ client.on('message', async (message) => {
     
         }, 750)
     }
+    /*
+    if(commandName === "ttslanguage"){
+        if(commandName === "ttsvoice"){
+            getUserByDiscord(message.author.id).then((res) => {
+                Polly.describeVoices(function(err, data){
+                    if(err) console.log(err)
+                    else{
+                        if(!args[0]){
+                            let out = []
+                            data.Voices.forEach(v=>{
+                                if(out.indexOf(v.LanguageName) == -1){
+                                    out.push(v.LanguageName)
+                                }
+                            })
+                            let embed = new Discord.MessageEmbed()
+                            .setColor(guild.embedColor)
+                            .setTimestamp()
+                            .setTitle(`Your current voice: ${res.ttsLanguage}`)
+                            .setDescription(out.join("\n"))
+                            message.channel.send(embed)
+                        }
+                        else{
+                            let voices = []
+                            data.Voices.forEach(v=>{
+                                if(v.LanguageName.includes("English")){
+                                    voices.push(v.Name)
+                                }
+                            })
+                            if(voices.indexOf(args[0])!== -1){
+                                res.ttsVoice = args[0]
+                                res.save()
+                                let embed = new Discord.MessageEmbed()
+                                .setColor(guild.embedColor)
+                                .setTimestamp()
+                                .setDescription(`:ok_hand: Successfully set your preffered TTS Language to \`${args[0]}\`!`)
+                                message.channel.send(embed)
+                            }
+                            else{
+                                let embed = new Discord.MessageEmbed()
+                                .setColor(guild.embedColor)
+                                .setDescription(`:warning: Invalid voice provided`)
+                                .setTimestamp()
+                                message.channel.send(embed)
+                            }
+                        }
+                    }
+                })
+            })
     
+        }
+    }
+    */
     
 })
 
