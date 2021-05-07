@@ -3098,7 +3098,7 @@ client.on('message', async (message) => {
         message.channel.send(embed);
     }
     if(commandName == "whois" || "userinfo" || "uinfo"){
-        const user = message.mentions.members.first() || message.guild.members.cache.get(args[0]) || message.guild.members.cache.find(member => member.user.tag === args.join(" ").replace("\n", "")) || message.guild.members.cache.find(u => u.user.username.toLowerCase().includes(args[0].toLowerCase())) || message.author
+        const user = message.mentions.members.first() || message.guild.members.cache.get(args[0]) || message.guild.members.cache.find(member => member.user.tag === args.join(" ").replace("\n", "")) || message.guild.members.cache.find(u => u.user.username.toLowerCase().includes(args[0] !== null  ? args[0].toLowerCase() : "asdfgh")) || message.author
         const member = message.guild.member(user);
         let whoisembed = new Discord.MessageEmbed()
         .setAuthor(`Requested by ${message.author.tag}`, message.author.displayAvatarURL({dynamic : true}))
