@@ -2684,7 +2684,8 @@ client.on('message', async (message) => {
         }, 750)
     }
     if(commandName === "walls"){
-        let now = new Date()  
+        if(!args[0]){
+            let now = new Date()  
         let time = Math.round(now.getTime() / 1000)
         let db = []
         getUsers().then((r) => {
@@ -2705,9 +2706,67 @@ client.on('message', async (message) => {
                     message.channel.send(embed)
                 })                
             })
+        }
+        else if(args[0].toLowerCase() == "status"){
+            let embed = new Discord.MessageEmbed()
+            .setColor(guild.embedColor)
+            .setTimestamp()
+            .setTitle(`Walls status for ${message.guild.name} | ${config.settings.host}`)
+            .setDescription(`${guild.rpost == false ? ":red_circle: Walls are currently Disabled!" : ":green_circle: Walls are currently Enabled!"}`)
+            message.channel.send(embed)
+        }
+        else if(args[0].toLowerCase() == "enable" || args[0].toLowerCase() == "on"){
+            if(guild.walls == false){
+                guild.walls = true;
+                guild.save().then(s=>{
+                    let embed = new Discord.MessageEmbed()
+                    .setColor(guild.embedColor)
+                    .setTimestamp()
+                    .setDescription(`:ok_hand: Successfully enabled Wall Checks!`)
+                    message.channel.send(embed)
+                })
+            }
+            else{
+                let embed = new Discord.MessageEmbed()
+                .setTimestamp()
+                .setColor(guild.embedColor)
+                .setDescription(`:warning: Walls are already enabled!`)
+                message.channel.send(embed)
+                return;     
+            }
+        }
+        else if(args[0].toLowerCase() == "disable" || args[0].toLowerCase() == "off"){
+            if(guild.walls == true){
+                guild.walls = false;
+                guild.save().then(s=>{
+                    let embed = new Discord.MessageEmbed()
+                    .setColor(guild.embedColor)
+                    .setTimestamp()
+                    .setDescription(`:ok_hand: Successfully disabled Wall Checks!`)
+                    message.channel.send(embed)
+                })
+            }
+            else{
+                let embed = new Discord.MessageEmbed()
+                .setTimestamp()
+                .setColor(guild.embedColor)
+                .setDescription(`:warning: Wall checks are already disabled!`)
+                message.channel.send(embed)
+                return;     
+            }
+        }
+        else{
+            let embed = new Discord.MessageEmbed()
+            .setColor(guild.embedColor)
+            .setTimestamp()
+            .setDescription(`:warning: Invalid syntax, use the command like this: \`${guild.prefix}walls [status/enable/disable]\``)
+            message.channel.send(embed)
+        }
+        
     }
     if(commandName === "buffers"){
-        let now = new Date()  
+        if(args[0]){
+                let now = new Date()  
         let time = Math.round(now.getTime() / 1000)
         let db = []
         getUsers().then((r) => {
@@ -2728,29 +2787,144 @@ client.on('message', async (message) => {
                     message.channel.send(embed)
                 })                
             })
-    }
-    if(commandName === "raidingoutpost"){
-        let now = new Date()  
-        let time = Math.round(now.getTime() / 1000)
-        let db = []
-        getUsers().then((r) => {
-            r.forEach(user => {
-                db.push(user.lastrpostcheck)
-            })
-        })
-            getUserByWallCheck(Math.max(...db)).then((u) => {
-                getUUID(u.ign).then(uuid=>{
+        }
+        else if(args[0].toLowerCase() == "status"){
+            let embed = new Discord.MessageEmbed()
+            .setColor(guild.embedColor)
+            .setTimestamp()
+            .setTitle(`Buffers status for ${message.guild.name} | ${config.settings.host}`)
+            .setDescription(`${guild.buffers == false ? ":red_circle: Buffers are currently Disabled!" : ":green_circle: Buffers are currently Enabled!"}`)
+            message.channel.send(embed)
+        }
+        else if(args[0].toLowerCase() == "enable" || args[0].toLowerCase() == "on"){
+            if(guild.buffer == false){
+                guild.buffer = true;
+                guild.save().then(s=>{
                     let embed = new Discord.MessageEmbed()
                     .setColor(guild.embedColor)
                     .setTimestamp()
-                    .setTitle(`RPost Status for ${message.guild.name} | ${config.settings.host}`)
-                    .addField(`Last Check`, `${ms((time-Math.max(...db))*1000, { long: true })}`, true)
-                    .addField(`Last Checker`, `${u.ign}(${message.guild.members.cache.get(u.discordId)})`,)
-                    .addField(`Other Usage`, `${guild.prefix}wallstop, ${guild.prefix}wtop, ${guild.prefix}whitelist`)
-                    .setThumbnail(`https://crafatar.com/avatars/${uuid.id}.png`, true)
+                    .setDescription(`:ok_hand: Successfully enabled Buffer Checks!`)
                     message.channel.send(embed)
-                })                
+                })
+            }
+            else{
+                let embed = new Discord.MessageEmbed()
+                .setTimestamp()
+                .setColor(guild.embedColor)
+                .setDescription(`:warning: Buffers are already enabled!`)
+                message.channel.send(embed)
+                return;     
+            }
+        }
+        else if(args[0].toLowerCase() == "disable" || args[0].toLowerCase() == "off"){
+            if(guild.buffers == true){
+                guild.buffers = false;
+                guild.save().then(s=>{
+                    let embed = new Discord.MessageEmbed()
+                    .setColor(guild.embedColor)
+                    .setTimestamp()
+                    .setDescription(`:ok_hand: Successfully disabled Buffer Checks!`)
+                    message.channel.send(embed)
+                })
+            }
+            else{
+                let embed = new Discord.MessageEmbed()
+                .setTimestamp()
+                .setColor(guild.embedColor)
+                .setDescription(`:warning: Buffer checks are already disabled!`)
+                message.channel.send(embed)
+                return;     
+            }
+        }
+        else{
+            let embed = new Discord.MessageEmbed()
+            .setColor(guild.embedColor)
+            .setTimestamp()
+            .setDescription(`:warning: Invalid syntax, use the command like this: \`${guild.prefix}buffers [status/enable/disable]\``)
+            message.channel.send(embed)
+        }
+    
+    }
+    if(commandName === "raidingoutpost"){
+        if(!args[0]){
+            let now = new Date()  
+            let time = Math.round(now.getTime() / 1000)
+            let db = []
+            getUsers().then((r) => {
+                r.forEach(user => {
+                    db.push(user.lastrpostcheck)
+                })
             })
+                getUserByWallCheck(Math.max(...db)).then((u) => {
+                    getUUID(u.ign).then(uuid=>{
+                        let embed = new Discord.MessageEmbed()
+                        .setColor(guild.embedColor)
+                        .setTimestamp()
+                        .setTitle(`RPost Status for ${message.guild.name} | ${config.settings.host}`)
+                        .addField(`Last Check`, `${ms((time-Math.max(...db))*1000, { long: true })}`, true)
+                        .addField(`Last Checker`, `${u.ign}(${message.guild.members.cache.get(u.discordId)})`,)
+                        .addField(`Other Usage`, `${guild.prefix}wallstop, ${guild.prefix}wtop, ${guild.prefix}whitelist`)
+                        .setThumbnail(`https://crafatar.com/avatars/${uuid.id}.png`, true)
+                        message.channel.send(embed)
+                    })                
+                })
+        }
+        else if(args[0] == "status"){
+            let embed = new Discord.MessageEmbed()
+            .setColor(guild.embedColor)
+            .setTimestamp()
+            .setTitle(`RPost status for ${message.guild.name} | ${config.settings.host}`)
+            .setDescription(`${guild.rpost == false ? ":red_circle: RPost is currently Disabled!" : ":green_circle: RPost is currently Enabled!"}`)
+            message.channel.send(embed)
+        }
+        else if(args[0].toLowerCase() == "enable" || args[0].toLowerCase() == "on"){
+            if(guild.rpost == false){
+                guild.rpost = true;
+                guild.save().then(s=>{
+                    let embed = new Discord.MessageEmbed()
+                    .setColor(guild.embedColor)
+                    .setTimestamp()
+                    .setDescription(`:ok_hand: Successfully enabled RPost Checks!`)
+                    message.channel.send(embed)
+                })
+            }
+            else{
+                let embed = new Discord.MessageEmbed()
+                .setTimestamp()
+                .setColor(guild.embedColor)
+                .setDescription(`:warning: RPost is already enabled!`)
+                message.channel.send(embed)
+                return;     
+            }
+        }
+        else if(args[0].toLowerCase() == "disable" || args[0].toLowerCase() == "off"){
+            if(guild.rpost == true){
+                guild.rpost = false;
+                guild.save().then(s=>{
+                    let embed = new Discord.MessageEmbed()
+                    .setColor(guild.embedColor)
+                    .setTimestamp()
+                    .setDescription(`:ok_hand: Successfully disabled RPost Checks!`)
+                    message.channel.send(embed)
+                })
+            }
+            else{
+                let embed = new Discord.MessageEmbed()
+                .setTimestamp()
+                .setColor(guild.embedColor)
+                .setDescription(`:warning: RPost checks are already disabled!`)
+                message.channel.send(embed)
+                return;     
+            }
+        }
+        else{
+            let embed = new Discord.MessageEmbed()
+            .setColor(guild.embedColor)
+            .setTimestamp()
+            .setDescription(`:warning: Invalid syntax, use the command like this: \`${guild.prefix}raidingoutpost [status/enable/disable]\``)
+            message.channel.send(embed)
+        }
+        
     }
     if(commandName == "grace"){
         if(!args[0]){
