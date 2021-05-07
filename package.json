@@ -7,6 +7,7 @@
     "discord.js": "^12.5.3",
     "fs": "^0.0.1-security",
     "mathjs": "^9.3.2",
+    "minecraft-server-status": "^1.0.1",
     "mineflayer": "^3.6.0",
     "mineflayer-tps": "^1.0.1",
     "moment": "^2.29.1",

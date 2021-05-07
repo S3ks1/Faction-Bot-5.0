@@ -904,6 +904,7 @@ bot.on('fcf', (user,content) => {
             //console.log(person)
             //      console.log(person)
             if (content.indexOf(guild.prefix) != 0) return;
+            console.log(person)
             if(person === false){
                 bot.chat(`/ff [!] You must be verified to the bot to use ingame commands! Verify with .whitelist`)
             }
@@ -1221,6 +1222,7 @@ bot.on('entitySpawn', async (entity) => {
     }
 })
 bot.on('message', async (message) => {
+    console.log(message)
     bot.serverchat.push(message.toString())
     if(message.toString().includes("[!] WE ARE BEING RAIDED [!]")){
         let guild = await getGuild(config.mainGuild)
