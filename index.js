@@ -818,7 +818,7 @@ bot.on('login', async () => {
                 }
                 else{
                     let g = client.guilds.cache.get(config.mainGuild)
-                    console.log(g)
+                   
                     if(g){
                         let channel = g.channels.cache.find(c => c.name === guild.serverchatChannel)
                         if(guild.serverchat == true && channel){
