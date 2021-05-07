@@ -72,6 +72,8 @@ var staff = [
 let v = []
 const { inspect } = require("util");
 const { Stream } = require("stream");
+const { guildID } = require("./config");
+const { IoTSecureTunneling } = require("aws-sdk");
 var data;
 
 var Polly = new AWS.Polly({
@@ -514,6 +516,67 @@ function getUserByIGN(user){
     });
     return promise;
 }
+
+function getUserByWallCheck(user){
+    
+    let promise = new Promise(function(resolve, reject) {
+        User.findOne({lastwallcheck: user}).then((res) => {
+            //console.log(res)
+            //console.log(res)
+            if(Array.isArray(res) && res.length === 0 || res === null || res === undefined){
+                resolve(false)
+                //console.log("no user")
+            }
+            else
+            {
+                //console.log("user")
+                resolve(res)
+            }
+        }).catch((err) => console.log("error lol"))
+    });
+    return promise;
+}
+
+function getUserByBufferCheck(user){
+    
+    let promise = new Promise(function(resolve, reject) {
+        User.findOne({lastbuffercheck: user}).then((res) => {
+            //console.log(res)
+            //console.log(res)
+            if(Array.isArray(res) && res.length === 0 || res === null || res === undefined){
+                resolve(false)
+                //console.log("no user")
+            }
+            else
+            {
+                //console.log("user")
+                resolve(res)
+            }
+        }).catch((err) => console.log("error lol"))
+    });
+    return promise;
+}
+
+function getUserByRpostCheck(user){
+    
+    let promise = new Promise(function(resolve, reject) {
+        User.findOne({lastrpostcheck: user}).then((res) => {
+            //console.log(res)
+            //console.log(res)
+            if(Array.isArray(res) && res.length === 0 || res === null || res === undefined){
+                resolve(false)
+                //console.log("no user")
+            }
+            else
+            {
+                //console.log("user")
+                resolve(res)
+            }
+        }).catch((err) => console.log("error lol"))
+    });
+    return promise;
+}
+
 
 function getUsers(){
     let promise = new Promise(function(resolve, reject) {
@@ -1114,19 +1177,19 @@ bot.on('fcf', (user,content) => {
                 case "penis":
                     let random = Math.floor(Math.random() * (1000 - 100) + 100) / 100;
                     if(!args[0]){
-                        bot.chat(`/ff (!) Your penis is ${random} inches long`)
+                        bot.chat(`/ff (!) Your penis is ${random} inches long. 8${Array(Math.round(random)).join(`=`)}D`)
                     }
                     else{
-                        bot.chat(`/ff (!) ${args[0]}'s pensis is ${random} inches long`)
+                        bot.chat(`/ff (!) ${args[0]}'s pensis is ${random} inches long. 8${Array(Math.round(random)).join(`=`)}D`)
                     }
                     break;
                 case "dick":
                         let random2 = Math.floor(Math.random() * (1000 - 100) + 100) / 100;
                         if(!args[0]){
-                            bot.chat(`/ff (!) Your dick is ${random2} inches long`)
+                            bot.chat(`/ff (!) Your dick is ${random2} inches long. 8${Array(Math.round(random2)).join(`=`)}D`)
                         }
                         else{
-                            bot.chat(`/ff (!) ${args[0]}'s dick is ${random2} inches long`)
+                            bot.chat(`/ff (!) ${args[0]}'s dick is ${random2} inches long. 8${Array(Math.round(random2)).join(`=`)}D`)
                         }
                         break;  
                 case "tps":
@@ -1995,7 +2058,7 @@ client.on('message', async (message) => {
         }, 500)
         
     }
-    if(commandName === "dm"){
+    if(commandName === "dm"){   
         if(!args[0]){
             let embed = new Discord.MessageEmbed()
             .setDescription(`:warning: Incorrect usage for the ${commandName} command. Proper usage: \`.dm <role> <message>\``)
@@ -2611,58 +2674,202 @@ client.on('message', async (message) => {
     
         }, 750)
     }
-    /*
-    if(commandName === "ttslanguage"){
-        if(commandName === "ttsvoice"){
-            getUserByDiscord(message.author.id).then((res) => {
-                Polly.describeVoices(function(err, data){
-                    if(err) console.log(err)
-                    else{
-                        if(!args[0]){
-                            let out = []
-                            data.Voices.forEach(v=>{
-                                if(out.indexOf(v.LanguageName) == -1){
-                                    out.push(v.LanguageName)
-                                }
-                            })
-                            let embed = new Discord.MessageEmbed()
-                            .setColor(guild.embedColor)
-                            .setTimestamp()
-                            .setTitle(`Your current voice: ${res.ttsLanguage}`)
-                            .setDescription(out.join("\n"))
-                            message.channel.send(embed)
-                        }
-                        else{
-                            let voices = []
-                            data.Voices.forEach(v=>{
-                                if(v.LanguageName.includes("English")){
-                                    voices.push(v.Name)
-                                }
-                            })
-                            if(voices.indexOf(args[0])!== -1){
-                                res.ttsVoice = args[0]
-                                res.save()
-                                let embed = new Discord.MessageEmbed()
-                                .setColor(guild.embedColor)
-                                .setTimestamp()
-                                .setDescription(`:ok_hand: Successfully set your preffered TTS Language to \`${args[0]}\`!`)
-                                message.channel.send(embed)
-                            }
-                            else{
-                                let embed = new Discord.MessageEmbed()
-                                .setColor(guild.embedColor)
-                                .setDescription(`:warning: Invalid voice provided`)
-                                .setTimestamp()
-                                message.channel.send(embed)
-                            }
-                        }
-                    }
-                })
+    if(commandName === "walls"){
+        let now = new Date()  
+        let time = Math.round(now.getTime() / 1000)
+        let db = []
+        getUsers().then((r) => {
+            r.forEach(user => {
+                db.push(user.lastwallcheck)
             })
-    
+        })
+            getUserByWallCheck(Math.max(...db)).then((u) => {
+                getUUID(u.ign).then(uuid=>{
+                    let embed = new Discord.MessageEmbed()
+                    .setColor(guild.embedColor)
+                    .setTimestamp()
+                    .setTitle(`Walls Status for ${message.guild.name} | ${config.settings.host}`)
+                    .addField(`Last Check`, `${ms((time-Math.max(...db))*1000, { long: true })}`, true)
+                    .addField(`Last Checker`, `${u.ign}(${message.guild.users.cache.get(u.discordId).user.tag})`,)
+                    .addField(`Other Usage`, `${guild.prefix}wallstop, ${guild.prefix}wtop, ${guild.prefix}whitelist`)
+                    .setThumbnail(`https://crafatar.com/avatars/${uuid.id}.png`, true)
+                    message.channel.send(embed)
+                })                
+            })
+    }
+    if(commandName === "buffers"){
+        let now = new Date()  
+        let time = Math.round(now.getTime() / 1000)
+        let db = []
+        getUsers().then((r) => {
+            r.forEach(user => {
+                db.push(user.lastbuffercheck)
+            })
+        })
+            getUserByBufferCheck(Math.max(...db)).then((u) => {
+                getUUID(u.ign).then(uuid=>{
+                    let embed = new Discord.MessageEmbed()
+                    .setColor(guild.embedColor)
+                    .setTimestamp()
+                    .setTitle(`Buffers Status for ${message.guild.name} | ${config.settings.host}`)
+                    .addField(`Last Check`, `${ms((time-Math.max(...db))*1000, { long: true })}`, true)
+                    .addField(`Last Checker`, `${u.ign}(${message.guild.users.cache.get(u.discordId).user.tag})`,)
+                    .addField(`Other Usage`, `${guild.prefix}wallstop, ${guild.prefix}wtop, ${guild.prefix}whitelist`)
+                    .setThumbnail(`https://crafatar.com/avatars/${uuid.id}.png`, true)
+                    message.channel.send(embed)
+                })                
+            })
+    }
+    if(commandName === "raidingoutpost"){
+        let now = new Date()  
+        let time = Math.round(now.getTime() / 1000)
+        let db = []
+        getUsers().then((r) => {
+            r.forEach(user => {
+                db.push(user.lastrpostcheck)
+            })
+        })
+            getUserByWallCheck(Math.max(...db)).then((u) => {
+                getUUID(u.ign).then(uuid=>{
+                    let embed = new Discord.MessageEmbed()
+                    .setColor(guild.embedColor)
+                    .setTimestamp()
+                    .setTitle(`RPost Status for ${message.guild.name} | ${config.settings.host}`)
+                    .addField(`Last Check`, `${ms((time-Math.max(...db))*1000, { long: true })}`, true)
+                    .addField(`Last Checker`, `${u.ign}(${message.guild.users.cache.get(u.discordId).user.tag})`,)
+                    .addField(`Other Usage`, `${guild.prefix}wallstop, ${guild.prefix}wtop, ${guild.prefix}whitelist`)
+                    .setThumbnail(`https://crafatar.com/avatars/${uuid.id}.png`, true)
+                    message.channel.send(embed)
+                })                
+            })
+    }
+    if(commandName == "grace"){
+        if(!args[0]){
+            let embed = new Discord.MessageEmbed()
+            .setColor(guild.embedColor)
+            .setTimestamp()
+            .setDescription(`:warning: Invalid syntax, use the command like this: \`${guild.prefix}grace <status/enable/disable>\`\nTo manage automatic grace settings, use ${guild.prefix}autograce\nTo add a temporary grace, use ${guild.prefix}tempgrace`)
+            message.channel.send(embed)
+        }
+        else if(args[0] == "status"){
+            let embed = new Discord.MessageEmbed()
+            .setColor(guild.embedColor)
+            .setTimestamp()
+            .setTitle(`Grace status for ${message.guild.name} | ${config.settings.host}`)
+            .setDescription(`${guild.grace == false ? ":red_circle: Grace is currently Disabled!" : ":green_circle: Grace is currently Enabled!"}`)
+            message.channel.send(embed)
+        }
+        else if(args[0].toLowerCase() == "enable"){
+            if(guild.grace == false){
+                guild.grace == true;
+                guild.save().then(s=>{
+                    let embed = new Discord.MessageEmbed()
+                    .setColor(guild.embedColor)
+                    .setTimestamp()
+                    .setDescription(`:ok_hand: Successfully enabled the Grace period!`)
+                    message.channel.send(embed)
+                })
+            }
+            else{
+                let embed = new Discord.MessageEmbed()
+                .setTimestamp()
+                .setColor(guild.embedColor)
+                .setDescription(`:warning: Grace is already enabled!`)
+                message.channel.send(embed)
+                return;     
+            }
+        }
+        else if(args[0].toLowerCase() == "disable"){
+            if(guild.grace == true){
+                guild.grace == false;
+                guild.save().then(s=>{
+                    let embed = new Discord.MessageEmbed()
+                    .setColor(guild.embedColor)
+                    .setTimestamp()
+                    .setDescription(`:ok_hand: Successfully disabled the Grace period!`)
+                    message.channel.send(embed)
+                })
+            }
+            else{
+                let embed = new Discord.MessageEmbed()
+                .setTimestamp()
+                .setColor(guild.embedColor)
+                .setDescription(`:warning: Grace is already disabled!`)
+                message.channel.send(embed)
+                return;     
+            }
+        }
+        else{
+            let embed = new Discord.MessageEmbed()
+            .setColor(guild.embedColor)
+            .setTimestamp()
+            .setDescription(`:warning: Invalid syntax, use the command like this: \`${guild.prefix}grace <status/enable/disable>\`\nTo manage automatic grace settings, use ${guild.prefix}autograce\nTo add a temporary grace, use ${guild.prefix}tempgrace`)
+            message.channel.send(embed)
         }
     }
-    */
+    if(commandName == "status"){
+        let now = new Date()    
+        let time = Math.round(now.getTime() / 1000)
+        let walls = []
+        let buffers = []
+        let rpost = []
+        let users = await getUsers()
+        users.forEach((u) => {
+            if(u.lastwallcheck) walls.push(u.lastwallcheck)
+            if(u.lastbuffercheck) buffers.push(u.lastbuffercheck)
+            if(u.lastrpostcheck) rpost.push(u.lastrpostcheck)
+        })
+        let embed = new Discord.MessageEmbed()
+        .setTimestamp()
+        .setTitle(`Bot Status for ${message.guild.name} | ${config.settings.host}`)
+        .setColor(guild.embedColor)
+        .setDescription(`**Grace and Checks Status**\n\n**Grace**: ${guild.grace == false ? `:red_circle:` : `:green_circle:`}\n**Wall Checks**: ${guild.walls == false ? `:red_circle:` : `:green_circle:`}\n**Buffer Checks**: ${guild.buffers == false ? `:red_circle:` : `:green_circle:`}\n**RPost Checks**: ${guild.rpost == false ? `:red_circle:` : `:green_circle:`}\n\n**User Information**\n**Total Whitelisted Users:** ${users.length}\n**Last Wall Check:** ${ms((time-Math.max(walls))*1000, { long: true })} ago\n**Last Buffer Check:** ${ms((time-Math.max(buffers))*1000, { long: true })} ago\n**Last RPost Check:** ${ms((time-Math.max(rpost))*1000, { long: true })}`)
+        message.channel.send(embed)
+    }
+    if(commandName == "tempgrace"){
+        if(!args[0]){
+            let embed = new Discord.MessageEmbed()
+            .setTimestamp()
+            .setColor(guild.embedColor)
+            .setDescription(`Invalid syntax, use the command like this: \`${guild.prefix}tempgrace <time>\``)
+            message.channel.send(embed)
+        }
+        else if(!isNaN(args[0])){
+            let embed = new Discord.MessageEmbed()
+            .setColor(guild.embedColor)
+            .setTimestamp()
+            .setDescription(`:ok_hand: Enabling grace for ${ms(parseInt(args[0])*60000, {long : true})}!`)
+            message.channel.send(embed)
+            guild.grace = true
+            guild.save().then(s=>{
+                setTimeout(() => {
+                    guild.grace = false
+                    guild.save()
+                }, parseInt(args[0])*60000)
+            })
+        }
+        else if(isNaN(args[0])){
+            let embed = new Discord.MessageEmbed()
+            .setColor(guild.embedColor)
+            .setTimestamp()
+            .setDescription(`:ok_hand: Enabling grace for ${ms(ms(args[0]))}`)
+            message.channel.send(embed)
+            guild.grace = true
+            guild.save().then((s) => {
+                setTimeout(() => {
+                    guild.grace = false
+                    guild.save()
+                }, ms(args[0]))
+            })
+        }
+        else{
+            let embed = new Discord.MessageEmbed()
+                .setTimestamp()
+                .setColor(guild.embedColor)
+                .setDescription(`:warning: Not sure what you fucked up, but DM me. `)
+                message.channel.send(embed)
+        }
+    }
     
 })
 
