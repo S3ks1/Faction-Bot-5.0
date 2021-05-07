@@ -1103,6 +1103,10 @@ bot.on('fcf', (user,content) => {
                     break;
                 case "fire":
                     const button = bot.findBlock({point: bot.entity.position, matching: 77, maxDistance: 5});
+                    if(button == null){
+                            bot.chat(`/ff [!] No button could be found!`)
+                            return;
+                    }
                     if (button)
                       bot.activateBlock(button);
                     var outputvec = vec3(button.position.x, button.position.y, button.position.z);
@@ -1115,6 +1119,10 @@ bot.on('fcf', (user,content) => {
                         maxDistance: 5
                        })
                        //console.log(levers)
+                       if(levers == null){
+                           bot.chat(`/ff [!] No lever could be found!`)
+                           return;
+                       }
                        bot.activateBlock(levers)
                        var leverpos = vec3(levers.position.x, levers.position.y, levers.position.z)
                        bot.chat(`/ff ${person.ign}, I flicked the lever at ${leverpos} to the ${levers.metadata == 6 ? "On Position" : "Off Position"}`)
