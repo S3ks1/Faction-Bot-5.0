@@ -8,6 +8,7 @@ var AWS = require('aws-sdk');
 const mineflayer = require("mineflayer")
 var tpsPlugin = require("mineflayer-tps")(mineflayer)
 const randomstring = require("randomstring")
+const moment = require("moment")
 const config = require("./config")
 const axios = require('axios')
 const request = require("request")
@@ -3060,7 +3061,54 @@ client.on('message', async (message) => {
                 message.channel.send(embed)
         }
     }
-    
+    if(commandName == "serverinfo" || "sinfo"){
+        const filterLevels = {
+            DISABLED: 'Off',
+            MEMBERS_WITHOUT_ROLES: 'No Role',
+            ALL_MEMBERS: 'Everyone'
+        };
+        const verificationLevels = {
+            NONE: 'None',
+            LOW: 'Low',
+            MEDIUM: 'Medium',
+            HIGH: '(╯°□°）╯︵ ┻━┻',
+            VERY_HIGH: '┻━┻ ﾐヽ(ಠ益ಠ)ノ彡┻━┻'
+        };
+        const regions = {
+            brazil: 'Brazil',
+            europe: 'Europe',
+            hongkong: 'Hong Kong',
+            india: 'India',
+            japan: 'Japan',
+            russia: 'Russia',
+            singapore: 'Singapore',
+            southafrica: 'South Africa',
+            sydeny: 'Sydeny',
+            'us-central': 'US Central',
+            'us-east': 'US East',
+            'us-west': 'US West',
+            'us-south': 'US South'
+        };
+        const roles = message.guild.roles.cache.sort((a, b) => b.position - a.position).map(role => role.toString());
+        const members = message.guild.members.cache;
+        const channels = message.guild.channels.cache;
+        const emojis = message.guild.emojis.cache;
+        const embed = new Discord.MessageEmbed().setDescription(`**Server information for __${message.guild.name}__**`).setThumbnail(message.guild.iconURL({
+            dynamic: true
+        })).setColor(message.embedColor).addField('General', [`**Name:** ${message.guild.name}`, `**Location:** ${regions[message.guild.region]}`, `**Tier:** ${message.guild.premiumTier ? `Tier ${message.guild.premiumTier}` : 'None'}`, `**Verification Level:** ${verificationLevels[message.guild.verificationLevel]}`, `**Created:** ${moment(message.guild.createdTimestamp).format('LT')} ${moment(message.guild.createdTimestamp).format('LL')} ${moment(message.guild.createdTimestamp).fromNow()}`, '\u200b']).addField('Statistics', [`**Role Count:** ${roles.length}`, `**Emoji Count:** ${emojis.size}`, `**Regular Emoji Count:** ${emojis.filter(emoji => !emoji.animated).size}`, `**Animated Emoji Count:** ${emojis.filter(emoji => emoji.animated).size}`, `**Member Count:** ${message.guild.memberCount}`, `**Text Channels:** ${channels.filter(channel => channel.type === 'text').size}`, `**Voice Channels:** ${channels.filter(channel => channel.type === 'voice').size}`, `**Number of boosts:** ${message.guild.premiumSubscriptionCount || '0'}`, `**Roles:** ${message.guild.roles.cache.sort((a, b) => b.position - a.position).map(r => r)}`, '\u200b']).setTimestamp()
+        message.channel.send(embed);
+    }
+    if(commandName == "whois" || "userinfo" || "uinfo"){
+        const user = message.mentions.members.first() || message.guild.members.cache.get(msgargs[0]) || message.guild.members.cache.find(member => member.user.tag === msgargs.join(" ").replace("\n", "")) || message.author
+        const member = message.guild.member(user);
+        let whoisembed = new Discord.MessageEmbed()
+        .setAuthor(`Requested by ${message.author.tag}`, message.author.displayAvatarURL({dynamic : true}))
+        .setThumbnail(user.avatarURL)
+        .setDescription(`**Discord Tag:** ${member.user.tag}(${member})\n**Discord ID:** ${member.id}\n**Nickname:** ${member.nickname !== null ? `${member.nickname}` : 'None'}\n**Account Creation Date:** ${moment.utc(member.user.createdAt).format("dddd, MMMM Do YYYY")}\n**Join Date:** ${moment.utc(member.joinedAt).format("dddd, MMMM Do YYYY")}\n**Bot:** ${member.user.bot}\n**Custom Status:** ${member.presence.activities !== null ? "None" : member.presence.activities[0].state !== null ? member.presence.activities[0].state : "None"}\n**Status:** ${member.presence.status == "online" ? `:green_circle:` : member.presence.status == "idle" ? `:yellow_circle:` : member.presence.status == "dnd" ? `:red_circle:` : `:black_circle:`}\n**Game:** ${member.presence.activities !== null ? "None" : member.presence.activities[0].details ? member.presence.activities[0].name : member.presence.activities[1].details ? member.presence.activities[1].name :'None'}\n**Highest Role:** ${member.roles.highest}\n**Roles:** ${member.roles.cache.map(roles => `${roles}`).join(', ')}`)
+        .setColor(message.embedColor)
+        .setTimestamp()
+        message.channel.send(whoisembed)
+    }
 })
 
 
