@@ -818,6 +818,7 @@ bot.on('login', async () => {
                 }
                 else{
                     let g = client.guilds.cache.get(config.mainGuild)
+                    console.log(g)
                     if(g){
                         let channel = g.channels.cache.find(c => c.name === guild.serverchatChannel)
                         if(guild.serverchat == true && channel){
@@ -1288,7 +1289,7 @@ client.on('message', async (message) => {
     if(message.channel.type == "dm") return;
     let guild = await getGuild(message.guild.id)
     if(message.channel.name == guild.serverchatChannel){
-        bot.chat(message.content.toString())
+        //bot.chat(message.content.toString())
     }
     if(guild == false){
         createGuild(message.guild.id).then(res => guild = res)
