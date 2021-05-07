@@ -1230,7 +1230,6 @@ bot.on('entitySpawn', async (entity) => {
     }
 })
 bot.on('message', async (message) => {
-    console.log(message)
     bot.serverchat.push(message.toString())
     if(message.toString().includes("[!] WE ARE BEING RAIDED [!]")){
         let guild = await getGuild(config.mainGuild)
