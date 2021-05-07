@@ -3088,23 +3088,23 @@ client.on('message', async (message) => {
             'us-west': 'US West',
             'us-south': 'US South'
         };
-        const roles = message.guild.roles.cache.sort((a, b) => b.position - a.position).map(role => role.toString());
-        const members = message.guild.members.cache;
-        const channels = message.guild.channels.cache;
-        const emojis = message.guild.emojis.cache;
-        const embed = new Discord.MessageEmbed().setDescription(`**Server information for __${message.guild.name}__**`).setThumbnail(message.guild.iconURL({
+        let roles = message.guild.roles.cache.sort((a, b) => b.position - a.position).map(role => role.toString());
+        let members = message.guild.members.cache;
+        let channels = message.guild.channels.cache;
+        let emojis = message.guild.emojis.cache;
+        let embed = new Discord.MessageEmbed().setDescription(`**Server information for __${message.guild.name}__**`).setThumbnail(message.guild.iconURL({
             dynamic: true
         })).setColor(message.embedColor).addField('General', [`**Name:** ${message.guild.name}`, `**Location:** ${regions[message.guild.region]}`, `**Tier:** ${message.guild.premiumTier ? `Tier ${message.guild.premiumTier}` : 'None'}`, `**Verification Level:** ${verificationLevels[message.guild.verificationLevel]}`, `**Created:** ${moment(message.guild.createdTimestamp).format('LT')} ${moment(message.guild.createdTimestamp).format('LL')} ${moment(message.guild.createdTimestamp).fromNow()}`, '\u200b']).addField('Statistics', [`**Role Count:** ${roles.length}`, `**Emoji Count:** ${emojis.size}`, `**Regular Emoji Count:** ${emojis.filter(emoji => !emoji.animated).size}`, `**Animated Emoji Count:** ${emojis.filter(emoji => emoji.animated).size}`, `**Member Count:** ${message.guild.memberCount}`, `**Text Channels:** ${channels.filter(channel => channel.type === 'text').size}`, `**Voice Channels:** ${channels.filter(channel => channel.type === 'voice').size}`, `**Number of boosts:** ${message.guild.premiumSubscriptionCount || '0'}`, `**Roles:** ${message.guild.roles.cache.sort((a, b) => b.position - a.position).map(r => r).length < 1024 ? message.guild.roles.cache.sort((a, b) => b.position - a.position).map(r => r) : "Too long to display"}`, '\u200b']).setTimestamp()
         message.channel.send(embed);
     }
     if(commandName == "whois" || commandName == "userinfo" || commandName == "uinfo"){
-        const user = message.mentions.members.first() || message.guild.members.cache.get(args[0]) || message.guild.members.cache.find(member => member.user.tag === args.join(" ").replace("\n", "")) || message.guild.members.cache.find(u => u.user.username.toLowerCase().includes(args[0])) || message.author
-        const member = message.guild.member(user);
+        let user = message.mentions.members.first() || message.guild.members.cache.get(args[0]) || message.guild.members.cache.find(member => member.user.tag === args.join(" ").replace("\n", "")) || message.guild.members.cache.find(u => u.user.username.toLowerCase().includes(args[0])) || message.author
+        let member = message.guild.member(user);
         let whoisembed = new Discord.MessageEmbed()
         .setAuthor(`Requested by ${message.author.tag}`, message.author.displayAvatarURL({dynamic : true}))
         .setThumbnail(user.avatarURL)
         .setDescription(`**Discord Tag:** ${member.user.tag}(${member})\n**Discord ID:** ${member.id}\n**Nickname:** ${member.nickname !== null ? `${member.nickname}` : 'None'}\n**Account Creation Date:** ${moment.utc(member.user.createdAt).format("dddd, MMMM Do YYYY")}\n**Join Date:** ${moment.utc(member.joinedAt).format("dddd, MMMM Do YYYY")}\n**Bot:** ${member.user.bot}\n**Custom Status:** ${member.presence.activities !== null ? "None" : member.presence.activities[0].state !== null ? member.presence.activities[0].state : "None"}\n**Status:** ${member.presence.status == "online" ? `:green_circle:` : member.presence.status == "idle" ? `:yellow_circle:` : member.presence.status == "dnd" ? `:red_circle:` : `:black_circle:`}\n**Game:** ${member.presence.activities !== null ? "None" : member.presence.activities[0].details ? member.presence.activities[0].name : member.presence.activities[1].details ? member.presence.activities[1].name :'None'}\n**Highest Role:** ${member.roles.highest}\n**Roles:** ${member.roles.cache.map(roles => `${roles}`).join(', ')}`)
-        .setColor(message.embedColor)
+        .setColor(guild.embedColor)
         .setTimestamp()
         message.channel.send(whoisembed)
     }
