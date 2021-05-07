@@ -2952,6 +2952,7 @@ client.on('message', async (message) => {
                     .setTimestamp()
                     .setDescription(`:ok_hand: Successfully enabled the Grace period!`)
                     message.channel.send(embed)
+                    bot.chat(`/ff (!) Grace has been enabled!`)
                 })
             }
             else{
@@ -2972,6 +2973,7 @@ client.on('message', async (message) => {
                     .setTimestamp()
                     .setDescription(`:ok_hand: Successfully disabled the Grace period!`)
                     message.channel.send(embed)
+                    bot.chat(`/ff (!) Grace has been disabled!`)
                 })
             }
             else{
@@ -3024,11 +3026,13 @@ client.on('message', async (message) => {
             .setTimestamp()
             .setDescription(`:ok_hand: Enabling grace for ${ms(parseInt(args[0])*60000, {long : true})}!`)
             message.channel.send(embed)
+            bot.chat(`/ff (!) Grace has been enabled for ${ms(parseInt(args[0])*60000, {long : true})}!`)
             guild.grace = true
             guild.save().then(s=>{
                 setTimeout(() => {
                     guild.grace = false
                     guild.save()
+                    bot.chat(`/ff (!) Grace has been disasbled!`)
                 }, parseInt(args[0])*60000)
             })
         }
@@ -3038,11 +3042,13 @@ client.on('message', async (message) => {
             .setTimestamp()
             .setDescription(`:ok_hand: Enabling grace for ${ms(ms(args[0]))}`)
             message.channel.send(embed)
+            bot.chat(`/ff (!) Grace has been enabled for ${ms(ms(args[0]))}!`)
             guild.grace = true
             guild.save().then((s) => {
                 setTimeout(() => {
                     guild.grace = false
                     guild.save()
+                    bot.chat(`/ff (!) Grace has been disabled!`)
                 }, ms(args[0]))
             })
         }
