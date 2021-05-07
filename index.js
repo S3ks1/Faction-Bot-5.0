@@ -2770,7 +2770,7 @@ client.on('message', async (message) => {
         }
         else if(args[0].toLowerCase() == "enable"){
             if(guild.grace == false){
-                guild.grace == true;
+                guild.grace = true;
                 guild.save().then(s=>{
                     let embed = new Discord.MessageEmbed()
                     .setColor(guild.embedColor)
@@ -2790,7 +2790,7 @@ client.on('message', async (message) => {
         }
         else if(args[0].toLowerCase() == "disable"){
             if(guild.grace == true){
-                guild.grace == false;
+                guild.grace = false;
                 guild.save().then(s=>{
                     let embed = new Discord.MessageEmbed()
                     .setColor(guild.embedColor)
