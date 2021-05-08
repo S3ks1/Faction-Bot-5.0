@@ -990,9 +990,9 @@ bot.on('fcf', async (user,content) => {
     //console.log("xd")
     let now = new Date()  
     let time = Math.round(now.getTime() / 1000)
-    getGuild(config.mainGuild).then((guild) => {
+    getGuild(config.mainGuild).then(async (guild) => {
         //console.log(user)
-        getUserByIGN(user).then((person) => {
+        getUserByIGN(user).then(async (person) => {
             //console.log(person)
             //      console.log(person)
             if (content.indexOf(guild.prefix) != 0) return;
