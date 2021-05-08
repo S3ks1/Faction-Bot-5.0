@@ -354,6 +354,11 @@ const skip_song = (g, message, server_queue) => {
         return message.channel.send(embed)  
     }
     server_queue.connection.dispatcher.end();
+    let embed = new Discord.MessageEmbed()
+    .setColor(g.embedColor)
+    .setTimestamp()
+    .setDescription(`:ok_hand: Skipped ${server_queue.songs[0].title}`)
+    message.channel.send(embed)
 }
 
 const stop_song = (g, message, server_queue) => {
@@ -366,6 +371,10 @@ const stop_song = (g, message, server_queue) => {
     }
     server_queue.songs = [];
     server_queue.connection.dispatcher.end()
+    let embed = new Discord.MessageEmbed()
+    .setColor(g.embedColor)
+    .setTimestamp()
+    .setDescription(`:ok_hand: Stopped playing music and left your channel!`)
 }
 var result = function(command, cb){
     var child = exec(command, function(err, stdout, stderr){
