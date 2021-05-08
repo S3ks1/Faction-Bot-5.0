@@ -3202,6 +3202,8 @@ client.on('message', async (message) => {
             }
             queue.set(message.guild.id, queue_constructor)
             queue_constructor.songs.push(song)
+            console.log(song)
+            console.log(queue_constructor)
 
             try{
                 let connection = await voiceChannel.join();
