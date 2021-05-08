@@ -3263,9 +3263,11 @@ client.on('message', async (message) => {
         }
     }
     if(commandName == "skip"){
+        let server_queue = queue.get(message.guild.id);
         skip_song(guild, message, server_queue)
     }
     if(commandName == "stop"){
+        let server_queue = queue.get(message.guild.id);
         stop_song(guild, message, server_queue)
     }
 })
