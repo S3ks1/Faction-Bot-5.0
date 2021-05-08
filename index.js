@@ -2777,11 +2777,24 @@ client.on('message', async (message) => {
             }
             
             if(!message.member.voice.channel){
-                bot.chat("/ff [!] You aren't in a voice channel")
+                
+                    let embed = new Discord.MessageEmbed()
+                    .setColor(guild.embedColor)
+                    .setTimestamp()
+                    .setDescription(`:warning: You aren't in a voice channel`)
+                    message.channel.send(embed)
+                    return;
             }
             else if(message.guild.me.voice.channel && message.member.voice.channel.id !== message.guild.me.voice.channel.id){
-                bot.chat("/ff [!] You aren't in the same voice channel as I am")
+                
+                    let embed = new Discord.MessageEmbed()
+                    .setColor(guild.embedColor)
+                    .setTimestamp()
+                    .setDescription(`:warning: You aren't in the same voice channel as me`)
+                    message.channel.send(embed)
+                    return;
             }
+            
             else if(message.member.hasPermission("SEND_MESSAGES") && used == 0){
                 const broadcast = client.voice.createBroadcast()
                 
@@ -2805,6 +2818,7 @@ client.on('message', async (message) => {
                 return bot.chat("/ff [!] Another broadcast is playing");
             }
         })
+        
         
     }
     if(commandName === "rpost"){
