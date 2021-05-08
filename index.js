@@ -3206,7 +3206,7 @@ client.on('message', async (message) => {
             try{
                 let connection = await voiceChannel.join();
                 queue_constructor.connection = connection;
-                video_player(message.guild, queue_constructor[0])
+                video_player(message.guild, queue_constructor.songs[0])
             }
             catch (err) {
                 console.log(err)
