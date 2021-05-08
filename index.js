@@ -1349,14 +1349,16 @@ bot.on('fcf', async (user,content) => {
                             connection: null,
                             songs: []
                         }
-                        queue.set(gb.id, queue_constructor)
                         queue_constructor.songs.push(song)
+                        
+                        
                     // console.log(song)
                         //console.log(queue_constructor)
 
                         try{
                             let connection = await memberb.voice.channel.join();
                             queue_constructor.connection = connection;
+                            queue.set(gb.id, queue_constructor)
                             video_player(guild, gb, queue_constructor.songs[0])
                         }
                         catch (err) {
@@ -3344,14 +3346,16 @@ client.on('message', async (message) => {
                 connection: null,
                 songs: []
             }
-            queue.set(message.guild.id, queue_constructor)
             queue_constructor.songs.push(song)
+            
+            
            // console.log(song)
             //console.log(queue_constructor)
 
             try{
                 let connection = await voiceChannel.join();
                 queue_constructor.connection = connection;
+                queue.set(message.guild.id, queue_constructor)
                 video_player(guild, message.guild, queue_constructor.songs[0])
             }
             catch (err) {
