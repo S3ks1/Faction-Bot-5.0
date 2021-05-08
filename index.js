@@ -77,7 +77,6 @@ const { inspect } = require("util");
 const { Stream } = require("stream");
 const { guildID } = require("./config");
 const { IoTSecureTunneling } = require("aws-sdk");
-const math = require("mathjs");
 var data;
 
 var Polly = new AWS.Polly({
