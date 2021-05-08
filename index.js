@@ -2942,7 +2942,7 @@ client.on('message', async (message) => {
             })
         })
         let ux = await getUserByWallCheck()
-        message.channel.send(ux)
+        console.log(time-ux.lastwallcheck)
                 getUUID(ux.ign).then(uuid=>{
                     let embed = new Discord.MessageEmbed()
                     .setColor(guild.embedColor)
