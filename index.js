@@ -334,8 +334,38 @@ const video_player = async (guild, song) => {
     let embed = new Discord.MessageEmbed()
     .setColor(guild.embedColor)
     .setTimestamp()
-    .setDescription(`:musical_note: Now playing **[${song.name}](${song.url})**`)
+    .setDescription(`:musical_note: Now playing **[${song.title}](${song.url})**`)
     await song_queue.text_channel.send(embed)
+}
+
+const skip_song = (g, message, server_queue) => {
+    if(!message.member.voice.channel){
+        let embed = new Discord.MessageEmbed()
+        .setTimestamp()
+        .setColor(g.embedColor)
+        .setDescription(`:warning: You need to be in a voice channel to skip songs!`)
+        return message.channel.send(embed)
+    }
+    if(!server_queue){
+        let embed = new Discord.MessageEmbed()
+        .setTimestamp()
+        .setColor(g.embedColor)
+        .setDescription(`:warning: There are no songs to skip!`)
+        return message.channel.send(embed)  
+    }
+    server_queue.connection.dispatcher.end();
+}
+
+const stop_song = (g, message, server_queue) => {
+    if(!message.member.voice.channel){
+        let embed = new Discord.MessageEmbed()
+        .setTimestamp()
+        .setColor(g.embedColor)
+        .setDescription(`:warning: You need to be in a voice channel to stop songs!`)
+        return message.channel.send(embed)
+    }
+    server_queue.songs = [];
+    server_queue.connection.dispatcher.end()
 }
 var result = function(command, cb){
     var child = exec(command, function(err, stdout, stderr){
@@ -3232,8 +3262,11 @@ client.on('message', async (message) => {
             return;
         }
     }
-    if(commandName == "leave"){
-
+    if(commandName == "skip"){
+        skip_song(guild, message, server_queue)
+    }
+    if(commandName == "stop"){
+        stop_song(guild, message, server_queue)
     }
 })
 
