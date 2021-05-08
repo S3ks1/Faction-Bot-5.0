@@ -375,6 +375,7 @@ const stop_song = (g, message, server_queue) => {
     .setColor(g.embedColor)
     .setTimestamp()
     .setDescription(`:ok_hand: Stopped playing music and left your channel!`)
+    message.channel.send(embed)
 }
 var result = function(command, cb){
     var child = exec(command, function(err, stdout, stderr){
@@ -3278,6 +3279,18 @@ client.on('message', async (message) => {
     if(commandName == "stop"){
         let server_queue = queue.get(message.guild.id);
         stop_song(guild, message, server_queue)
+    }
+    if(commandName == "queue"){
+        let server_queue = queue.get(message.guild.id);
+        if(!server_queue){
+            let embed = new Discord.MessageEmbed()
+            .setColor(guild.embedColor)
+            .setTimestamp()
+            .setDescription(`:warning: No songs currently in the queue for ${message.guild.name}`)
+            message.channel.send(embed)
+            return;
+        }
+        console.log(server_queue)
     }
 })
 
