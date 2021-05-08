@@ -2948,7 +2948,7 @@ client.on('message', async (message) => {
                     .setColor(guild.embedColor)
                     .setTimestamp()
                     .setTitle(`Walls Status for ${message.guild.name} | ${config.settings.host}`)
-                    .addField(`Last Check`, `${ms(time-ux.lastwallcheck*1000, { long: true })}`, true)
+                    .addField(`Last Check`, `${ms(time-ux.lastwallcheck, { long: true })}`, true)
                     .addField(`Last Checker`, `${ux.ign}(${message.guild.members.cache.get(ux.discordId)})`,)
                     .addField(`Other Usage`, `${guild.prefix}wallstop, ${guild.prefix}wtop, ${guild.prefix}whitelist`)
                     .setThumbnail(`https://crafatar.com/avatars/${uuid.id}.png`, true)
