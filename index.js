@@ -1390,13 +1390,13 @@ bot.on('fcf', async (user,content) => {
                     else{
 
                     }
-                    let server_queue = queue.get(gb.id);
-                    if(!server_queue){
+                    let server_queuez = queue.get(gb.id);
+                    if(!server_queuez){
                         bot.chat(`/ff [!] No playing music`)
                         return
                     }
-                    server_queue.connection.dispatcher.end();
-                    bot.chat(`/ff (!) Skipped ${server_queue.songs[0].title}`)
+                    server_queuez.connection.dispatcher.end();
+                    bot.chat(`/ff (!) Skipped ${server_queuez.songs[0].title}`)
                     
     
             }
