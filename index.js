@@ -587,7 +587,7 @@ function getUserByCode(user){
                 //console.log("user")
                 resolve(res)
             }
-        }).catch((err) => console.log("error lol"))
+        }).catch((err) => console.log(err))
     });
     return promise;
 
@@ -608,7 +608,7 @@ function getUserByIGN(user){
                 //console.log("user")
                 resolve(res)
             }
-        }).catch((err) => console.log("error lol"))
+        }).catch((err) => console.log(err))
     });
     return promise;
 }
@@ -628,7 +628,7 @@ function getUserByWallCheck(user){
                 //console.log("user")
                 resolve(res)
             }
-        }).catch((err) => console.log("error lol"))
+        }).catch((err) => console.log(err))
     });
     return promise;
 }
@@ -648,7 +648,7 @@ function getUserByBufferCheck(user){
                 //console.log("user")
                 resolve(res)
             }
-        }).catch((err) => console.log("error lol"))
+        }).catch((err) => console.log(err))
     });
     return promise;
 }
@@ -668,7 +668,7 @@ function getUserByRpostCheck(user){
                 //console.log("user")
                 resolve(res)
             }
-        }).catch((err) => console.log("error lol"))
+        }).catch((err) => console.log(err))
     });
     return promise;
 }
