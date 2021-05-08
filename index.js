@@ -442,7 +442,7 @@ function tts(text, voice) {
                 voicez.push(v)
                 })   
                 
-                    params.Text = text.replace(/[^A-Za-z0-9]/+g, '');
+                    params.Text = text.replace(/[^A-Za-z0-9]/g, '');
                     params.VoiceId = voice;
                     params.Engine = n.indexOf(voice) !== -1 ? "neural" : "standard"
                     // Construct the request
