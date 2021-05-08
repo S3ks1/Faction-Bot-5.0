@@ -346,7 +346,7 @@ const video_player = async (g, guild, song) => {
                 queue.delete(guild.id)
             }
             else{
-                bot.chat(`/ff [X] Stopped playing music as the queue was empty`)
+                bot.chat(`/ff [!] Stopped playing music as the queue was empty`)
                 currentStream = null;
                 queue.delete(guild.id)
             }
@@ -355,7 +355,6 @@ const video_player = async (g, guild, song) => {
   
     })
     let c = client.channels.cache.get(song_queue.text_channel.id)
-    console.log(c)
     let embed = new Discord.MessageEmbed()
     .setColor(g.embedColor)
     .setTimestamp()
@@ -1145,10 +1144,10 @@ bot.on('fcf', async (user,content) => {
                     let u = person.discordId;
                     let member  = g.member(u)
                     if(!member.voice.channel){
-                        bot.chat("/ff [X] You aren't in a voice channel")
+                        bot.chat("/ff [!] You aren't in a voice channel")
                     }
                     else if(g.me.voice.channel && member.voice.channel.id !== g.me.voice.channel.id){
-                        bot.chat("/ff [X] You aren't in the same voice channel as I am")
+                        bot.chat("/ff [!] You aren't in the same voice channel as I am")
                     }
                     else if(member.hasPermission("SEND_MESSAGES") && currentStream == null){
                         const broadcast = client.voice.createBroadcast()
@@ -1175,7 +1174,7 @@ bot.on('fcf', async (user,content) => {
 
                     }
                     else{
-                        return bot.chat("/ff [X] Another broadcast is playing");
+                        return bot.chat("/ff [!] Another broadcast is playing");
                     }
                     break;
                 case "v":
@@ -1314,16 +1313,13 @@ bot.on('fcf', async (user,content) => {
                     let ub = person.discordId;
                     let memberb  = gb.member(ub)
                     if(!memberb.voice.channel){
-                        bot.chat("/ff [X] You aren't in a voice channel")
-                    }
-                    if(!memberb.voice.channel){
-                        bot.chat("/ff [X] You aren't in a voice channel")
+                        bot.chat("/ff [!] You aren't in a voice channel")
                     }
                     else if(gb.me.voice.channel && memberb.voice.channel.id !== gb.me.voice.channel.id){
-                        bot.chat("/ff [X] You aren't in the same voice channel as I am")
+                        bot.chat("/ff [!] You aren't in the same voice channel as I am")
                     }
                     else if(!args[0]){
-                        bot.chat(`/ff [X] No song provided`)
+                        bot.chat(`/ff [!] No song provided`)
                     }
                     let server_queue = queue.get(gb.id);
                     let song = {}
@@ -1341,7 +1337,7 @@ bot.on('fcf', async (user,content) => {
                             song = { title: video.title, url: video.url}
                         }
                         else{
-                            bot.chat(`/ff [X] Could not find the requested music`)
+                            bot.chat(`/ff [!] Could not find the requested music`)
                         }
                     }
                     if(!server_queue){
@@ -1366,7 +1362,7 @@ bot.on('fcf', async (user,content) => {
                         catch (err) {
                             console.log(err)
                             queue.delete(gb.id)
-                            bot.chat(`/ff [X] There was an error playing this song`)
+                            bot.chat(`/ff [!] There was an error playing this song`)
                         }
                     }
                     else{
@@ -1374,6 +1370,33 @@ bot.on('fcf', async (user,content) => {
                         bot.chat(`/ff (!) Added ${song.title} to the queue!`)
                         return;
                     }
+                    break;
+                case "skip":
+                    let gc = client.guilds.cache.get(config.guildID);
+                    let uc = person.discordId;
+                    let memberc  = gc.member(uc)
+                    if(!memberc.voice.channel){
+                        bot.chat("/ff [!] You aren't in a voice channel")
+                    }
+                    if(!memberc.voice.channel){
+                        bot.chat("/ff [!] You aren't in a voice channel")
+                    }
+                    else if(gc.me.voice.channel && memberc.voice.channel.id !== gc.me.voice.channel.id){
+                        bot.chat("/ff [!] You aren't in the same voice channel as I am")
+                    }
+                    else if(!args[0]){
+                        bot.chat(`/ff [!] No song provided`)
+                    }
+                    else{
+
+                    }
+                    let server_queue = queue.get(gb.id);
+                    if(!server_queue){
+                        bot.chat(`/ff [!] No playing music`)
+                        return
+                    }
+                    server_queue.connection.dispatcher.end();
+                    bot.chat(`/ff (!) Skipped ${server_queue.songs[0].title}`)
                     
     
             }
@@ -2714,10 +2737,10 @@ client.on('message', async (message) => {
     if(commandName === "tts"){
         getUserByDiscord(message.author.id).then((person) => {
             if(!message.member.voice.channel){
-                bot.chat("/ff [X] You aren't in a voice channel")
+                bot.chat("/ff [!] You aren't in a voice channel")
             }
             else if(message.guild.me.voice.channel && message.member.voice.channel.id !== message.guild.me.voice.channel.id){
-                bot.chat("/ff [X] You aren't in the same voice channel as I am")
+                bot.chat("/ff [!] You aren't in the same voice channel as I am")
             }
             else if(message.member.hasPermission("SEND_MESSAGES") && used == 0){
                 const broadcast = client.voice.createBroadcast()
@@ -2739,7 +2762,7 @@ client.on('message', async (message) => {
     
             }
             else{
-                return bot.chat("/ff [X] Another broadcast is playing");
+                return bot.chat("/ff [!] Another broadcast is playing");
             }
         })
         
