@@ -40,39 +40,19 @@ bot.ftop = {
 var currentStream;
 bot.chatAddPattern(/^\[\[(?:[^ ]*)] ([^ ]*) (?:[^]*| )-> me\] (.*)$/, "dm", "archon dm") 
 bot.chatAddPattern(/^\[(?:[^ ]*)] \(([^ ]*) ➥ me\) (.*)$/, "dm", "archon dm")
+bot.chatAddPattern(/^\(PM\) ([^ ]*) -> me » (.*)$/, "dm", "pvplab dm")
 
 bot.chatAddPattern(/^(?:[*+-]{0,3}|[^ ]*)(?: |)(?:[ ]{0,1})([^ ]*): (.*)$/, "fcf", "archon fcf")
 bot.chatAddPattern(/\[!] WE ARE GETTING RAIDED \[!]/, "raid", "archon raid alerts")
 const vec3 = require('vec3')
 
 var staff = [
-    "Codester511",
-    "IniquityRy",
-    "OperatedBYT",
-    "Notched",
-    "Idiopathic",
-    "Artitus",
-    "Dabify",
-    "Qiyn",
-    "MatrixEh",
-    "Oliviaax",
-    "Jushua",
-    "mqny",
-    "xNestle",
-    "Solce",
-    "Dyzl",
-    "IShootMilk",
-    "Sexq",
-    "Breeezies",
-    "Swirlys",
-    "Decipty",
-    "HandBuilt",
-    "MoistMeth",
-    "Preenix",
-    "SanctusNugis",
-    "Scorp1qn_",
-    "FirstWallScout",
-    "__Lego__"
+    "ignJack",
+    "Font",
+    "PvPLabz",
+    "Advertized",
+    "PvPLabs",
+    "KingpinJordan"
 ]
 let v = []
 const { inspect } = require("util");
