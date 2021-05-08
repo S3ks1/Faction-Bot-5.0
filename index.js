@@ -408,7 +408,7 @@ const stop_song = (g, message, server_queue) => {
     message.channel.send(embed)
     currentStream = null;
 }
-var result = function(command, cb){
+const resultz = function(command, cb){
     var child = exec(command, function(err, stdout, stderr){
         if(err != null){
             return cb(new Error(err), null);
@@ -2502,7 +2502,7 @@ client.on('message', async (message) => {
 
     }
     if(commandName === "update" || commandName === "git" && args[0] === "pull"){
-        result("git pull", function(err, response){
+        resultz("git pull", function(err, response){
             if(!err){
                 message.channel.send(`\`\`\`${response}\`\`\``)
                 setTimeout(() => {
