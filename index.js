@@ -355,7 +355,7 @@ const video_player = async (g, guild, song) => {
   
     })
     let c = guild.channels.cache.get(song_queue.text_channel)
-    console.log(song_queue.text_channel.id)
+    console.log(`Channel ID: ${song_queue.text_channel.id}`)
     let embed = new Discord.MessageEmbed()
     .setColor(g.embedColor)
     .setTimestamp()
