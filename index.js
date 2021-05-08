@@ -1333,7 +1333,7 @@ bot.on('fcf', async (user,content) => {
                     }
                     if(!server_queue){
                         let queue_constructor = {
-                            voice_channel: member.voice.channel,
+                            voice_channel: memberb.voice.channel,
                             text_channel: "ingame",
                             connection: null,
                             songs: []
