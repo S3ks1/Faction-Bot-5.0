@@ -2941,9 +2941,8 @@ client.on('message', async (message) => {
                 db.push(user.lastwallcheck)
             })
         })
-            getUserByWallCheck(Math.max(...db)).then((u) => {
-                console.log(Math.max(...db))
-                console.log(u)
+        let u = await getUserByWallCheck(Math.max(...db))
+        console.log(u)
                 getUUID(u.ign).then(uuid=>{
                     let embed = new Discord.MessageEmbed()
                     .setColor(guild.embedColor)
@@ -2955,7 +2954,7 @@ client.on('message', async (message) => {
                     .setThumbnail(`https://crafatar.com/avatars/${uuid.id}.png`, true)
                     message.channel.send(embed)
                 })                
-            })
+            
         }
         else if(args[0].toLowerCase() == "status"){
             let embed = new Discord.MessageEmbed()
