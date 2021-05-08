@@ -616,7 +616,7 @@ function getUserByIGN(user){
 function getUserByWallCheck(user){
     
     let promise = new Promise(function(resolve, reject) {
-        User.findOne({lastwallcheck: user}).then((res) => {
+        User.find().sort({lastwallcheck:-1}).limit(1).then((res) => {
             //console.log(res)
             //console.log(res)
             if(Array.isArray(res) && res.length === 0 || res === null || res === undefined){
@@ -2941,14 +2941,14 @@ client.on('message', async (message) => {
                 db.push(user.lastwallcheck)
             })
         })
-        let ux = await getUserByWallCheck(Math.max(...db))
-        console.log(Math.max(...db))
+        let ux = await getUserByWallCheck()
+        message.channel.send(ux)
                 getUUID(ux.ign).then(uuid=>{
                     let embed = new Discord.MessageEmbed()
                     .setColor(guild.embedColor)
                     .setTimestamp()
                     .setTitle(`Walls Status for ${message.guild.name} | ${config.settings.host}`)
-                    .addField(`Last Check`, `${ms((time-Math.max(...db))*1000, { long: true })}`, true)
+                    .addField(`Last Check`, `${ms(time-ux.lastwallcheck*1000, { long: true })}`, true)
                     .addField(`Last Checker`, `${ux.ign}(${message.guild.members.cache.get(ux.discordId)})`,)
                     .addField(`Other Usage`, `${guild.prefix}wallstop, ${guild.prefix}wtop, ${guild.prefix}whitelist`)
                     .setThumbnail(`https://crafatar.com/avatars/${uuid.id}.png`, true)
