@@ -340,16 +340,28 @@ const video_player = async (g, guild, song) => {
             .setColor(g.embedColor)
             .setTimestamp()
             .setDescription(`:ok_hand: Ran out of music to play and left your channel!`)
-            message.channel.send(embed)
+            if(song_queue.text_channel !== "ingame"){
+                song_queue.text_channel.send(embed)
+            }
+            else{
+                bot.chat(`/ff [X] Stopped playing music as the queue was empty`)
+            }
             return;
         }
   
     })
+    let c = guild.channels.cache.get(song_queue.text_channel)
     let embed = new Discord.MessageEmbed()
     .setColor(g.embedColor)
     .setTimestamp()
     .setDescription(`:musical_note: Now playing **[${song.title}](${song.url})**`)
-    await song_queue.text_channel.send(embed)
+    if(c){
+        await song_queue.text_channel.send(embed)
+    }
+    else{
+        bot.chat(`/ff (!) Now playing ${song.title}`)
+    }
+
 }
 
 const skip_song = (g, message, server_queue) => {
@@ -1136,7 +1148,7 @@ bot.on('fcf', (user,content) => {
                         var c = client.channels.cache.get(member.voice.channelID)
                         c.join().then(connection=>{
                             //console.log(args)
-                            console.log(person)
+                            //console.log(person)
                             tts(args.join(" "), person.ttsVoice).then((res) => {
                                 bot.chat(`/ff Playing ${args.join(" ")}`)
                                 //console.log(args)
@@ -1280,9 +1292,73 @@ bot.on('fcf', (user,content) => {
                         else{
                             bot.chat(`/ff (!) ${args[0]}'s dick is ${random2} inches long. 8${Array(Math.round(random2)).join(`=`)}D`)
                         }
-                        break;  
+                    break;  
                 case "tps":
                     bot.chat(`/ff (!) Current TPS: `+ bot.getTps())
+                    break;
+                case "play":
+                    let g = client.guilds.cache.get(config.guildID);
+                    let u = person.discordId;
+                    let member  = g.member(u)
+                    if(!member.voice.channel){
+                        bot.chat("/ff [X] You aren't in a voice channel")
+                    }
+                    if(!member.voice.channel){
+                        bot.chat("/ff [X] You aren't in a voice channel")
+                    }
+                    else if(g.me.voice.channel && member.voice.channel.id !== g.me.voice.channel.id){
+                        bot.chat("/ff [X] You aren't in the same voice channel as I am")
+                    }
+                    else if(!args[0]){
+                        bot.chat(`/ff [X] No song provided`)
+                    }
+                    let server_queue = queue.get(g.id);
+                    let song = {}
+                    if(ytdl.validateURL(args[0])){
+                        let song_info = await ytdl.getInfo(args[0])
+                        song = { title: song_info.videoDetails.title, url: song_info.videoDetails.video_url }
+                    }
+                    else{
+                        let video_finder = async (query) => {
+                            let videoResult = await ytSearch(query)
+                            return (videoResult.videos.length > 1) ? videoResult.videos[0] : null;
+                        }
+                        let video = await video_finder(args.join(' '))
+                        if(video){
+                            song = { title: video.title, url: video.url}
+                        }
+                        else{
+                            bot.chat(`/ff [X] Could not find the requested music`)
+                        }
+                    }
+                    if(!server_queue){
+                        let queue_constructor = {
+                            voice_channel: voiceChannel,
+                            text_channel: "ingame",
+                            connection: null,
+                            songs: []
+                        }
+                        queue.set(g.id, queue_constructor)
+                        queue_constructor.songs.push(song)
+                    // console.log(song)
+                        //console.log(queue_constructor)
+
+                        try{
+                            let connection = await member.voice.channel.join();
+                            queue_constructor.connection = connection;
+                            video_player(guild, g, queue_constructor.songs[0])
+                        }
+                        catch (err) {
+                            console.log(err)
+                            queue.delete(g.id)
+                            bot.chat(`/ff [X] There was an error playing this song`)
+                        }
+                    }
+                    else{
+                        server_queue.songs.push(song)
+                        bot.chat(`/ff (!) Added ${song.title} to the queue!`)
+                        return;
+                    }
                     
     
             }
@@ -3192,7 +3268,7 @@ client.on('message', async (message) => {
         let embed = new Discord.MessageEmbed().setDescription(`:nerd: Your result is **${result}**`).setTimestamp().setColor(message.embedColor)
         message.channel.send(embed)
     }
-    if(commandName == "play"){
+    if(commandName == "play" || commandName == "p"){
         let voiceChannel = message.member.voice.channel;
         if(!voiceChannel){
             let embed = new Discord.MessageEmbed()
@@ -3286,7 +3362,7 @@ client.on('message', async (message) => {
             return;
         }
     }
-    if(commandName == "skip"){
+    if(commandName == "skip" || commandName == "s"){
         let server_queue = queue.get(message.guild.id);
         skip_song(guild, message, server_queue)
     }
