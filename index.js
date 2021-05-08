@@ -1299,14 +1299,14 @@ bot.on('fcf', (user,content) => {
                 case "play":
                     let gb = client.guilds.cache.get(config.guildID);
                     let ub = person.discordId;
-                    let member  = gb.member(ub)
-                    if(!member.voice.channel){
+                    let memberb  = gb.member(ub)
+                    if(!memberb.voice.channel){
                         bot.chat("/ff [X] You aren't in a voice channel")
                     }
-                    if(!member.voice.channel){
+                    if(!memberb.voice.channel){
                         bot.chat("/ff [X] You aren't in a voice channel")
                     }
-                    else if(gb.me.voice.channel && member.voice.channel.id !== gb.me.voice.channel.id){
+                    else if(gb.me.voice.channel && memberb.voice.channel.id !== gb.me.voice.channel.id){
                         bot.chat("/ff [X] You aren't in the same voice channel as I am")
                     }
                     else if(!args[0]){
@@ -1333,7 +1333,7 @@ bot.on('fcf', (user,content) => {
                     }
                     if(!server_queue){
                         let queue_constructor = {
-                            voice_channel: voiceChannel,
+                            voice_channel: member.voice.channel,
                             text_channel: "ingame",
                             connection: null,
                             songs: []
@@ -1344,7 +1344,7 @@ bot.on('fcf', (user,content) => {
                         //console.log(queue_constructor)
 
                         try{
-                            let connection = await member.voice.channel.join();
+                            let connection = await memberb.voice.channel.join();
                             queue_constructor.connection = connection;
                             video_player(guild, gb, queue_constructor.songs[0])
                         }
