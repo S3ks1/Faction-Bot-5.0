@@ -2507,7 +2507,8 @@ client.on('message', async (message) => {
         process.exit(0)
     }
     if(commandName === "stats"){
-        var user = message.mentions.members.first() || message.guild.members.cache.get(args[0]) || message.guild.members.cache.find(member => member.user.tag === args.join(" ").replace("\n", "")) || message.guild.members.cache.find(member => member.user.username.toLowerCase() === args.join(" ").replace("\n", "").toLowerCase())
+        
+        var user = message.mentions.members.first() || message.guild.members.cache.get(args[0]) || message.guild.members.cache.find(member => member.user.tag === args.join(" ").replace("\n", "")) || message.guild.members.cache.find(member => member.user.username.toLowerCase() === args.join(" ").replace("\n", "").toLowerCase()) || message.author
         let person = "";
         if(!user){
             getUserByIGN(args[0]).then((res) => {
