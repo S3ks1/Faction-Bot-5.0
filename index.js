@@ -636,7 +636,7 @@ function getUserByWallCheck(user){
 function getUserByBufferCheck(user){
     
     let promise = new Promise(function(resolve, reject) {
-        User.findOne({lastbuffercheck: user}).then((res) => {
+        User.find().sort({lastbuffercheck:-1}).limit(1).then((res) => {
             //console.log(res)
             //console.log(res)
             if(Array.isArray(res) && res.length === 0 || res === null || res === undefined){
@@ -656,7 +656,7 @@ function getUserByBufferCheck(user){
 function getUserByRpostCheck(user){
     
     let promise = new Promise(function(resolve, reject) {
-        User.findOne({lastrpostcheck: user}).then((res) => {
+        User.find().sort({lastrpostcheck:-1}).limit(1).then((res) => {
             //console.log(res)
             //console.log(res)
             if(Array.isArray(res) && res.length === 0 || res === null || res === undefined){
@@ -2947,7 +2947,7 @@ client.on('message', async (message) => {
                     .setColor(guild.embedColor)
                     .setTimestamp()
                     .setTitle(`Walls Status for ${message.guild.name} | ${config.settings.host}`)
-                    .addField(`Last Check`, `${ms(time-ux[0].lastwallcheck, { long: true })}`, true)
+                    .addField(`Last Check`, `${ms((time-ux[0].lastwallcheck)*1000, { long: true })}`, true)
                     .addField(`Last Checker`, `${ux[0].ign}(${message.guild.members.cache.get(ux[0].discordId)})`,)
                     .addField(`Other Usage`, `${guild.prefix}wallstop, ${guild.prefix}wtop, ${guild.prefix}whitelist`)
                     .setThumbnail(`https://crafatar.com/avatars/${uuid.id}.png`, true)
@@ -3022,19 +3022,18 @@ client.on('message', async (message) => {
                 db.push(user.lastbuffercheck)
             })
         })
-            getUserByBufferCheck(Math.max(...db)).then((u) => {
-                getUUID(u.ign).then(uuid=>{
+        let uv = await getUserByBufferCheck()
+                getUUID(uv[0].ign).then(uuid=>{
                     let embed = new Discord.MessageEmbed()
                     .setColor(guild.embedColor)
                     .setTimestamp()
-                    .setTitle(`Buffers Status for ${message.guild.name} | ${config.settings.host}`)
-                    .addField(`Last Check`, `${ms((time-Math.max(...db))*1000, { long: true })}`, true)
-                    .addField(`Last Checker`, `${u.ign}(${message.guild.members.cache.get(u.discordId)})`,)
+                    .setTitle(`Walls Status for ${message.guild.name} | ${config.settings.host}`)
+                    .addField(`Last Check`, `${ms((time-uv[0].lastwallcheck)*1000, { long: true })}`, true)
+                    .addField(`Last Checker`, `${uv[0].ign}(${message.guild.members.cache.get(uv[0].discordId)})`,)
                     .addField(`Other Usage`, `${guild.prefix}wallstop, ${guild.prefix}wtop, ${guild.prefix}whitelist`)
                     .setThumbnail(`https://crafatar.com/avatars/${uuid.id}.png`, true)
                     message.channel.send(embed)
-                })                
-            })
+                })   
         }
         else if(args[0].toLowerCase() == "status"){
             let embed = new Discord.MessageEmbed()
@@ -3103,19 +3102,18 @@ client.on('message', async (message) => {
                     db.push(user.lastrpostcheck)
                 })
             })
-                getUserByWallCheck(Math.max(...db)).then((u) => {
-                    getUUID(u.ign).then(uuid=>{
-                        let embed = new Discord.MessageEmbed()
-                        .setColor(guild.embedColor)
-                        .setTimestamp()
-                        .setTitle(`RPost Status for ${message.guild.name} | ${config.settings.host}`)
-                        .addField(`Last Check`, `${ms((time-Math.max(...db))*1000, { long: true })}`, true)
-                        .addField(`Last Checker`, `${u.ign}(${message.guild.members.cache.get(u.discordId)})`,)
-                        .addField(`Other Usage`, `${guild.prefix}wallstop, ${guild.prefix}wtop, ${guild.prefix}whitelist`)
-                        .setThumbnail(`https://crafatar.com/avatars/${uuid.id}.png`, true)
-                        message.channel.send(embed)
-                    })                
-                })
+            let ur = await getUserByRpostCheck()
+            getUUID(ur[0].ign).then(uuid=>{
+                let embed = new Discord.MessageEmbed()
+                .setColor(guild.embedColor)
+                .setTimestamp()
+                .setTitle(`Walls Status for ${message.guild.name} | ${config.settings.host}`)
+                .addField(`Last Check`, `${ms((time-ur[0].lastwallcheck)*1000, { long: true })}`, true)
+                .addField(`Last Checker`, `${ur[0].ign}(${message.guild.members.cache.get(ur[0].discordId)})`,)
+                .addField(`Other Usage`, `${guild.prefix}wallstop, ${guild.prefix}wtop, ${guild.prefix}whitelist`)
+                .setThumbnail(`https://crafatar.com/avatars/${uuid.id}.png`, true)
+                message.channel.send(embed)
+            })   
         }
         else if(args[0] == "status"){
             let embed = new Discord.MessageEmbed()
