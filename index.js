@@ -325,8 +325,9 @@ const video_player = async (guild, song) => {
         return;
     }
     let stream = ytdl(song.url, {filter: 'audioonly'});
-    song_queue.connection.play(stream, {seek:0, volume: 1})
+    song_queue.connection.play(stream, {seek:0, volume: 0.5 })
     .on('finish', () => {
+        console.log('done')
         song_queue.songs.shift();
         video_player(guild, song_queue.songs[0]);
     })
@@ -334,7 +335,7 @@ const video_player = async (guild, song) => {
     .setColor(guild.embedColor)
     .setTimestamp()
     .setDescription(`:musical_note: Now playing **[${song.name}](${song.url})**`)
-    await song_queue.text_channel.send(``)
+    await song_queue.text_channel.send(embed)
 }
 var result = function(command, cb){
     var child = exec(command, function(err, stdout, stderr){
@@ -3203,8 +3204,8 @@ client.on('message', async (message) => {
             }
             queue.set(message.guild.id, queue_constructor)
             queue_constructor.songs.push(song)
-            console.log(song)
-            console.log(queue_constructor)
+           // console.log(song)
+            //console.log(queue_constructor)
 
             try{
                 let connection = await voiceChannel.join();
