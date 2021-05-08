@@ -11,7 +11,9 @@ const moment = require("moment")
 const config = require("./config")
 const axios = require('axios')
 const request = require("request")
-const { help, typeOf, i} = require("mathjs")
+const math = require("mathjs")
+const ytdl = require('ytdl-core')
+const ytSearch = require('yt-search')
 const fs = require("fs")
 const util = require("util")
 const textToSpeech = require('@google-cloud/text-to-speech');
@@ -74,6 +76,7 @@ const { inspect } = require("util");
 const { Stream } = require("stream");
 const { guildID } = require("./config");
 const { IoTSecureTunneling } = require("aws-sdk");
+const math = require("mathjs");
 var data;
 
 var Polly = new AWS.Polly({
@@ -3017,7 +3020,7 @@ client.on('message', async (message) => {
             let embed = new Discord.MessageEmbed()
             .setTimestamp()
             .setColor(guild.embedColor)
-            .setDescription(`Invalid syntax, use the command like this: \`${guild.prefix}tempgrace <time>\``)
+            .setDescription(`:warning: Invalid syntax, use the command like this: \`${guild.prefix}tempgrace <time>\``)
             message.channel.send(embed)
         }
         else if(!isNaN(args[0])){
@@ -3060,7 +3063,7 @@ client.on('message', async (message) => {
                 message.channel.send(embed)
         }
     }
-    if(commandName == "serverinfo" || "sinfo"){
+    if(commandName == "serverinfo" || commandName == "sinfo"){
         const filterLevels = {
             DISABLED: 'Off',
             MEMBERS_WITHOUT_ROLES: 'No Role',
@@ -3094,7 +3097,7 @@ client.on('message', async (message) => {
         let emojis = message.guild.emojis.cache;
         let embed = new Discord.MessageEmbed().setDescription(`**Server information for __${message.guild.name}__**`).setThumbnail(message.guild.iconURL({
             dynamic: true
-        })).setColor(message.embedColor).addField('General', [`**Name:** ${message.guild.name}`, `**Location:** ${regions[message.guild.region]}`, `**Tier:** ${message.guild.premiumTier ? `Tier ${message.guild.premiumTier}` : 'None'}`, `**Verification Level:** ${verificationLevels[message.guild.verificationLevel]}`, `**Created:** ${moment(message.guild.createdTimestamp).format('LT')} ${moment(message.guild.createdTimestamp).format('LL')} ${moment(message.guild.createdTimestamp).fromNow()}`, '\u200b']).addField('Statistics', [`**Role Count:** ${roles.length}`, `**Emoji Count:** ${emojis.size}`, `**Regular Emoji Count:** ${emojis.filter(emoji => !emoji.animated).size}`, `**Animated Emoji Count:** ${emojis.filter(emoji => emoji.animated).size}`, `**Member Count:** ${message.guild.memberCount}`, `**Text Channels:** ${channels.filter(channel => channel.type === 'text').size}`, `**Voice Channels:** ${channels.filter(channel => channel.type === 'voice').size}`, `**Number of boosts:** ${message.guild.premiumSubscriptionCount || '0'}`, '\u200b']).setTimestamp()
+        })).setColor(guild.embedColor).addField('General', [`**Name:** ${message.guild.name}`, `**Location:** ${regions[message.guild.region]}`, `**Tier:** ${message.guild.premiumTier ? `Tier ${message.guild.premiumTier}` : 'None'}`, `**Verification Level:** ${verificationLevels[message.guild.verificationLevel]}`, `**Created:** ${moment(message.guild.createdTimestamp).format('LT')} ${moment(message.guild.createdTimestamp).format('LL')} ${moment(message.guild.createdTimestamp).fromNow()}`, '\u200b']).addField('Statistics', [`**Role Count:** ${roles.length}`, `**Emoji Count:** ${emojis.size}`, `**Regular Emoji Count:** ${emojis.filter(emoji => !emoji.animated).size}`, `**Animated Emoji Count:** ${emojis.filter(emoji => emoji.animated).size}`, `**Member Count:** ${message.guild.memberCount}`, `**Text Channels:** ${channels.filter(channel => channel.type === 'text').size}`, `**Voice Channels:** ${channels.filter(channel => channel.type === 'voice').size}`, `**Number of boosts:** ${message.guild.premiumSubscriptionCount || '0'}`, '\u200b']).setTimestamp()
         message.channel.send(embed);
     }
     if(commandName == "whois" || commandName == "userinfo" || commandName == "uinfo"){
@@ -3107,6 +3110,83 @@ client.on('message', async (message) => {
         .setColor(guild.embedColor)
         .setTimestamp()
         message.channel.send(whoisembed)
+    }
+    if(commandName == "calc"){
+        var result = math.evaluate(args.join(""))
+        let embed = new Discord.MessageEmbed().setDescription(`:nerd: Your result is **${result}**`).setTimestamp().setColor(message.embedColor)
+        message.channel.send(embed)
+    }
+    if(commandName == "play"){
+        let voiceChannel = message.member.voice.channel;
+        if(!voiceChannel){
+            let embed = new Discord.MessageEmbed()
+            .setColor(guild.embedColor)
+            .setTimestamp()
+            .setDescription(`:warning: You must be in a voice channel to play music!`)
+            return message.channel.send(embed)
+        }
+        let permissionz = voiceChannel.permissionsFor(message.client.user)
+        if(!permissionz.has('SPEAK')){
+            let embed = new Discord.MessageEmbed()
+            .setTimestamp()
+            .setColor(guild.embedColor)
+            .setDescription(`:warning: I don't have permission to speak in your channel!`)
+            return message.channel.send(embed)
+        }
+        else if(!permissionz.has('CONNECT')){
+            let embed = new Discord.MessageEmbed()
+            .setTimestamp()
+            .setColor(guild.embedColor)
+            .setDescription(`:warning: I don't have permission to connect to your channel!`)
+            return message.channel.send(embed)
+        }
+        else{
+
+        }
+        if(!args[0]){
+            let embed = new Discord.MessageEmbed()
+            .setTimestamp()
+            .setColor(guild.embedColor)
+            .setDescription(`:warning: Invalid syntax, use the command like this: \`${guild.prefix}play <song name>\``)
+            return message.channel.send(embed)
+        }
+        let connection = await voiceChannel.join()
+        let videoFinder = async (query) => {
+            const videoResult = await ytSearch(query)
+            
+            return (videoResult.videos.length > 1) ? videoResult.videos[0] : null;
+        }
+        
+        const video = await videoFinder(args.join(' '))
+
+        if(video){
+            const stream = ytdl(video.url, {filter : "audioonly"});
+            connection.play(stream, {seek: 0, volume: 1})
+            .on('finish', () => {
+                voiceChannel.leave()
+            })
+            let embed = new Discord.MessageEmbed()
+            .setColor(guild.embedColor)
+            .setTimestamp()
+            .setDescription(`:musical_note: Now playing **[${video.title}](${video.url})**`)
+            .setThumbnail(video.thumbnail)
+            message.channel.send(embed)
+            
+        }
+        else{
+            let embed = new Discord.MessageEmbed()
+            .setColor(guild.embedColor)
+            .setDescription(`:warning: No results found on youtube!`)
+            .setTimestamp()
+            message.channel.send(embed)
+            return;
+        }
+
+
+
+    }
+    if(commandName == "leave"){
+
     }
 })
 
