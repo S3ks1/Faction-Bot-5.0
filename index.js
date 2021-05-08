@@ -1392,9 +1392,36 @@ bot.on('fcf', async (user,content) => {
                         bot.chat(`/ff [!] No playing music`)
                         return
                     }
+                    if(server_queuez.songs.length=1){
+                        server_queuez.voice_channel.leave()
+                    }
                     server_queuez.connection.dispatcher.end();
                     bot.chat(`/ff (!) Skipped ${server_queuez.songs[0].title}`)
-                    
+                    break;
+                case "queue":
+                    let gp = client.guilds.cache.get(config.guildID);
+                    let up = person.discordId;
+                    let memberp  = gp.member(up)
+                    let server_queuer = queue.get(gp.id);
+                    if(!server_queuer){
+                        bot.chat(`/ff [!] No currently playing music`)
+                    }
+                    else{
+                        bot.chat(`/ff (!) Current Queue: ${server_queuer.songs.map(s=>`${s.title}`).join(",")}`)
+                    }
+                    break;
+                case "np":
+                    let gr = client.guilds.cache.get(config.guildID);
+                    let ur = person.discordId;
+                    let memberr  = gr.member(ur)
+                    let server_queuer = queue.get(gr.id)
+                    if(!server_queuer){
+                        bot.chat(`/ff [!] No currently playing music`)
+                    }
+                    else{
+                        let songinfo = await ytdl.getInfo(server_queuer.songs[0].url)
+                        bot.chat(`/ff (!) Now Playing: ${songinfo.videoDetails.title} by ${songinfo.videoDetails.author} - ${ms(songinfo.videoDetails.lengthSeconds*1000)}`)
+                    }
     
             }
         })
