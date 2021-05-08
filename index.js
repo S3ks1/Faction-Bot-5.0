@@ -1157,11 +1157,12 @@ bot.on('fcf', async (user,content) => {
                                 //console.log(args.join(" "))
                                 var bufferStream = new Stream.PassThrough()
                                 bufferStream.end(res.AudioStream);
-                                broadcast.play(bufferStream);
-                                currentStream = connection.play(broadcast, {volume:2})
+                                broadcast.play(bufferStream)
                                 .on('finish', () => {
-                                    currentStream = null;
+                                    currentStream = null
                                 })
+                                currentStream = connection.play(broadcast, {volume:2})
+                                
                             
                             })
                         })
