@@ -1384,13 +1384,10 @@ bot.on('fcf', async (user,content) => {
                     else if(gc.me.voice.channel && memberc.voice.channel.id !== gc.me.voice.channel.id){
                         bot.chat("/ff [!] You aren't in the same voice channel as I am")
                     }
-                    else if(!args[0]){
-                        bot.chat(`/ff [!] No song provided`)
-                    }
                     else{
 
                     }
-                    let server_queuez = queue.get(gb.id);
+                    let server_queuez = queue.get(gc.id);
                     if(!server_queuez){
                         bot.chat(`/ff [!] No playing music`)
                         return
