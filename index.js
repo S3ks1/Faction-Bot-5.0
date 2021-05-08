@@ -346,6 +346,7 @@ const video_player = async (g, guild, song) => {
             else{
                 bot.chat(`/ff [X] Stopped playing music as the queue was empty`)
                 currentStream = null;
+                queue.delete(guild.id)
             }
             return;
         }
@@ -396,7 +397,7 @@ const stop_song = (g, message, server_queue) => {
         .setDescription(`:warning: You need to be in a voice channel to stop songs!`)
         return message.channel.send(embed)
     }
-    server_queue.songs = [];
+    queue.delete(server_queue)
     server_queue.connection.dispatcher.end()
     let embed = new Discord.MessageEmbed()
     .setColor(g.embedColor)
