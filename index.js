@@ -1246,15 +1246,16 @@ bot.on('fcf', async (user,content) => {
                             Object.keys(res._doc).forEach(k=> {
                                 mapped.push(`${k}:${res._doc[k]}`)
                             })
-                            bot.chat(`/ff ${mapped.join(", ")}`)
+                            bot.chat(`/ff (!) ${person.ign} Check your discord dms!`)
+                            memberz.send(mapped.join(`\n`))
                         }
                         else if(Object.keys(res._doc).indexOf(args[0]) !== -1){
                             //message.channel.send(`*saving* ${msgargs[1]}`)
-                            //console.log(typeOf(res._doc[args[0]]))
-                            if(typeOf(res._doc[args[0]]) == "number"){
+                            //console.log(typeof(res._doc[args[0]]))
+                            if(typeof(res._doc[args[0]]) == "number"){
                                 res._doc[args[0]] = Number(args.slice(1).join(" "))
                             }
-                            else if(typeOf(res._doc[args[0]]) == "boolean"){
+                            else if(typeof(res._doc[args[0]]) == "boolean"){
                                 if(args[1] == "true" || args[1] == "1"){
                                     res._doc[args[0]] = true
                                 }
@@ -2159,11 +2160,11 @@ client.on('message', async (message) => {
             }
             else if(Object.keys(res._doc).indexOf(args[0]) !== -1){
                 //message.channel.send(`*saving* ${msgargs[1]}`)
-                //console.log(typeOf(res._doc[args[0]]))
-                if(typeOf(res._doc[args[0]]) == "number"){
+                //console.log(typeof(res._doc[args[0]]))
+                if(typeof(res._doc[args[0]]) == "number"){
                     res._doc[args[0]] = Number(args.slice(1).join(" "))
                 }
-                else if(typeOf(res._doc[args[0]]) == "boolean"){
+                else if(typeof(res._doc[args[0]]) == "boolean"){
                     if(args[1] == "true" || args[1] == "1"){
                         res._doc[args[0]] = true
                     }
