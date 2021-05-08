@@ -3195,7 +3195,7 @@ client.on('message', async (message) => {
         }
         if(!server_queue){
             let queue_constructor = {
-                voiceChannel: voice_channel,
+                voice_channel: voiceChannel,
                 text_channel: message.channel,
                 connection: null,
                 songs: []
