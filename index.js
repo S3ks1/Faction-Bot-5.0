@@ -316,7 +316,7 @@ function getUUID(ign){
     return promise;
 }
 
-const video_player = async (guild, song) => {
+const video_player = async (g, guild, song) => {
     console.log(song)
     let song_queue = queue.get(guild.id);
     if(!song){
@@ -329,10 +329,10 @@ const video_player = async (guild, song) => {
     .on('finish', () => {
         console.log('done')
         song_queue.songs.shift();
-        video_player(guild, song_queue.songs[0]);
+        video_player(g, guild, song_queue.songs[0]);
     })
     let embed = new Discord.MessageEmbed()
-    .setColor(guild.embedColor)
+    .setColor(g.embedColor)
     .setTimestamp()
     .setDescription(`:musical_note: Now playing **[${song.title}](${song.url})**`)
     await song_queue.text_channel.send(embed)
@@ -3249,7 +3249,7 @@ client.on('message', async (message) => {
             try{
                 let connection = await voiceChannel.join();
                 queue_constructor.connection = connection;
-                video_player(message.guild, queue_constructor.songs[0])
+                video_player(guild, message.guild, queue_constructor.songs[0])
             }
             catch (err) {
                 console.log(err)
