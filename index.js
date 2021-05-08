@@ -2688,6 +2688,14 @@ client.on('message', async (message) => {
     }
     if(commandName === "ttsvoice"){
         getUserByDiscord(message.author.id).then((res) => {
+            if(res == false){
+                let embed = new Discord.MessageEmbed()
+                .setColor(guild.embedColor)
+                .setTimestamp()
+                .setDescription(`:warning: You must be whitelisted to use the TTS Bot. Use \`.whitelist\` or \`.setign\` to whitelist.`)
+                message.channel.send(embed)
+                return;
+            }
             Polly.describeVoices(function(err, data){
                 if(err) console.log(err)
                 else{
@@ -2759,6 +2767,15 @@ client.on('message', async (message) => {
     }
     if(commandName === "tts"){
         getUserByDiscord(message.author.id).then((person) => {
+            if(person == false){
+                let embed = new Discord.MessageEmbed()
+                .setColor(guild.embedColor)
+                .setTimestamp()
+                .setDescription(`:warning: You must be whitelisted to use the TTS Bot. Use \`.whitelist\` or \`.setign\` to whitelist.`)
+                message.channel.send(embed)
+                return;
+            }
+            
             if(!message.member.voice.channel){
                 bot.chat("/ff [!] You aren't in a voice channel")
             }
