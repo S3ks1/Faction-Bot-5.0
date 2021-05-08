@@ -3094,7 +3094,7 @@ client.on('message', async (message) => {
         let emojis = message.guild.emojis.cache;
         let embed = new Discord.MessageEmbed().setDescription(`**Server information for __${message.guild.name}__**`).setThumbnail(message.guild.iconURL({
             dynamic: true
-        })).setColor(message.embedColor).addField('General', [`**Name:** ${message.guild.name}`, `**Location:** ${regions[message.guild.region]}`, `**Tier:** ${message.guild.premiumTier ? `Tier ${message.guild.premiumTier}` : 'None'}`, `**Verification Level:** ${verificationLevels[message.guild.verificationLevel]}`, `**Created:** ${moment(message.guild.createdTimestamp).format('LT')} ${moment(message.guild.createdTimestamp).format('LL')} ${moment(message.guild.createdTimestamp).fromNow()}`, '\u200b']).addField('Statistics', [`**Role Count:** ${roles.length}`, `**Emoji Count:** ${emojis.size}`, `**Regular Emoji Count:** ${emojis.filter(emoji => !emoji.animated).size}`, `**Animated Emoji Count:** ${emojis.filter(emoji => emoji.animated).size}`, `**Member Count:** ${message.guild.memberCount}`, `**Text Channels:** ${channels.filter(channel => channel.type === 'text').size}`, `**Voice Channels:** ${channels.filter(channel => channel.type === 'voice').size}`, `**Number of boosts:** ${message.guild.premiumSubscriptionCount || '0'}`, `**Roles:** ${message.guild.roles.cache.sort((a, b) => b.position - a.position).map(r => r).length < 1024 ? message.guild.roles.cache.sort((a, b) => b.position - a.position).map(r => r) : "Too long to display"}`, '\u200b']).setTimestamp()
+        })).setColor(message.embedColor).addField('General', [`**Name:** ${message.guild.name}`, `**Location:** ${regions[message.guild.region]}`, `**Tier:** ${message.guild.premiumTier ? `Tier ${message.guild.premiumTier}` : 'None'}`, `**Verification Level:** ${verificationLevels[message.guild.verificationLevel]}`, `**Created:** ${moment(message.guild.createdTimestamp).format('LT')} ${moment(message.guild.createdTimestamp).format('LL')} ${moment(message.guild.createdTimestamp).fromNow()}`, '\u200b']).addField('Statistics', [`**Role Count:** ${roles.length}`, `**Emoji Count:** ${emojis.size}`, `**Regular Emoji Count:** ${emojis.filter(emoji => !emoji.animated).size}`, `**Animated Emoji Count:** ${emojis.filter(emoji => emoji.animated).size}`, `**Member Count:** ${message.guild.memberCount}`, `**Text Channels:** ${channels.filter(channel => channel.type === 'text').size}`, `**Voice Channels:** ${channels.filter(channel => channel.type === 'voice').size}`, `**Number of boosts:** ${message.guild.premiumSubscriptionCount || '0'}`, '\u200b']).setTimestamp()
         message.channel.send(embed);
     }
     if(commandName == "whois" || commandName == "userinfo" || commandName == "uinfo"){
@@ -3109,8 +3109,5 @@ client.on('message', async (message) => {
         message.channel.send(whoisembed)
     }
 })
-
-
-
 
 client.login(config.token)
