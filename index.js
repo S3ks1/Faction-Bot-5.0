@@ -3387,7 +3387,7 @@ client.on('message', async (message) => {
         .setColor(guild.embedColor)
         .setTimestamp()
         .setDescription(`**Currently Playing:** ${songs[0]}\n\n**Up Next:**\n${songs.length > 1 ? songs.slice(1).splice(songs[0],songs[songs.length <= 5 ? songs.length : 5]).join("\n") : "No songs after the current one"}`)
-        .setThumbnail(song_info.thumbnail_url)<=
+        .setThumbnail(song_info.thumbnail_url)
         message.channel.send(embedz)
     }
     if(commandName == "nowplaying" || commandName == "np"){
