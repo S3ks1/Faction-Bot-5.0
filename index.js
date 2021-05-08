@@ -1418,7 +1418,7 @@ bot.on('fcf', async (user,content) => {
                     }
                     else{
                         let songinfo = await ytdl.getInfo(server_queuer.songs[0].url)
-                        bot.chat(`/ff (!) Now Playing: ${songinfo.videoDetails.title} by ${songinfo.videoDetails.author} - ${ms(songinfo.videoDetails.lengthSeconds*1000)}`)
+                        bot.chat(`/ff (!) Now Playing: ${songinfo.videoDetails.title} by ${songinfo.videoDetails.ownerChannelName} - ${ms(songinfo.videoDetails.lengthSeconds*1000)}`)
                     }
     
             }
