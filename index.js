@@ -1155,7 +1155,7 @@ bot.on('fcf', async (user,content) => {
                         c.join().then(connection=>{
                             //console.log(args)
                             //console.log(person)
-                            tts(`${member.username} says ${args.join(" ")}`, person.ttsVoice).then((res) => {
+                            tts(`${member.user.username} says ${args.join(" ")}`, person.ttsVoice).then((res) => {
                                 bot.chat(`/ff Playing ${args.join(" ")}`)
                                 //console.log(args)
                                 //console.log(args.join(" "))
@@ -2803,7 +2803,7 @@ client.on('message', async (message) => {
                 c.join().then(connection=>{
                     //console.log(args)
                    // console.log(person)
-                    tts(`${message.member.username} says ${args.join(" ")}`, person.ttsVoice).then((res) => {
+                    tts(`${message.member.user.username} says ${args.join(" ")}`, person.ttsVoice).then((res) => {
                         message.channel.send(`:ok_hand: Playing ${args.join(" ")} as ${person.ttsVoice}!`)
                         //console.log(args)
                         //console.log(args.join(" "))
