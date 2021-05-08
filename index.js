@@ -3290,7 +3290,13 @@ client.on('message', async (message) => {
             message.channel.send(embed)
             return;
         }
-        console.log(server_queue)
+        let songs = server_queue.songs.map(s => `[${s.title}](${s.url})`)
+        let embed = new Discord.MessageEmbed()
+        .setTitle(`Song queue for ${message.guild.name}`)
+        .setColor(guild.embedColor)
+        .setTimestamp()
+        .setDescription(`**Currently Playing:** ${songs[0]}\n\n**Up Next:**\n${songs.length > 1 ? songs.join("\n") : "No songs after the current one"}`)
+        message.channel.send(embed)
     }
 })
 
