@@ -3411,7 +3411,7 @@ client.on('message', async (message) => {
         let embed = new Discord.MessageEmbed()
         .setColor(guild.embedColor)
         .setTimestamp()
-        .setDescription(`**Song Name:** ${song_info.videoDetails.title}\n**Position in Song:** ${ms(currentStream.streamTime, {long: true})}/${ms(song_info.videoDetails.lengthSeconds*1000, {long: true})}\n**Artist:** ${song_info.videoDetails.ownerChannelName}\n**Upload Date:** ${song_info.videoDetails.uploadDate}\n**View Count:** ${song_info.videoDetails.viewCount}`)
+        .setDescription(`**Song Name:** ${song_info.videoDetails.title}\n**Position in Song:** ${currentStream.streamTime !== null ? ms(currentStream.streamTime, {long: true}) : "Not avaliable"}/${ms(song_info.videoDetails.lengthSeconds*1000, {long: true})}\n**Artist:** ${song_info.videoDetails.ownerChannelName}\n**Upload Date:** ${song_info.videoDetails.uploadDate}\n**View Count:** ${song_info.videoDetails.viewCount}`)
         .setTitle(`Currently Playing in ${message.guild.name} | ${server_queue.songs[0].title}`)
         .setThumbnail(song_info.videoDetails.thumbnail.thumbnails[0].url)
         message.channel.send(embed)
