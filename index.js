@@ -1400,12 +1400,12 @@ bot.on('fcf', async (user,content) => {
                     let gp = client.guilds.cache.get(config.guildID);
                     let up = person.discordId;
                     let memberp  = gp.member(up)
-                    let server_queuer = queue.get(gp.id);
-                    if(!server_queuer){
+                    let server_queuep = queue.get(gp.id);
+                    if(!server_queuep){
                         bot.chat(`/ff [!] No currently playing music`)
                     }
                     else{
-                        bot.chat(`/ff (!) Current Queue: ${server_queuer.songs.map(s=>`${s.title}`).join(",")}`)
+                        bot.chat(`/ff (!) Current Queue: ${server_queuep.songs.map(s=>`${s.title}`).join(",")}`)
                     }
                     break;
                 case "np":
