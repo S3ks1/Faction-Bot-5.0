@@ -3382,13 +3382,13 @@ client.on('message', async (message) => {
         }
         let songs = server_queue.songs.map(s => `[${s.title}](${s.url})`)
         let song_info = await ytdl.getInfo(server_queue.songs[0].url)
-        let embed = new Discord.MessageEmbed()
+        let embedz = new Discord.MessageEmbed()
         .setTitle(`:musical_note: Song queue for ${message.guild.name}`)
         .setColor(guild.embedColor)
         .setTimestamp()
         .setDescription(`**Currently Playing:** ${songs[0]}\n\n**Up Next:**\n${songs.length > 1 ? songs.slice(1).splice(songs[0],songs[songs.length <= 5 ? songs.length : 5]).join("\n") : "No songs after the current one"}`)
         .setThumbnail(song_info.thumbnail_url)<=
-        message.channel.send(embed)
+        message.channel.send(embedz)
     }
     if(commandName == "nowplaying" || commandName == "np"){
         let server_queue = queue.get(message.guild.id);
