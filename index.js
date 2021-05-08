@@ -3505,6 +3505,7 @@ client.on('message', async (message) => {
         }
     if(commandName == "sstatus" || commandName == "serverstatus"){
         status(args[0], 25565, response => {
+            console.log(response)
             let embed = new Discord.MessageEmbed()
             .setColor(guild.embedColor)
             .setTimestamp()
