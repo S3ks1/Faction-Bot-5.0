@@ -1297,22 +1297,22 @@ bot.on('fcf', (user,content) => {
                     bot.chat(`/ff (!) Current TPS: `+ bot.getTps())
                     break;
                 case "play":
-                    let g = client.guilds.cache.get(config.guildID);
-                    let u = person.discordId;
-                    let member  = g.member(u)
+                    let gb = client.guilds.cache.get(config.guildID);
+                    let ub = person.discordId;
+                    let member  = gb.member(ub)
                     if(!member.voice.channel){
                         bot.chat("/ff [X] You aren't in a voice channel")
                     }
                     if(!member.voice.channel){
                         bot.chat("/ff [X] You aren't in a voice channel")
                     }
-                    else if(g.me.voice.channel && member.voice.channel.id !== g.me.voice.channel.id){
+                    else if(gb.me.voice.channel && member.voice.channel.id !== gb.me.voice.channel.id){
                         bot.chat("/ff [X] You aren't in the same voice channel as I am")
                     }
                     else if(!args[0]){
                         bot.chat(`/ff [X] No song provided`)
                     }
-                    let server_queue = queue.get(g.id);
+                    let server_queue = queue.get(gb.id);
                     let song = {}
                     if(ytdl.validateURL(args[0])){
                         let song_info = await ytdl.getInfo(args[0])
@@ -1338,7 +1338,7 @@ bot.on('fcf', (user,content) => {
                             connection: null,
                             songs: []
                         }
-                        queue.set(g.id, queue_constructor)
+                        queue.set(gb.id, queue_constructor)
                         queue_constructor.songs.push(song)
                     // console.log(song)
                         //console.log(queue_constructor)
@@ -1346,11 +1346,11 @@ bot.on('fcf', (user,content) => {
                         try{
                             let connection = await member.voice.channel.join();
                             queue_constructor.connection = connection;
-                            video_player(guild, g, queue_constructor.songs[0])
+                            video_player(guild, gb, queue_constructor.songs[0])
                         }
                         catch (err) {
                             console.log(err)
-                            queue.delete(g.id)
+                            queue.delete(gb.id)
                             bot.chat(`/ff [X] There was an error playing this song`)
                         }
                     }
