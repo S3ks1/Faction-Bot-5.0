@@ -567,7 +567,7 @@ function getUserByDiscord(user){
                 //console.log("user")
                 resolve(res)
             }
-        }).catch((err) => console.log("error lol"))
+        }).catch((err) => console.log(err))
     });
     return promise;
 
