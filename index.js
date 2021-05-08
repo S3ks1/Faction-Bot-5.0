@@ -911,7 +911,7 @@ bot.on('login', async () => {
         if(bot.serverchat.length !== 0){
             let guild = await getGuild(config.mainGuild)
                 if(guild === false){
-                    console.log("Couldn't find guild :(")
+                    //console.log("Couldn't find guild :(")
                 }
                 else{
                     let g = client.guilds.cache.get(config.mainGuild)
@@ -3314,7 +3314,7 @@ client.on('message', async (message) => {
             return message.channel.send(embed)
         }
         let server_queue = queue.get(message.guild.id);
-        console.log(server_queue)
+        //dconsole.log(server_queue)
         let song = {}
         if(ytdl.validateURL(args[0])){
             let song_info = await ytdl.getInfo(args[0])
