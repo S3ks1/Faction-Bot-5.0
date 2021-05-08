@@ -442,7 +442,7 @@ function tts(text, voice) {
                 voicez.push(v)
                 })   
                 
-                    params.Text = text;
+                    params.Text = text.replace(/[^A-Za-z0-9]/+g, '');
                     params.VoiceId = voice;
                     params.Engine = n.indexOf(voice) !== -1 ? "neural" : "standard"
                     // Construct the request
@@ -1155,7 +1155,7 @@ bot.on('fcf', async (user,content) => {
                         c.join().then(connection=>{
                             //console.log(args)
                             //console.log(person)
-                            tts(args.join(" "), person.ttsVoice).then((res) => {
+                            tts(`${member.username} says ${args.join(" ")}`, person.ttsVoice).then((res) => {
                                 bot.chat(`/ff Playing ${args.join(" ")}`)
                                 //console.log(args)
                                 //console.log(args.join(" "))
@@ -2803,7 +2803,7 @@ client.on('message', async (message) => {
                 c.join().then(connection=>{
                     //console.log(args)
                    // console.log(person)
-                    tts(args.join(" "), person.ttsVoice).then((res) => {
+                    tts(`${message.member.username} says ${args.join(" ")}`, person.ttsVoice).then((res) => {
                         message.channel.send(`:ok_hand: Playing ${args.join(" ")} as ${person.ttsVoice}!`)
                         //console.log(args)
                         //console.log(args.join(" "))
