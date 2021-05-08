@@ -355,15 +355,17 @@ const video_player = async (g, guild, song) => {
   
     })
     let c = guild.channels.cache.get(song_queue.text_channel)
-    console.log(`Channel ID: ${song_queue.text_channel.id}`)
+    console.log("channel" + c)
     let embed = new Discord.MessageEmbed()
     .setColor(g.embedColor)
     .setTimestamp()
     .setDescription(`:musical_note: Now playing **[${song.title}](${song.url})**`)
     if(c){
+        console.log(`SENT IN RIGHT CHANNEL`)
         await song_queue.text_channel.send(embed)
     }
     else{
+        console.log(`DEFAULTED TO INGAME CHAT`)
         bot.chat(`/ff (!) Now playing ${song.title}`)
     }
 
