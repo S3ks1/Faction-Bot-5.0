@@ -36,6 +36,7 @@ bot.ftop = {
     ftop:[],
     ptop:[]
 }
+var currentStream;
 bot.chatAddPattern(/^\[\[(?:[^ ]*)] ([^ ]*) (?:[^]*| )-> me\] (.*)$/, "dm", "archon dm") 
 bot.chatAddPattern(/^\[(?:[^ ]*)] \(([^ ]*) ➥ me\) (.*)$/, "dm", "archon dm")
 
@@ -317,19 +318,32 @@ function getUUID(ign){
 }
 
 const video_player = async (g, guild, song) => {
-    console.log(song)
+    //console.log(song)
     let song_queue = queue.get(guild.id);
     if(!song){
         song_queue.voice_channel.leave();
         queue.delete(guild.id)
         return;
     }
-    let stream = ytdl(song.url, {filter: 'audioonly'});
-    song_queue.connection.play(stream, {seek:0, volume: 0.5 })
+    let stream = ytdl(song.url, {filter: 'audioonly', quality: 'highestaudio'});
+    currentStream = song_queue.connection.play(stream, {seek:0, volume: 0.5 })
     .on('finish', () => {
-        console.log('done')
+        //console.log('done')
         song_queue.songs.shift();
-        video_player(g, guild, song_queue.songs[0]);
+        if(song_queue.songs.length >0){
+            video_player(g, guild, song_queue.songs[0]);
+        }
+        else{
+            server_queue.songs = [];
+            server_queue.connection.dispatcher.end()
+            let embed = new Discord.MessageEmbed()
+            .setColor(g.embedColor)
+            .setTimestamp()
+            .setDescription(`:ok_hand: Ran out of music to play and left your channel!`)
+            message.channel.send(embed)
+            return;
+        }
+  
     })
     let embed = new Discord.MessageEmbed()
     .setColor(g.embedColor)
@@ -3291,13 +3305,34 @@ client.on('message', async (message) => {
             return;
         }
         let songs = server_queue.songs.map(s => `[${s.title}](${s.url})`)
+        let song_info = await ytdl.getInfo(server_queue.songs[0].url)
         let embed = new Discord.MessageEmbed()
         .setTitle(`:musical_note: Song queue for ${message.guild.name}`)
         .setColor(guild.embedColor)
         .setTimestamp()
-        .setDescription(`**Currently Playing:** ${songs[0]}\n\n**Up Next:**\n${songs.length > 1 ? songs.slice(1).join("\n") : "No songs after the current one"}`)
+        .setDescription(`**Currently Playing:** ${songs[0]}\n\n**Up Next:**\n${songs.length > 1 ? songs.slice(1).splice(songs[0],songs[5]).join("\n") : "No songs after the current one"}`)
+        .setThumbnail(song_info.thumbnail_url)
         message.channel.send(embed)
     }
+    if(commandName == "nowplaying" || commandName == "np"){
+        let server_queue = queue.get(message.guild.id);
+        if(!server_queue){
+            let embed = new Discord.MessageEmbed()
+            .setColor(guild.embedColor)
+            .setTimestamp()
+            .setDescription(`:warning: No songs currently playing in ${message.guild.name}`)
+            message.channel.send(embed)
+            return;
+        }
+        let song_info = await ytdl.getInfo(server_queue.songs[0].url)
+        let embed = new Discord.MessageEmbed()
+        .setColor(guild.embedColor)
+        .setTimestamp()
+        .setDescription(`**Song Name:** ${song_info.videoDetails.title}\n**Position in Song:** ${currentStream.streamTime}`)
+        .setTitle(`Currently Playing in ${message.guild.name} | ${server_queue.songs[0].title}`)
+        .setThumbnail(song_info.thumbnail_url)
+        message.channel.send(embed)
+        }
 })
 
 client.login(config.token)
