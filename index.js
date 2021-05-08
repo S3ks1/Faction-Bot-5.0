@@ -2941,8 +2941,8 @@ client.on('message', async (message) => {
                 db.push(user.lastwallcheck)
             })
         })
-        let ux = await getUserByWallCheck(parseInt(Math.max(...db)))
-        console.log(ux)
+        let ux = await getUserByWallCheck(Math.max(...db))
+        console.log(Math.max(db))
                 getUUID(ux.ign).then(uuid=>{
                     let embed = new Discord.MessageEmbed()
                     .setColor(guild.embedColor)
