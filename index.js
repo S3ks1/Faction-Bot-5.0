@@ -317,6 +317,7 @@ function getUUID(ign){
 }
 
 const video_player = async (guild, song) => {
+    console.log(song)
     let song_queue = queue.get(guild.id);
     if(!song){
         song_queue.voice_channel.leave();
