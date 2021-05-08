@@ -3209,6 +3209,7 @@ client.on('message', async (message) => {
                 video_player(message.guild, queue_constructor[0])
             }
             catch (err) {
+                console.log(err)
                 queue.delete(message.guild.id)
                 let embed = new Discord.MessageEmbed()
                 .setTimestamp()
