@@ -20,6 +20,7 @@ const textToSpeech = require('@google-cloud/text-to-speech');
 const clientt = new textToSpeech.TextToSpeechClient();
 const client = new Discord.Client({partials: ["MESSAGE", "CHANNEL", "REACTION"]})
 const cooldowns = new Set()
+const status = require('minecraft-server-status');
 var exec = require('child_process').exec;
 let queue = new Map();
 var used = 0;
@@ -3502,6 +3503,16 @@ client.on('message', async (message) => {
         .setThumbnail(song_info.videoDetails.thumbnails[0].url)
         message.channel.send(embed)
         }
+    if(commandName == "sstatus" || commandName == "serverstatus"){
+        status(args[0], 25565, response => {
+            let embed = new Discord.MessageEmbed()
+            .setColor(guild.embedColor)
+            .setTimestamp()
+            .setTitle(`MC Server status for ${args[0]}`)
+            .setDescription(`\`\`\`${response}\`\`\``)
+            message.channel.send(embed)
+        })
+    }
 })
 
 client.login(config.token)
