@@ -342,6 +342,8 @@ const video_player = async (g, guild, song) => {
             .setDescription(`:ok_hand: Ran out of music to play and left your channel!`)
             if(song_queue.text_channel !== "ingame"){
                 song_queue.text_channel.send(embed)
+                currentStream = null;
+                queue.delete(guild.id)
             }
             else{
                 bot.chat(`/ff [X] Stopped playing music as the queue was empty`)
