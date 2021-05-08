@@ -913,7 +913,7 @@ bot.on('login', async () => {
                     if(u.lastbuffercheck) buffers.push(u.lastbuffercheck)
                     if(u.lastrpostcheck) rpost.push(u.lastrpostcheck)
                 })
-                if((time-Math.max(...walls)) % guild.wallAlert == 0 && guild.walls === true){
+                if((time-Math.max(...walls)) % guild.wallAlert == 0 && guild.walls === true && guild.grace == false){
                     
                     let g = client.guilds.cache.get(config.mainGuild)
                     let c = g.channels.cache.find(c => c.name === guild.wallsChannel)
@@ -927,7 +927,7 @@ bot.on('login', async () => {
                         walls
                     }
                 }
-                if((time-Math.max(...buffers)) % guild.bufferAlert == 0 && guild.buffers === true){
+                if((time-Math.max(...buffers)) % guild.bufferAlert == 0 && guild.buffers === true && guild.grace == false){
                     let g = client.guilds.cache.get(config.mainGuild)
                     let c = g.channels.cache.find(c => c.name === guild.bufferChannel)
                     bot.chat(`/ff Buffers have not been checked in ${ms((time-Math.max(walls))*1000, { long: true })}! Check now and type ${guild.prefix}${guild.bufferCommand}`)
@@ -939,7 +939,7 @@ bot.on('login', async () => {
                         c.send(embed)
                     }
                 }
-                if((time-Math.max(rpost)) % guild.rpostAlert == 0 && guild.rpost === true){
+                if((time-Math.max(rpost)) % guild.rpostAlert == 0 && guild.rpost === true && guild.grace == false){
                     let g = client.guilds.cache.get(config.mainGuild)
                     let c = g.channels.cache.find(c => c.name === guild.rpostChannel)
                     bot.chat(`/ff RPost walls have not been checked in ${ms((time-Math.max(rpost))*1000, { long: true })}! Check now and type ${guild.prefix}${guild.rpostCommand}`)
@@ -3295,7 +3295,7 @@ client.on('message', async (message) => {
         .setTitle(`:musical_note: Song queue for ${message.guild.name}`)
         .setColor(guild.embedColor)
         .setTimestamp()
-        .setDescription(`**Currently Playing:** ${songs[0]}\n\n**Up Next:**\n${songs.length > 1 ? songs.shift().join("\n") : "No songs after the current one"}`)
+        .setDescription(`**Currently Playing:** ${songs[0]}\n\n**Up Next:**\n${songs.length > 1 ? songs.slice(1).join("\n") : "No songs after the current one"}`)
         message.channel.send(embed)
     }
 })
