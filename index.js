@@ -3256,7 +3256,7 @@ client.on('message', async (message) => {
         .setTimestamp()
         .setTitle(`Bot Status for ${message.guild.name} | ${config.settings.host}`)
         .setColor(guild.embedColor)
-        .setDescription(`**Grace and Checks Status**\n\n**Grace**: ${guild.grace == false ? `:red_circle:` : `:green_circle:`}\n**Wall Checks**: ${guild.walls == false ? `:red_circle:` : `:green_circle:`}\n**Buffer Checks**: ${guild.buffers == false ? `:red_circle:` : `:green_circle:`}\n**RPost Checks**: ${guild.rpost == false ? `:red_circle:` : `:green_circle:`}\n\n**User Information**\n**Total Whitelisted Users:** ${users.length}\n**Last Wall Check:** ${ms((time-Math.max(walls))*1000, { long: true })} ago\n**Last Buffer Check:** ${ms((time-Math.max(buffers))*1000, { long: true })} ago\n**Last RPost Check:** ${ms((time-Math.max(rpost))*1000, { long: true })}`)
+        .setDescription(`**Grace and Checks Status**\n\n**Grace**: ${guild.grace == false ? `:red_circle:` : `:green_circle:`}\n**Wall Checks**: ${guild.walls == false ? `:red_circle:` : `:green_circle:`}\n**Buffer Checks**: ${guild.buffers == false ? `:red_circle:` : `:green_circle:`}\n**RPost Checks**: ${guild.rpost == false ? `:red_circle:` : `:green_circle:`}\n\n**User Information**\n**Total Whitelisted Users:** ${users.length}\n**Last Wall Check:** ${ms((time-Math.max(...walls))*1000, { long: true })} ago\n**Last Buffer Check:** ${ms((time-Math.max(...buffers))*1000, { long: true })} ago\n**Last RPost Check:** ${ms((time-Math.max(...rpost))*1000, { long: true })}`)
         message.channel.send(embed)
     }
     if(commandName == "tempgrace"){
