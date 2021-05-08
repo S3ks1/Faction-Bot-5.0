@@ -345,6 +345,7 @@ const video_player = async (g, guild, song) => {
             }
             else{
                 bot.chat(`/ff [X] Stopped playing music as the queue was empty`)
+                currentStream = null;
             }
             return;
         }
@@ -402,6 +403,7 @@ const stop_song = (g, message, server_queue) => {
     .setTimestamp()
     .setDescription(`:ok_hand: Stopped playing music and left your channel!`)
     message.channel.send(embed)
+    currentStream = null;
 }
 var result = function(command, cb){
     var child = exec(command, function(err, stdout, stderr){
@@ -1142,7 +1144,7 @@ bot.on('fcf', async (user,content) => {
                     else if(g.me.voice.channel && member.voice.channel.id !== g.me.voice.channel.id){
                         bot.chat("/ff [X] You aren't in the same voice channel as I am")
                     }
-                    else if(member.hasPermission("SEND_MESSAGES") && used == 0){
+                    else if(member.hasPermission("SEND_MESSAGES") && currentStream == null){
                         const broadcast = client.voice.createBroadcast()
                         
                         var c = client.channels.cache.get(member.voice.channelID)
@@ -1156,7 +1158,11 @@ bot.on('fcf', async (user,content) => {
                                 var bufferStream = new Stream.PassThrough()
                                 bufferStream.end(res.AudioStream);
                                 broadcast.play(bufferStream);
-                                connection.play(broadcast, {volume:2})
+                                currentStream = connection.play(broadcast, {volume:2})
+                                .on('finish', () => {
+                                    currentStream = null;
+                                })
+                            
                             })
                         })
 
@@ -3387,7 +3393,7 @@ client.on('message', async (message) => {
         .setColor(guild.embedColor)
         .setTimestamp()
         .setDescription(`**Currently Playing:** ${songs[0]}\n\n**Up Next:**\n${songs.length > 1 ? songs.slice(1).slice(0,5).join("\n") : "No songs after the current one"}`)
-        .setThumbnail(song_info.thumbnail_url)
+        .setThumbnail(song_info.videoDetails.thumbnail.thumbnails[0].url)
         message.channel.send(embedz)
     }
     if(commandName == "nowplaying" || commandName == "np"){
