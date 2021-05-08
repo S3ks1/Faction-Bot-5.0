@@ -986,7 +986,7 @@ bot.on('end', () => {
     process.exit(0)
 })
 
-bot.on('fcf', (user,content) => {
+bot.on('fcf', async (user,content) => {
     //console.log("xd")
     let now = new Date()  
     let time = Math.round(now.getTime() / 1000)
