@@ -360,11 +360,9 @@ const video_player = async (g, guild, song) => {
     .setTimestamp()
     .setDescription(`:musical_note: Now playing **[${song.title}](${song.url})**`)
     if(c){
-        console.log(`SENT IN RIGHT CHANNEL`)
         await song_queue.text_channel.send(embed)
     }
     else{
-        console.log(`DEFAULTED TO INGAME CHAT`)
         bot.chat(`/ff (!) Now playing ${song.title}`)
     }
 
@@ -3452,7 +3450,7 @@ client.on('message', async (message) => {
         .setColor(guild.embedColor)
         .setTimestamp()
         .setDescription(`**Currently Playing:** ${songs[0]}\n\n**Up Next:**\n${songs.length > 1 ? songs.slice(1).slice(0,5).join("\n") : "No songs after the current one"}`)
-        .setThumbnail(song_info.videoDetails.thumbnail.thumbnails[0].url)
+        .setThumbnail(song_info.videoDetails.thumbnails[0].url)
         message.channel.send(embedz)
     }
     if(commandName == "nowplaying" || commandName == "np"){
@@ -3471,7 +3469,7 @@ client.on('message', async (message) => {
         .setTimestamp()
         .setDescription(`**Song Name:** ${song_info.videoDetails.title}\n**Position in Song:** ${currentStream.streamTime !== null ? ms(currentStream.streamTime, {long: true}) : "Not avaliable"}/${ms(song_info.videoDetails.lengthSeconds*1000, {long: true})}\n**Artist:** ${song_info.videoDetails.ownerChannelName}\n**Upload Date:** ${song_info.videoDetails.uploadDate}\n**View Count:** ${song_info.videoDetails.viewCount}`)
         .setTitle(`Currently Playing in ${message.guild.name} | ${server_queue.songs[0].title}`)
-        .setThumbnail(song_info.videoDetails.thumbnail.thumbnails[0].url)
+        .setThumbnail(song_info.videoDetails.thumbnails[0].url)
         message.channel.send(embed)
         }
 })
