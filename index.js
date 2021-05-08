@@ -21,6 +21,7 @@ const clientt = new textToSpeech.TextToSpeechClient();
 const client = new Discord.Client({partials: ["MESSAGE", "CHANNEL", "REACTION"]})
 const cooldowns = new Set()
 var exec = require('child_process').exec;
+let queue = new Map();
 var used = 0;
 client.aliases = new Discord.Collection()
 client.commands = new Discord.Collection()
@@ -76,6 +77,7 @@ const { inspect } = require("util");
 const { Stream } = require("stream");
 const { guildID } = require("./config");
 const { IoTSecureTunneling } = require("aws-sdk");
+const math = require("mathjs");
 var data;
 
 var Polly = new AWS.Polly({
@@ -313,6 +315,26 @@ function getUUID(ign){
         })
     })
     return promise;
+}
+
+const video_player = async (guild, song) => {
+    let song_queue = queue.get(guild.id);
+    if(!song){
+        song_queue.voice_channel.leave();
+        queue.delete(guild.id)
+        return;
+    }
+    let stream = ytdl(song.url, {filter: 'audioonly'});
+    song_queue.connection.play(stream, {seek:0, volume: 1})
+    .on('finish', () => {
+        song_queue.songs.shift();
+        video_player(guild, song_queue.songs[0]);
+    })
+    let embed = new Discord.MessageEmbed()
+    .setColor(guild.embedColor)
+    .setTimestamp()
+    .setDescription(`:musical_note: Now playing **[${song.name}](${song.url})**`)
+    await song_queue.text_channel.send(``)
 }
 var result = function(command, cb){
     var child = exec(command, function(err, stdout, stderr){
@@ -3149,40 +3171,62 @@ client.on('message', async (message) => {
             .setDescription(`:warning: Invalid syntax, use the command like this: \`${guild.prefix}play <song name>\``)
             return message.channel.send(embed)
         }
-        let connection = await voiceChannel.join()
-        let videoFinder = async (query) => {
-            const videoResult = await ytSearch(query)
-            
-            return (videoResult.videos.length > 1) ? videoResult.videos[0] : null;
-        }
-        
-        const video = await videoFinder(args.join(' '))
-
-        if(video){
-            const stream = ytdl(video.url, {filter : "audioonly"});
-            connection.play(stream, {seek: 0, volume: 1})
-            .on('finish', () => {
-                voiceChannel.leave()
-            })
-            let embed = new Discord.MessageEmbed()
-            .setColor(guild.embedColor)
-            .setTimestamp()
-            .setDescription(`:musical_note: Now playing **[${video.title}](${video.url})**`)
-            .setThumbnail(video.thumbnail)
-            message.channel.send(embed)
-            
+        let server_queue = queue.get(message.guild.id);
+        let song = {}
+        if(ytdl.validateURL(args[0])){
+            let song_info = await ytdl.getInfo(args[0])
+            song = { title: song_info.videoDetails.title, url: song_info.videoDetails.video_url }
         }
         else{
+            let video_finder = async (query) => {
+                let videoResult = await ytSearch(query)
+                return (videoResult.videos.length > 1) ? videoResult.videos[0] : null;
+            }
+            let video = await video_finder(args.join(' '))
+            if(video){
+                song = { title: video.title, url: video.url}
+            }
+            else{
+                let embed = new Discord.MessageEmbed()
+                .setColor(guild.embedColor)
+                .setTimestamp()
+                .setDescription(`:warning: Could not find the requested music`)
+                return message.channel.send(embed)
+            }
+        }
+        if(!server_queue){
+            let queue_constructor = {
+                voice_channel: voice_channel,
+                text_channel: message.channel,
+                connection: null,
+                songs: []
+            }
+            queue.set(message.guild.id, queue_constructor)
+            queue_constructor.songs.push(song)
+
+            try{
+                let connection = await voice_channel.join();
+                queue_constructor.connection = connection;
+                video_player(message.guild, queue_constructor[0])
+            }
+            catch (err) {
+                queue.delete(message.guild.id)
+                let embed = new Discord.MessageEmbed()
+                .setTimestamp()
+                .setColor(guild.embedColor)
+                .setDescription(`:warning: There was an error playing this song!`)
+                return message.channel.send(embed)
+            }
+        }
+        else{
+            server_queue.songs.push(song)
             let embed = new Discord.MessageEmbed()
             .setColor(guild.embedColor)
-            .setDescription(`:warning: No results found on youtube!`)
             .setTimestamp()
+            .setDescription(`:ok_hand: Added **[${song.title}](${song.url})** to the queue!`)
             message.channel.send(embed)
             return;
         }
-
-
-
     }
     if(commandName == "leave"){
 
