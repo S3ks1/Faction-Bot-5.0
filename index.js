@@ -3313,6 +3313,7 @@ client.on('message', async (message) => {
             return message.channel.send(embed)
         }
         let server_queue = queue.get(message.guild.id);
+        console.log(server_queue)
         let song = {}
         if(ytdl.validateURL(args[0])){
             let song_info = await ytdl.getInfo(args[0])
