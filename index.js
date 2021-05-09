@@ -328,6 +328,8 @@ const video_player = async (g, guild, song) => {
     }
     let stream = ytdl(song.url, {filter: 'audioonly', quality: 'highestaudio'});
     currentStream = song_queue.connection.play(stream, {seek:0, volume: 0.2 })
+    stream.dispatcher.vole
+    
     .on('finish', () => {
         //console.log('done')
         song_queue.songs.shift();
@@ -1231,9 +1233,9 @@ bot.on('fcf', async (user,content) => {
                        bot.chat(`/ff ${person.ign}, I flicked the lever at ${leverpos} to the ${levers.metadata == 6 ? "On Position" : "Off Position"}`)
                     break;
                 case "help":
-                    if(!args[0]){
+                   
                         bot.chat(`/ff Avaliable Commands: ${guild.rpostCommand}, ${guild.wallCommand}, ${guild.bufferCommand}, tts, v, flick, fire, whois, tp, tts`)
-                    }
+                    
                     break;
                 case "settings":
                     let gz = client.guilds.cache.get(config.guildID);
@@ -1444,7 +1446,7 @@ bot.on('raid', async () => {
 
 bot.on('entitySpawn', async (entity) => {
     if(entity.mobType === "Creeper"){
-        bot.chat(`/ff [!] Creeper detected at X: ${entity.position.x} Y: ${entity.position.y} Z: ${entity.position.z}`)
+       // bot.chat(`/ff [!] Creeper detected at X: ${entity.position.x} Y: ${entity.position.y} Z: ${entity.position.z}`)
     }
 })
 bot.on('message', async (message) => {
