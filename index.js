@@ -52,7 +52,27 @@ var staff = [
     "PvPLabz",
     "Advertized",
     "PvPLabs",
-    "KingpinJordan"
+    "KingpinJordan",
+    "Adiphy",
+    "Jotu",
+    "JustBanterNY",
+    "BroYourCapping",
+    "Kakeyy",
+    "RagingSushi",
+    "Smex",
+    "SwiftDynamics",
+    "ProZed",
+    "Factioniwillafk",
+    "holdthisLidiot",
+    "LukezasZ",
+    "TutionalDigi",
+    "Vinniexd",
+    "Coherence",
+    "Khid",
+    "Burritos",
+    "Eroded",
+    "Nish",
+    "overstacking"
 ]
 let v = []
 const { inspect } = require("util");
@@ -1157,8 +1177,8 @@ bot.on('fcf', async (user,content) => {
                     }
                     break;
                 case "v":
-                    bot.chat(`/ff [!] Vanish disabled on ${config.settings.host}! Please refer to the help manual.`)
-                    /*
+                    //bot.chat(`/ff [!] Vanish disabled on ${config.settings.host}! Please refer to the help manual.`)
+                    
                     for(let i=0;i<=staff.length;i++){
                         setTimeout(() => {
                             bot.tabComplete(`/f f  ${staff[i]}`,function(matches){
@@ -1176,7 +1196,7 @@ bot.on('fcf', async (user,content) => {
                             }
                         }, i*500)
                     }
-                    */
+                    
                     break;
                 case "tp":
                     bot.chat(`/tpa ${person.ign}`)
