@@ -3465,6 +3465,8 @@ client.on('message', async (message) => {
     }
     if(commandName == "stop"){
         let server_queue = queue.get(message.guild.id);
+        queue.delete(message.guild.id)
+        server_queue.voiceChannel.leave()
         stop_song(guild, message, server_queue)
     }
     if(commandName == "queue"){
