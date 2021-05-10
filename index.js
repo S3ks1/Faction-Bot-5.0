@@ -933,60 +933,51 @@ bot.on('login', async () => {
     setInterval(async () => {
         let now = new Date()    
         let time = Math.round(now.getTime() / 1000)
-        let walls = []
-        let buffers = []
-        let rpost = []
+        let walls = await getUserByWallCheck()
+        let buffers = await getUserByBufferCheck()
+        let rpost = await getUserByRpostCheck()
         let guild = await getGuild(config.mainGuild)
-        getUsers().then((res) => {
-            if(res == false || res == []){
-                return;
-            }
-            else{
-                res.forEach((u) => {
-                    if(u.lastwallcheck) walls.push(u.lastwallcheck)
-                    if(u.lastbuffercheck) buffers.push(u.lastbuffercheck)
-                    if(u.lastrpostcheck) rpost.push(u.lastrpostcheck)
-                })
-                if((time-Math.max(...walls)) % guild.wallAlert == 0 && guild.walls === true && guild.grace == false){
+
+                if(walls.lastwallcheck % guild.wallAlert == 0 && guild.walls === true && guild.grace == false){
                     
                     let g = client.guilds.cache.get(config.mainGuild)
                     let c = g.channels.cache.find(c => c.name === guild.wallsChannel)
-                    bot.chat(`/ff Walls have not been checked in ${ms((time-Math.max(...walls))*1000, { long: true })}! Check now and type ${guild.prefix}${guild.wallCommand}`)
+                    bot.chat(`/ff Walls have not been checked in ${ms((time-walls.lastwallcheck)*1000, { long: true })}! Check now and type ${guild.prefix}${guild.wallCommand}`)
                     if(c){
                         let embed = new Discord.MessageEmbed()
                         .setColor(guild.embedColor)
                         .setTimestamp()
-                        .setDescription(`:warning: Walls have been unchecked for ${ms((time-Math.max(...walls))*1000, { long: true })}! Check now by typing ${guild.prefix}${guild.wallCommand}`)
+                        .setDescription(`:warning: Walls have been unchecked for ${ms((time-walls.lastwallcheck)*1000, { long: true })}! Check now by typing ${guild.prefix}${guild.wallCommand}`)
                         c.send(embed)
                         walls
                     }
                 }
-                if((time-Math.max(...buffers)) % guild.bufferAlert == 0 && guild.buffers === true && guild.grace == false){
+                if(time-buffers.lastbuffercheck % guild.bufferAlert == 0 && guild.buffers === true && guild.grace == false){
                     let g = client.guilds.cache.get(config.mainGuild)
-                    let c = g.channels.cache.find(c => c.name === guild.bufferChannel)
-                    bot.chat(`/ff Buffers have not been checked in ${ms((time-Math.max(walls))*1000, { long: true })}! Check now and type ${guild.prefix}${guild.bufferCommand}`)
+                    let c = g.channels.cache.find(c => c.name === guild.bufferChannel)  
+                    bot.chat(`/ff Buffers have not been checked in ${ms((time-buffers.lastbuffercheck)*1000, { long: true })}! Check now and type ${guild.prefix}${guild.bufferCommand}`)
                     if(c){
                         let embed = new Discord.MessageEmbed()
                         .setColor(guild.embedColor)
                         .setTimestamp()
-                        .setDescription(`:warning: Buffers have been unchecked for ${ms((time-Math.max(...buffers))*1000, { long: true })}! Check now by typing ${guild.prefix}${guild.bufferCommand}`)
+                        .setDescription(`:warning: Buffers have been unchecked for ${ms((time-buffers.lastbuffercheck)*1000, { long: true })}! Check now by typing ${guild.prefix}${guild.bufferCommand}`)
                         c.send(embed)
                     }
                 }
-                if((time-Math.max(rpost)) % guild.rpostAlert == 0 && guild.rpost === true && guild.grace == false){
+                if(time-rpost.lastrpostcheck % guild.rpostAlert == 0 && guild.rpost === true && guild.grace == false){
                     let g = client.guilds.cache.get(config.mainGuild)
                     let c = g.channels.cache.find(c => c.name === guild.rpostChannel)
-                    bot.chat(`/ff RPost walls have not been checked in ${ms((time-Math.max(rpost))*1000, { long: true })}! Check now and type ${guild.prefix}${guild.rpostCommand}`)
+                    bot.chat(`/ff RPost walls have not been checked in ${ms((time-rpost.lastrpostcheck)*1000, { long: true })}! Check now and type ${guild.prefix}${guild.rpostCommand}`)
                     if(c){
                         let embed = new Discord.MessageEmbed()
                         .setColor(guild.embedColor)
                         .setTimestamp()
-                        .setDescription(`:warning: RPost walls have been unchecked for ${ms((time-Math.max(rpost))*1000, { long: true })}! Check now by typing ${guild.prefix}${guild.rpostCommand}`)
+                        .setDescription(`:warning: RPost walls have been unchecked for ${ms((time-rpost.lastrpostcheck)*1000, { long: true })}! Check now by typing ${guild.prefix}${guild.rpostCommand}`)
                         c.send(embed)
                     }
                 }
-            }
-        })
+            
+        
     }, 1000)
 })
 
@@ -1017,12 +1008,7 @@ bot.on('fcf', async (user,content) => {
                 case guild.wallCommand:
                     if(guild.walls === true && guild.grace === false){
                         if(time-guild.wallCooldown > person.lastwallcheck){
-                            let db = []
-                            getUsers().then((r) => {
-                                r.forEach(user => {
-                                    db.push(user.lastwallcheck)
-                                })
-                            })
+                            let lastcheck = await getUserByWallCheck()
                             request(`https://api.mojang.com/users/profiles/minecraft/${person.ign}`, {
                                 json: true
                             }, (err, res, uuid) => {
@@ -1034,7 +1020,7 @@ bot.on('fcf', async (user,content) => {
                                     if(channel){
                                                 let embed = new Discord.MessageEmbed()
                                                 .setTitle(`Wall Check`)
-                                                .addField(`Check Time`, `${ms((time-Math.max(...db))*1000, { long: true })}`)
+                                                .addField(`Check Time`, `${ms((time-lastcheck)*1000, { long: true })}`)
                                                 .addField(`Total Checks`, `${person.wallchecks+1}`)
                                                 .addField(`Discord`, `${client.users.cache.get(person.discordId).tag} (${person.discordId})`)
                                                 .addField(`IGN`, person.ign)
@@ -1045,7 +1031,7 @@ bot.on('fcf', async (user,content) => {
                                                 channel.send(embed)   
                                     }
                                     person.wallchecks++
-                                    bot.chat(`/ff ${person.ign} checked walls! Time since last check: ${ms((time-Math.max(...db))*1000, { long: true })}! Total Checks: ${person.wallchecks}`)
+                                    bot.chat(`/ff ${person.ign} checked walls! Time since last check: ${ms((time-lastcheck)*1000, { long: true })}! Total Checks: ${person.wallchecks}`)
                                     person.lastwallcheck = time
                                     person.save()
                                     return;
@@ -1059,12 +1045,7 @@ bot.on('fcf', async (user,content) => {
                 case guild.bufferCommand:
                     if(guild.buffers === true && guild.grace === false){
                         if(time-guild.bufferCooldown > person.lastbuffercheck){
-                            let db = []
-                            getUsers().then((r) => {
-                                r.forEach(user => {
-                                    db.push(user.lastbuffercheck)
-                                })
-                            })
+                            let lastcheck = await getUserByBufferCheck()
                             request(`https://api.mojang.com/users/profiles/minecraft/${person.ign}`, {
                                 json: true
                             }, (err, res, uuid) => {
@@ -1076,7 +1057,7 @@ bot.on('fcf', async (user,content) => {
                                     if(channel){
                                                 let embed = new Discord.MessageEmbed()
                                                 .setTitle(`Buffer Check`)
-                                                .addField(`Check Time`, `${ms((time-Math.max(...db))*1000, { long: true })}`)
+                                                .addField(`Check Time`, `${ms((time-lastcheck)*1000, { long: true })}`)
                                                 .addField(`Total Checks`, `${person.bufferchecks+1}`)
                                                 .addField(`Discord`, `${client.users.cache.get(person.discordId).tag} (${person.discordId})`)
                                                 .addField(`IGN`, person.ign)
@@ -1087,7 +1068,7 @@ bot.on('fcf', async (user,content) => {
                                                 channel.send(embed)   
                                     }
                                     person.bufferchecks++
-                                    bot.chat(`/ff ${person.ign} checked buffers! Time since last check: ${ms((time-Math.max(...db))*1000, { long: true })}! Total Checks: ${person.bufferchecks}`)
+                                    bot.chat(`/ff ${person.ign} checked buffers! Time since last check: ${ms((time-lastcheck)*1000, { long: true })}! Total Checks: ${person.bufferchecks}`)
                                     person.lastbuffercheck = time
                                     person.save()
                                     return;
@@ -1103,12 +1084,7 @@ bot.on('fcf', async (user,content) => {
                     console.log(guild.grace)
                     if(guild.rpost === true && guild.grace === false){
                         if(time-guild.rpostCooldown > person.lastrpostcheck){
-                            let db = []
-                            getUsers().then((r) => {
-                                r.forEach(user => {
-                                    db.push(user.lastrpostcheck)
-                                })
-                            })
+                            let lastcheck = await getUserByRpostCheck()
                             request(`https://api.mojang.com/users/profiles/minecraft/${person.ign}`, {
                                 json: true
                             }, (err, res, uuid) => {
