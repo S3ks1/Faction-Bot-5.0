@@ -1070,6 +1070,7 @@ bot.on('fcf', async (user,content) => {
                                                 channel.send(embed)   
                                     }
                                     person.bufferchecks++
+                                    console.log(`/ff ${person.ign} checked buffers! Time since last check: ${ms((time-lastcheck[0].lastbuffercheck)*1000, { long: true })}! Total Checks: ${person.bufferchecks}`)
                                     bot.chat(`/ff ${person.ign} checked buffers! Time since last check: ${ms((time-lastcheck[0].lastbuffercheck)*1000, { long: true })}! Total Checks: ${person.bufferchecks}`)
                                     person.lastbuffercheck = time
                                     person.save()
