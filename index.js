@@ -1010,6 +1010,7 @@ bot.on('fcf', async (user,content) => {
                     if(guild.walls === true && guild.grace === false){
                         if(time-guild.wallCooldown > person.lastwallcheck){
                             let lastcheck = await getUserByWallCheck()
+                            console.log(lastcheck)
                             request(`https://api.mojang.com/users/profiles/minecraft/${person.ign}`, {
                                 json: true
                             }, (err, res, uuid) => {
@@ -1021,7 +1022,7 @@ bot.on('fcf', async (user,content) => {
                                     if(channel){
                                                 let embed = new Discord.MessageEmbed()
                                                 .setTitle(`Wall Check`)
-                                                .addField(`Check Time`, `${ms((time-lastcheck)*1000, { long: true })}`)
+                                                .addField(`Check Time`, `${ms((time-lastchec.lastwallcheckk)*1000, { long: true })}`)
                                                 .addField(`Total Checks`, `${person.wallchecks+1}`)
                                                 .addField(`Discord`, `${client.users.cache.get(person.discordId).tag} (${person.discordId})`)
                                                 .addField(`IGN`, person.ign)
@@ -1032,7 +1033,7 @@ bot.on('fcf', async (user,content) => {
                                                 channel.send(embed)   
                                     }
                                     person.wallchecks++
-                                    bot.chat(`/ff ${person.ign} checked walls! Time since last check: ${ms((time-lastcheck)*1000, { long: true })}! Total Checks: ${person.wallchecks}`)
+                                    bot.chat(`/ff ${person.ign} checked walls! Time since last check: ${ms((time-lastcheck.lastwallcheck)*1000, { long: true })}! Total Checks: ${person.wallchecks}`)
                                     person.lastwallcheck = time
                                     person.save()
                                     return;
@@ -1058,7 +1059,7 @@ bot.on('fcf', async (user,content) => {
                                     if(channel){
                                                 let embed = new Discord.MessageEmbed()
                                                 .setTitle(`Buffer Check`)
-                                                .addField(`Check Time`, `${ms((time-lastcheck)*1000, { long: true })}`)
+                                                .addField(`Check Time`, `${ms((time-lastcheck.lastbuffercheck)*1000, { long: true })}`)
                                                 .addField(`Total Checks`, `${person.bufferchecks+1}`)
                                                 .addField(`Discord`, `${client.users.cache.get(person.discordId).tag} (${person.discordId})`)
                                                 .addField(`IGN`, person.ign)
@@ -1069,7 +1070,7 @@ bot.on('fcf', async (user,content) => {
                                                 channel.send(embed)   
                                     }
                                     person.bufferchecks++
-                                    bot.chat(`/ff ${person.ign} checked buffers! Time since last check: ${ms((time-lastcheck)*1000, { long: true })}! Total Checks: ${person.bufferchecks}`)
+                                    bot.chat(`/ff ${person.ign} checked buffers! Time since last check: ${ms((time-lastcheck.lastbuffercheck)*1000, { long: true })}! Total Checks: ${person.bufferchecks}`)
                                     person.lastbuffercheck = time
                                     person.save()
                                     return;
@@ -1097,7 +1098,7 @@ bot.on('fcf', async (user,content) => {
                                     if(channel){
                                                 let embed = new Discord.MessageEmbed()
                                                 .setTitle(`Raiding Outpost Check`)
-                                                .addField(`Check Time`, `${ms((time-Math.max(...db))*1000, { long: true })}`)
+                                                .addField(`Check Time`, `${ms((time-lastcheck.lastrpostcheck)*1000, { long: true })}`)
                                                 .addField(`Total Checks`, `${person.rpostchecks+1}`)
                                                 .addField(`Discord`, `${client.users.cache.get(person.discordId).tag} (${person.discordId})`)
                                                 .addField(`IGN`, person.ign)
@@ -1108,7 +1109,7 @@ bot.on('fcf', async (user,content) => {
                                                 channel.send(embed)   
                                     }
                                     person.rpostchecks++
-                                    bot.chat(`/ff ${person.ign} checked RPost walls! Time since last check: ${ms((time-Math.max(...db))*1000, { long: true })}! Total Checks: ${person.rpostchecks}`)
+                                    bot.chat(`/ff ${person.ign} checked RPost walls! Time since last check: ${ms((time-lastcheck.lastrpostcheck)*1000, { long: true })}! Total Checks: ${person.rpostchecks}`)
                                     person.lastrpostcheck = time
                                     person.save()
                                     return;
