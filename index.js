@@ -1022,7 +1022,7 @@ bot.on('fcf', async (user,content) => {
                                     if(channel){
                                                 let embed = new Discord.MessageEmbed()
                                                 .setTitle(`Wall Check`)
-                                                .addField(`Check Time`, `${ms((time-lastcheck[0].lastwallcheckk)*1000, { long: true })}`)
+                                                .addField(`Check Time`, `${ms((time-lastcheck[0].lastwallcheck)*1000, { long: true })}`)
                                                 .addField(`Total Checks`, `${person.wallchecks+1}`)
                                                 .addField(`Discord`, `${client.users.cache.get(person.discordId).tag} (${person.discordId})`)
                                                 .addField(`IGN`, person.ign)
