@@ -43,6 +43,7 @@ bot.chatAddPattern(/^\[(?:[^ ]*)] \(([^ ]*) ➥ me\) (.*)$/, "dm", "archon dm")
 bot.chatAddPattern(/^\(PM\) ([^ ]*) -> me » (.*)$/, "dm", "pvplab dm")
 
 bot.chatAddPattern(/^(?:[*+-]{0,3}|[^ ]*)(?: |)(?:[ ]{0,1})([^ ]*): (.*)$/, "fcf", "archon fcf")
+bot.chatAddPattern(/^\[(?:[^ ]*)\] \[(?:[*+-]{0,3})\] ([^ ]*): ([^ ]*)/, "fcf", "pvplab fcf")
 bot.chatAddPattern(/\[!] WE ARE GETTING RAIDED \[!]/, "raid", "archon raid alerts")
 const vec3 = require('vec3')
 
