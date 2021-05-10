@@ -1099,6 +1099,8 @@ bot.on('fcf', async (user,content) => {
                     }
                     break;
                 case guild.rpostCommand:
+                    console.log(guild.rpost)
+                    console.log(guild.grace)
                     if(guild.rpost === true && guild.grace === false){
                         if(time-guild.rpostCooldown > person.lastrpostcheck){
                             let db = []
