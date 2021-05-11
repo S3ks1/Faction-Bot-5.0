@@ -350,7 +350,7 @@ const video_player = async (g, guild, song) => {
                 queue.delete(guild.id)
             }
             else{
-                bot.chat(`/ff [!] Stopped playing music as the queue was empty`)
+                bot.chat(`[!] Stopped playing music as the queue was empty`)
                 currentStream = null;
                 queue.delete(guild.id)
             }
@@ -367,7 +367,7 @@ const video_player = async (g, guild, song) => {
         await song_queue.text_channel.send(embed)
     }
     else{
-        bot.chat(`/ff (!) Now playing ${song.title}`)
+        bot.chat(`(!) Now playing ${song.title}`)
     }
 
 }
@@ -943,7 +943,7 @@ bot.on('login', async () => {
                     
                     let g = client.guilds.cache.get(config.mainGuild)
                     let c = g.channels.cache.find(c => c.name === guild.wallsChannel)
-                    bot.chat(`/ff Walls have not been checked in ${ms((time-walls.lastwallcheck)*1000, { long: true })}! Check now and type ${guild.prefix}${guild.wallCommand}`)
+                    bot.chat(`Walls have not been checked in ${ms((time-walls.lastwallcheck)*1000, { long: true })}! Check now and type ${guild.prefix}${guild.wallCommand}`)
                     if(c){
                         let embed = new Discord.MessageEmbed()
                         .setColor(guild.embedColor)
@@ -956,7 +956,7 @@ bot.on('login', async () => {
                 if(time-buffers.lastbuffercheck % guild.bufferAlert == 0 && guild.buffers === true && guild.grace == false){
                     let g = client.guilds.cache.get(config.mainGuild)
                     let c = g.channels.cache.find(c => c.name === guild.bufferChannel)  
-                    bot.chat(`/ff Buffers have not been checked in ${ms((time-buffers.lastbuffercheck)*1000, { long: true })}! Check now and type ${guild.prefix}${guild.bufferCommand}`)
+                    bot.chat(`Buffers have not been checked in ${ms((time-buffers.lastbuffercheck)*1000, { long: true })}! Check now and type ${guild.prefix}${guild.bufferCommand}`)
                     if(c){
                         let embed = new Discord.MessageEmbed()
                         .setColor(guild.embedColor)
@@ -968,7 +968,7 @@ bot.on('login', async () => {
                 if(time-rpost.lastrpostcheck % guild.rpostAlert == 0 && guild.rpost === true && guild.grace == false){
                     let g = client.guilds.cache.get(config.mainGuild)
                     let c = g.channels.cache.find(c => c.name === guild.rpostChannel)
-                    bot.chat(`/ff RPost walls have not been checked in ${ms((time-rpost.lastrpostcheck)*1000, { long: true })}! Check now and type ${guild.prefix}${guild.rpostCommand}`)
+                    bot.chat(`RPost walls have not been checked in ${ms((time-rpost.lastrpostcheck)*1000, { long: true })}! Check now and type ${guild.prefix}${guild.rpostCommand}`)
                     if(c){
                         let embed = new Discord.MessageEmbed()
                         .setColor(guild.embedColor)
@@ -980,6 +980,10 @@ bot.on('login', async () => {
             
         
     }, 1000)
+
+    setInterval(async () => {
+        bot.chat("/f c f")
+    }, 15000)
 })
 
 bot.on('end', () => {
@@ -997,7 +1001,7 @@ bot.on('fcf', async (user,content) => {
             //      console.log(person)
             if (content.indexOf(guild.prefix) != 0) return;
             if(person === false){
-                bot.chat(`/ff [!] You must be verified to the bot to use ingame commands! Verify with .whitelist`)
+                bot.chat(`[!] You must be verified to the bot to use ingame commands! Verify with .whitelist`)
                 return;
             }
             let args = content.slice(1).trim().split(/ +/g)
@@ -1033,14 +1037,14 @@ bot.on('fcf', async (user,content) => {
                                                 channel.send(embed)   
                                     }
                                     person.wallchecks++
-                                    bot.chat(`/ff ${person.ign} checked walls! Time since last check - ${ms((time-lastcheck[0].lastwallcheck)*1000, { long: true })}! Total Checks: ${person.wallchecks}`)
+                                    bot.chat(`${person.ign} checked walls! Time since last check - ${ms((time-lastcheck[0].lastwallcheck)*1000, { long: true })}! Total Checks: ${person.wallchecks}`)
                                     person.lastwallcheck = time
                                     person.save()
                                     return;
                             });
                         }
                         else{
-                            bot.chat(`/ff You are on cooldown for ${Math.abs((person.lastwallcheck+guild.wallCooldown)-time)} seconds`)
+                            bot.chat(`You are on cooldown for ${Math.abs((person.lastwallcheck+guild.wallCooldown)-time)} seconds`)
                         }
                     }
                     break;
@@ -1070,15 +1074,15 @@ bot.on('fcf', async (user,content) => {
                                                 channel.send(embed)   
                                     }
                                     person.bufferchecks++
-                                    //console.log(`/ff ${person.ign} checked buffers! Time since last check - ${ms((time-lastcheck[0].lastbuffercheck)*1000, { long: true })}! Total Checks: ${person.bufferchecks}`)
-                                    bot.chat(`/ff ${person.ign} checked buffers! Time since last check - ${ms((time-lastcheck[0].lastbuffercheck)*1000, { long: true })}! Total Checks: ${person.bufferchecks}`)
+                                    //console.log(`${person.ign} checked buffers! Time since last check - ${ms((time-lastcheck[0].lastbuffercheck)*1000, { long: true })}! Total Checks: ${person.bufferchecks}`)
+                                    bot.chat(`${person.ign} checked buffers! Time since last check - ${ms((time-lastcheck[0].lastbuffercheck)*1000, { long: true })}! Total Checks: ${person.bufferchecks}`)
                                     person.lastbuffercheck = time
                                     person.save()
                                     return;
                             });
                         }
                         else{
-                            bot.chat(`/ff You are on cooldown for ${Math.abs((person.lastbuffercheck+guild.bufferCooldown)-time)} seconds`)
+                            bot.chat(`You are on cooldown for ${Math.abs((person.lastbuffercheck+guild.bufferCooldown)-time)} seconds`)
                         }
                     }
                     break;
@@ -1110,14 +1114,14 @@ bot.on('fcf', async (user,content) => {
                                                 channel.send(embed)   
                                     }
                                     person.rpostchecks++
-                                    bot.chat(`/ff ${person.ign} checked RPost walls! Time since last check - ${ms((time-lastcheck[0].lastrpostcheck)*1000, { long: true })}! Total Checks: ${person.rpostchecks}`)
+                                    bot.chat(`${person.ign} checked RPost walls! Time since last check - ${ms((time-lastcheck[0].lastrpostcheck)*1000, { long: true })}! Total Checks: ${person.rpostchecks}`)
                                     person.lastrpostcheck = time
                                     person.save()
                                     return;
                             });
                         }
                         else{
-                            bot.chat(`/ff You are on cooldown for ${Math.abs((person.lastrpostcheck+guild.rpostCooldown)-time)} seconds`)
+                            bot.chat(`You are on cooldown for ${Math.abs((person.lastrpostcheck+guild.rpostCooldown)-time)} seconds`)
                         }
                     }
                     break;
@@ -1126,10 +1130,10 @@ bot.on('fcf', async (user,content) => {
                     let u = person.discordId;
                     let member  = g.member(u)
                     if(!member.voice.channel){
-                        bot.chat("/ff [!] You aren't in a voice channel")
+                        bot.chat("[!] You aren't in a voice channel")
                     }
                     else if(g.me.voice.channel && member.voice.channel.id !== g.me.voice.channel.id){
-                        bot.chat("/ff [!] You aren't in the same voice channel as I am")
+                        bot.chat("[!] You aren't in the same voice channel as I am")
                     }
                     else if(member.hasPermission("SEND_MESSAGES") && currentStream == null){
                         const broadcast = client.voice.createBroadcast()
@@ -1139,7 +1143,7 @@ bot.on('fcf', async (user,content) => {
                             //console.log(args)
                             //console.log(person)
                             tts(`${member.user.username} says ${args.join(" ")}`, person.ttsVoice).then((res) => {
-                                bot.chat(`/ff Playing ${args.join(" ")}`)
+                                bot.chat(`Playing ${args.join(" ")}`)
                                 //console.log(args)
                                 //console.log(args.join(" "))
                                 var bufferStream = new Stream.PassThrough()
@@ -1156,11 +1160,11 @@ bot.on('fcf', async (user,content) => {
 
                     }
                     else{
-                        return bot.chat("/ff [!] Another broadcast is playing");
+                        return bot.chat("[!] Another broadcast is playing");
                     }
                     break;
                 case "v":
-                    //bot.chat(`/ff [!] Vanish disabled on ${config.settings.host}! Please refer to the help manual.`)
+                    //bot.chat(`[!] Vanish disabled on ${config.settings.host}! Please refer to the help manual.`)
                     
                     for(let i=0;i<=staff.length;i++){
                         setTimeout(() => {
@@ -1174,7 +1178,7 @@ bot.on('fcf', async (user,content) => {
                             
                             if(i==staff.length){
                                 //console.log("xd")
-                                bot.chat(`/ff Vanish(${v.length}) - ${v.length !== 0 ? v.join(", ") : "No staff online"}`)
+                                bot.chat(`Vanish(${v.length}) - ${v.length !== 0 ? v.join(", ") : "No staff online"}`)
                                 v=[]
                             }
                         }, i*500)
@@ -1185,18 +1189,18 @@ bot.on('fcf', async (user,content) => {
                     bot.chat(`/tpa ${person.ign}`)
                     break;
                 case "whois":
-                    bot.chat(`/ff (${person.ign}) Walls - ${person.wallchecks}, Buffers - ${person.bufferchecks}, RPostChecks - ${person.rpostchecks}`)
+                    bot.chat(`(${person.ign}) Walls - ${person.wallchecks}, Buffers - ${person.bufferchecks}, RPostChecks - ${person.rpostchecks}`)
                     break;
                 case "fire":
                     const button = bot.findBlock({point: bot.entity.position, matching: 77, maxDistance: 5});
                     if(button == null){
-                            bot.chat(`/ff [!] No button could be found!`)
+                            bot.chat(`[!] No button could be found!`)
                             return;
                     }
                     if (button)
                       bot.activateBlock(button);
                     var outputvec = vec3(button.position.x, button.position.y, button.position.z);
-                     bot.chat(`/ff ${person.ign}, I hit the button at ${outputvec}`)
+                     bot.chat(`${person.ign}, I hit the button at ${outputvec}`)
                      break;
                 case "flick":
                     let levers = bot.findBlock({
@@ -1206,16 +1210,16 @@ bot.on('fcf', async (user,content) => {
                        })
                        //console.log(levers)
                        if(levers == null){
-                           bot.chat(`/ff [!] No lever could be found!`)
+                           bot.chat(`[!] No lever could be found!`)
                            return;
                        }
                        bot.activateBlock(levers)
                        var leverpos = vec3(levers.position.x, levers.position.y, levers.position.z)
-                       bot.chat(`/ff ${person.ign}, I flicked the lever at ${leverpos} to the ${levers.metadata == 6 ? "On Position" : "Off Position"}`)
+                       bot.chat(`${person.ign}, I flicked the lever at ${leverpos} to the ${levers.metadata == 6 ? "On Position" : "Off Position"}`)
                     break;
                 case "help":
                    
-                        bot.chat(`/ff Avaliable Commands - ${guild.rpostCommand}, ${guild.wallCommand}, ${guild.bufferCommand}, tts, v, flick, fire, whois, tp, tts`)
+                        bot.chat(`Avaliable Commands - ${guild.rpostCommand}, ${guild.wallCommand}, ${guild.bufferCommand}, tts, v, flick, fire, whois, tp, tts`)
                     
                     break;
                 case "settings":
@@ -1223,14 +1227,14 @@ bot.on('fcf', async (user,content) => {
                     let uz = person.discordId;
                     let memberz  = gz.member(uz)
                     
-                    if(!memberz.hasPermission("ADMINISTRATOR")) return bot.chat(`/ff [!] You don't have permission to run this command`)
+                    if(!memberz.hasPermission("ADMINISTRATOR")) return bot.chat(`[!] You don't have permission to run this command`)
                     getGuild(config.guildID).then((res) => {
                         if(!args[0]){
                             let mapped = []
                             Object.keys(res._doc).forEach(k=> {
                                 mapped.push(`${k}:${res._doc[k]}`)
                             })
-                            bot.chat(`/ff (!) ${person.ign} Check your discord dms!`)
+                            bot.chat(`(!) ${person.ign} Check your discord dms!`)
                             memberz.send(mapped.join(`\n`))
                         }
                         else if(Object.keys(res._doc).indexOf(args[0]) !== -1){
@@ -1247,7 +1251,7 @@ bot.on('fcf', async (user,content) => {
                                     res._doc[args[0]] = false
                                 }
                                 else{
-                                    bot.chat(`/ff [!] Invalid Key provided`)
+                                    bot.chat(`[!] Invalid Key provided`)
                                     return;
                                 }
                             }
@@ -1261,48 +1265,48 @@ bot.on('fcf', async (user,content) => {
                             ).then((xd) => {})
                 
 
-                            bot.chat(`/ff (!) Saved ${args.slice(1).join(" ")} as a new value for ${args[0]}`)
+                            bot.chat(`(!) Saved ${args.slice(1).join(" ")} as a new value for ${args[0]}`)
 
                             return;
                         }
                         else{
-                            bot.chat(`/ff [!] Invalid key ${args[0]} provided`)
+                            bot.chat(`[!] Invalid key ${args[0]} provided`)
                         }
                     }).catch((err) => {console.log(err)})
                     break;
                 case "penis":
                     let random = Math.floor(Math.random() * (1000 - 100) + 100) / 100;
                     if(!args[0]){
-                        bot.chat(`/ff (!) Your penis is ${random} inches long. 8${Array(Math.round(random)).join(`=`)}D`)
+                        bot.chat(`(!) Your penis is ${random} inches long. 8${Array(Math.round(random)).join(`=`)}D`)
                     }
                     else{
-                        bot.chat(`/ff (!) ${args[0]}'s pensis is ${random} inches long. 8${Array(Math.round(random)).join(`=`)}D`)
+                        bot.chat(`(!) ${args[0]}'s pensis is ${random} inches long. 8${Array(Math.round(random)).join(`=`)}D`)
                     }
                     break;
                 case "dick":
                         let random2 = Math.floor(Math.random() * (1000 - 100) + 100) / 100;
                         if(!args[0]){
-                            bot.chat(`/ff (!) Your dick is ${random2} inches long. 8${Array(Math.round(random2)).join(`=`)}D`)
+                            bot.chat(`(!) Your dick is ${random2} inches long. 8${Array(Math.round(random2)).join(`=`)}D`)
                         }
                         else{
-                            bot.chat(`/ff (!) ${args[0]}'s dick is ${random2} inches long. 8${Array(Math.round(random2)).join(`=`)}D`)
+                            bot.chat(`(!) ${args[0]}'s dick is ${random2} inches long. 8${Array(Math.round(random2)).join(`=`)}D`)
                         }
                     break;  
                 case "tps":
-                    bot.chat(`/ff (!) Current TPS: `+ bot.getTps())
+                    bot.chat(`(!) Current TPS: `+ bot.getTps())
                     break;
                 case "play":
                     let gb = client.guilds.cache.get(config.guildID);
                     let ub = person.discordId;
                     let memberb  = gb.member(ub)
                     if(!memberb.voice.channel){
-                        bot.chat("/ff [!] You aren't in a voice channel")
+                        bot.chat("[!] You aren't in a voice channel")
                     }
                     else if(gb.me.voice.channel && memberb.voice.channel.id !== gb.me.voice.channel.id){
-                        bot.chat("/ff [!] You aren't in the same voice channel as I am")
+                        bot.chat("[!] You aren't in the same voice channel as I am")
                     }
                     else if(!args[0]){
-                        bot.chat(`/ff [!] No song provided`)
+                        bot.chat(`[!] No song provided`)
                     }
                     let server_queue = queue.get(gb.id);
                     let song = {}
@@ -1320,7 +1324,7 @@ bot.on('fcf', async (user,content) => {
                             song = { title: video.title, url: video.url}
                         }
                         else{
-                            bot.chat(`/ff [!] Could not find the requested music`)
+                            bot.chat(`[!] Could not find the requested music`)
                         }
                     }
                     if(!server_queue){
@@ -1345,12 +1349,12 @@ bot.on('fcf', async (user,content) => {
                         catch (err) {
                             console.log(err)
                             queue.delete(gb.id)
-                            bot.chat(`/ff [!] There was an error playing this song`)
+                            bot.chat(`[!] There was an error playing this song`)
                         }
                     }
                     else{
                         server_queue.songs.push(song)
-                        bot.chat(`/ff (!) Added ${song.title} to the queue!`)
+                        bot.chat(`(!) Added ${song.title} to the queue!`)
                         return;
                     }
                     break;
@@ -1359,27 +1363,27 @@ bot.on('fcf', async (user,content) => {
                     let uc = person.discordId;
                     let memberc  = gc.member(uc)
                     if(!memberc.voice.channel){
-                        bot.chat("/ff [!] You aren't in a voice channel")
+                        bot.chat("[!] You aren't in a voice channel")
                     }
                     if(!memberc.voice.channel){
-                        bot.chat("/ff [!] You aren't in a voice channel")
+                        bot.chat("[!] You aren't in a voice channel")
                     }
                     else if(gc.me.voice.channel && memberc.voice.channel.id !== gc.me.voice.channel.id){
-                        bot.chat("/ff [!] You aren't in the same voice channel as I am")
+                        bot.chat("[!] You aren't in the same voice channel as I am")
                     }
                     else{
 
                     }
                     let server_queuez = queue.get(gc.id);
                     if(!server_queuez){
-                        bot.chat(`/ff [!] No playing music`)
+                        bot.chat(`[!] No playing music`)
                         return
                     }
                     if(server_queuez.songs.length=1){
                         server_queuez.voice_channel.leave()
                     }
                     server_queuez.connection.dispatcher.end();
-                    bot.chat(`/ff (!) Skipped ${server_queuez.songs[0].title}`)
+                    bot.chat(`(!) Skipped ${server_queuez.songs[0].title}`)
                     break;
                 case "queue":
                     let gp = client.guilds.cache.get(config.guildID);
@@ -1387,10 +1391,10 @@ bot.on('fcf', async (user,content) => {
                     let memberp  = gp.member(up)
                     let server_queuep = queue.get(gp.id);
                     if(!server_queuep){
-                        bot.chat(`/ff [!] No currently playing music`)
+                        bot.chat(`[!] No currently playing music`)
                     }
                     else{
-                        bot.chat(`/ff (!) Current Queue: ${server_queuep.songs.map(s=>`${s.title}`).join(",")}`)
+                        bot.chat(`(!) Current Queue: ${server_queuep.songs.map(s=>`${s.title}`).join(",")}`)
                     }
                     break;
                 case "np":
@@ -1399,11 +1403,11 @@ bot.on('fcf', async (user,content) => {
                     let memberr  = gr.member(ur)
                     let server_queuer = queue.get(gr.id)
                     if(!server_queuer){
-                        bot.chat(`/ff [!] No currently playing music`)
+                        bot.chat(`[!] No currently playing music`)
                     }
                     else{
                         let songinfo = await ytdl.getInfo(server_queuer.songs[0].url)
-                        bot.chat(`/ff (!) Now Playing: ${songinfo.videoDetails.title} by ${songinfo.videoDetails.ownerChannelName} - ${ms(songinfo.videoDetails.lengthSeconds*1000)}`)
+                        bot.chat(`(!) Now Playing: ${songinfo.videoDetails.title} by ${songinfo.videoDetails.ownerChannelName} - ${ms(songinfo.videoDetails.lengthSeconds*1000)}`)
                     }
     
             }
@@ -1427,7 +1431,7 @@ bot.on('raid', async () => {
 
 bot.on('entitySpawn', async (entity) => {
     if(entity.mobType === "Creeper"){
-       // bot.chat(`/ff [!] Creeper detected at X: ${entity.position.x} Y: ${entity.position.y} Z: ${entity.position.z}`)
+       // bot.chat(`[!] Creeper detected at X: ${entity.position.x} Y: ${entity.position.y} Z: ${entity.position.z}`)
     }
 })
 bot.on('message', async (message) => {
@@ -2800,7 +2804,7 @@ client.on('message', async (message) => {
     
             }
             else{
-                return bot.chat("/ff [!] Another broadcast is playing");
+                return bot.chat("[!] Another broadcast is playing");
             }
         })
         
@@ -3182,7 +3186,7 @@ client.on('message', async (message) => {
                     .setTimestamp()
                     .setDescription(`:ok_hand: Successfully enabled the Grace period!`)
                     message.channel.send(embed)
-                    bot.chat(`/ff (!) Grace has been enabled!`)
+                    bot.chat(`(!) Grace has been enabled!`)
                 })
             }
             else{
@@ -3203,7 +3207,7 @@ client.on('message', async (message) => {
                     .setTimestamp()
                     .setDescription(`:ok_hand: Successfully disabled the Grace period!`)
                     message.channel.send(embed)
-                    bot.chat(`/ff (!) Grace has been disabled!`)
+                    bot.chat(`(!) Grace has been disabled!`)
                 })
             }
             else{
@@ -3256,13 +3260,13 @@ client.on('message', async (message) => {
             .setTimestamp()
             .setDescription(`:ok_hand: Enabling grace for ${ms(parseInt(args[0])*60000, {long : true})}!`)
             message.channel.send(embed)
-            bot.chat(`/ff (!) Grace has been enabled for ${ms(parseInt(args[0])*60000, {long : true})}!`)
+            bot.chat(`(!) Grace has been enabled for ${ms(parseInt(args[0])*60000, {long : true})}!`)
             guild.grace = true
             guild.save().then(s=>{
                 setTimeout(() => {
                     guild.grace = false
                     guild.save()
-                    bot.chat(`/ff (!) Grace has been disasbled!`)
+                    bot.chat(`(!) Grace has been disasbled!`)
                 }, parseInt(args[0])*60000)
             })
         }
@@ -3272,13 +3276,13 @@ client.on('message', async (message) => {
             .setTimestamp()
             .setDescription(`:ok_hand: Enabling grace for ${ms(ms(args[0]))}`)
             message.channel.send(embed)
-            bot.chat(`/ff (!) Grace has been enabled for ${ms(ms(args[0]))}!`)
+            bot.chat(`(!) Grace has been enabled for ${ms(ms(args[0]))}!`)
             guild.grace = true
             guild.save().then((s) => {
                 setTimeout(() => {
                     guild.grace = false
                     guild.save()
-                    bot.chat(`/ff (!) Grace has been disabled!`)
+                    bot.chat(`(!) Grace has been disabled!`)
                 }, ms(args[0]))
             })
         }
