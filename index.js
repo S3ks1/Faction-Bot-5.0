@@ -938,14 +938,11 @@ bot.on('login', async () => {
         let buffers = await getUserByBufferCheck()
         let rpost = await getUserByRpostCheck()
         let guild = await getGuild(config.mainGuild)
-        console.log(time-walls[0].lastwallcheck)
-        console.log(guild.wallAlert)
 
                 if(parseInt(time-walls[0].lastwallcheck) % parseInt(guild.wallAlert) == 0 && guild.walls === true && guild.grace == false){
-                    console.log("gay")
                     
                     let g = client.guilds.cache.get(config.mainGuild)
-                    let c = g.channels.cache.find(c => c.name === guild.wallsChannel)
+                    let c = g.channels.cache.find(c => c.name === guild.wallChannel)
                     bot.chat(`Walls have not been checked in ${ms((time-walls[0].lastwallcheck)*1000, { long: true })}! Check now and type ${guild.prefix}${guild.wallCommand}`)
                     if(c){
                         let embed = new Discord.MessageEmbed()
@@ -953,7 +950,12 @@ bot.on('login', async () => {
                         .setTimestamp()
                         .setDescription(`:warning: Walls have been unchecked for ${ms((time-walls[0].lastwallcheck)*1000, { long: true })}! Check now by typing ${guild.prefix}${guild.wallCommand}`)
                         c.send(embed)
-                        walls
+                        if(guild.alertRole !== "none"){
+                            let r = g.roles.cache.find(r=>r.name===guild.alertRole)
+                            if(r){
+                                message.channel.send(r)
+                            }
+                        }
                     }
                 }
                 if(parseInt(time-buffers[0].lastbuffercheck) % parseInt(guild.bufferAlert) == 0 && guild.buffers === true && guild.grace == false){
@@ -966,6 +968,12 @@ bot.on('login', async () => {
                         .setTimestamp()
                         .setDescription(`:warning: Buffers have been unchecked for ${ms((time-buffers[0].lastbuffercheck)*1000, { long: true })}! Check now by typing ${guild.prefix}${guild.bufferCommand}`)
                         c.send(embed)
+                        if(guild.alertRole !== "none"){
+                            let r = g.roles.cache.find(r=>r.name===guild.alertRole)
+                            if(r){
+                                message.channel.send(r)
+                            }
+                        }
                     }
                 }
                 if(parseInt(time-rpost[0].lastrpostcheck) % parseInt(guild.rpostAlert) == 0 && guild.rpost === true && guild.grace == false){
@@ -978,6 +986,12 @@ bot.on('login', async () => {
                         .setTimestamp()
                         .setDescription(`:warning: RPost walls have been unchecked for ${ms((time-rpost[0].lastrpostcheck)*1000, { long: true })}! Check now by typing ${guild.prefix}${guild.rpostCommand}`)
                         c.send(embed)
+                        if(guild.alertRole !== "none"){
+                            let r = g.roles.cache.find(r=>r.name===guild.alertRole)
+                            if(r){
+                                message.channel.send(r)
+                            }
+                        }
                     }
                 }
             
