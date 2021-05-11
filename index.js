@@ -1022,7 +1022,7 @@ bot.on('fcf', async (user,content) => {
                 return;
             }
             let args = content.slice(1).trim().split(/ +/g)
-            //console.log(args)
+            console.log(args)
             let commandName = args.shift().toLowerCase()
             //console.log(commandName)
            //console.log(commandName)
