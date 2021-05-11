@@ -941,7 +941,7 @@ bot.on('login', async () => {
         console.log(time-walls[0].lastwallcheck)
         console.log(guild.wallAlert)
 
-        console.log(time-walls[0].lastwallcheck % guild.wallAlert == 0)
+        console.log(time-walls[0].lastwallcheck % guild.wallAlert)
                 if(time-walls[0].lastwallcheck % guild.wallAlert == 0 && guild.walls === true && guild.grace == false){
                     console.log("gay")
                     
