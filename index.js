@@ -938,44 +938,42 @@ bot.on('login', async () => {
         let buffers = await getUserByBufferCheck()
         let rpost = await getUserByRpostCheck()
         let guild = await getGuild(config.mainGuild)
-            console.log(walls.lastwallcheck % guild.wallAlert == 0)
-            console.log(walls.lastwallcheck)
-                if(walls.lastwallcheck % guild.wallAlert == 0 && guild.walls === true && guild.grace == false){
+                if(walls[0].lastwallcheck % guild.wallAlert == 0 && guild.walls === true && guild.grace == false){
                     console.log("gay")
                     
                     let g = client.guilds.cache.get(config.mainGuild)
                     let c = g.channels.cache.find(c => c.name === guild.wallsChannel)
-                    bot.chat(`Walls have not been checked in ${ms((time-walls.lastwallcheck)*1000, { long: true })}! Check now and type ${guild.prefix}${guild.wallCommand}`)
+                    bot.chat(`Walls have not been checked in ${ms((time-walls[0].lastwallcheck)*1000, { long: true })}! Check now and type ${guild.prefix}${guild.wallCommand}`)
                     if(c){
                         let embed = new Discord.MessageEmbed()
                         .setColor(guild.embedColor)
                         .setTimestamp()
-                        .setDescription(`:warning: Walls have been unchecked for ${ms((time-walls.lastwallcheck)*1000, { long: true })}! Check now by typing ${guild.prefix}${guild.wallCommand}`)
+                        .setDescription(`:warning: Walls have been unchecked for ${ms((time-walls[0].lastwallcheck)*1000, { long: true })}! Check now by typing ${guild.prefix}${guild.wallCommand}`)
                         c.send(embed)
                         walls
                     }
                 }
-                if(time-buffers.lastbuffercheck % guild.bufferAlert == 0 && guild.buffers === true && guild.grace == false){
+                if(time-buffers[0].lastbuffercheck % guild.bufferAlert == 0 && guild.buffers === true && guild.grace == false){
                     let g = client.guilds.cache.get(config.mainGuild)
                     let c = g.channels.cache.find(c => c.name === guild.bufferChannel)  
-                    bot.chat(`Buffers have not been checked in ${ms((time-buffers.lastbuffercheck)*1000, { long: true })}! Check now and type ${guild.prefix}${guild.bufferCommand}`)
+                    bot.chat(`Buffers have not been checked in ${ms((time-buffers[0].lastbuffercheck)*1000, { long: true })}! Check now and type ${guild.prefix}${guild.bufferCommand}`)
                     if(c){
                         let embed = new Discord.MessageEmbed()
                         .setColor(guild.embedColor)
                         .setTimestamp()
-                        .setDescription(`:warning: Buffers have been unchecked for ${ms((time-buffers.lastbuffercheck)*1000, { long: true })}! Check now by typing ${guild.prefix}${guild.bufferCommand}`)
+                        .setDescription(`:warning: Buffers have been unchecked for ${ms((time-buffers[0].lastbuffercheck)*1000, { long: true })}! Check now by typing ${guild.prefix}${guild.bufferCommand}`)
                         c.send(embed)
                     }
                 }
-                if(time-rpost.lastrpostcheck % guild.rpostAlert == 0 && guild.rpost === true && guild.grace == false){
+                if(time-rpost[0].lastrpostcheck % guild.rpostAlert == 0 && guild.rpost === true && guild.grace == false){
                     let g = client.guilds.cache.get(config.mainGuild)
                     let c = g.channels.cache.find(c => c.name === guild.rpostChannel)
-                    bot.chat(`RPost walls have not been checked in ${ms((time-rpost.lastrpostcheck)*1000, { long: true })}! Check now and type ${guild.prefix}${guild.rpostCommand}`)
+                    bot.chat(`RPost walls have not been checked in ${ms((time-rpost[0].lastrpostcheck)*1000, { long: true })}! Check now and type ${guild.prefix}${guild.rpostCommand}`)
                     if(c){
                         let embed = new Discord.MessageEmbed()
                         .setColor(guild.embedColor)
                         .setTimestamp()
-                        .setDescription(`:warning: RPost walls have been unchecked for ${ms((time-rpost.lastrpostcheck)*1000, { long: true })}! Check now by typing ${guild.prefix}${guild.rpostCommand}`)
+                        .setDescription(`:warning: RPost walls have been unchecked for ${ms((time-rpost[0].lastrpostcheck)*1000, { long: true })}! Check now by typing ${guild.prefix}${guild.rpostCommand}`)
                         c.send(embed)
                     }
                 }
