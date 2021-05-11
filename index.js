@@ -938,6 +938,9 @@ bot.on('login', async () => {
         let buffers = await getUserByBufferCheck()
         let rpost = await getUserByRpostCheck()
         let guild = await getGuild(config.mainGuild)
+        console.log(walls[0].lastwallcheck)
+        console.log(guild.wallAlert)
+        console.log(walls[0].lastwallcheck % guild.wallAlert == 0)
                 if(walls[0].lastwallcheck % guild.wallAlert == 0 && guild.walls === true && guild.grace == false){
                     console.log("gay")
                     
