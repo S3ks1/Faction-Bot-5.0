@@ -938,8 +938,10 @@ bot.on('login', async () => {
         let buffers = await getUserByBufferCheck()
         let rpost = await getUserByRpostCheck()
         let guild = await getGuild(config.mainGuild)
-
+            console.log(walls.lastwallcheck % guild.wallAlert == 0)
+            console.log(walls.lastwallcheck)
                 if(walls.lastwallcheck % guild.wallAlert == 0 && guild.walls === true && guild.grace == false){
+                    console.log("gay")
                     
                     let g = client.guilds.cache.get(config.mainGuild)
                     let c = g.channels.cache.find(c => c.name === guild.wallsChannel)
