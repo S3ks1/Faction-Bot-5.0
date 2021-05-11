@@ -1033,7 +1033,7 @@ bot.on('fcf', async (user,content) => {
                                                 channel.send(embed)   
                                     }
                                     person.wallchecks++
-                                    bot.chat(`/ff ${person.ign} checked walls! Time since last check: ${ms((time-lastcheck[0].lastwallcheck)*1000, { long: true })}! Total Checks: ${person.wallchecks}`)
+                                    bot.chat(`/ff ${person.ign} checked walls! Time since last check - ${ms((time-lastcheck[0].lastwallcheck)*1000, { long: true })}! Total Checks: ${person.wallchecks}`)
                                     person.lastwallcheck = time
                                     person.save()
                                     return;
@@ -1070,8 +1070,8 @@ bot.on('fcf', async (user,content) => {
                                                 channel.send(embed)   
                                     }
                                     person.bufferchecks++
-                                    console.log(`/ff ${person.ign} checked buffers! Time since last check: ${ms((time-lastcheck[0].lastbuffercheck)*1000, { long: true })}! Total Checks: ${person.bufferchecks}`)
-                                    bot.chat(`/ff ${person.ign} checked buffers! Time since last check: ${ms((time-lastcheck[0].lastbuffercheck)*1000, { long: true })}! Total Checks: ${person.bufferchecks}`)
+                                    //console.log(`/ff ${person.ign} checked buffers! Time since last check - ${ms((time-lastcheck[0].lastbuffercheck)*1000, { long: true })}! Total Checks: ${person.bufferchecks}`)
+                                    bot.chat(`/ff ${person.ign} checked buffers! Time since last check - ${ms((time-lastcheck[0].lastbuffercheck)*1000, { long: true })}! Total Checks: ${person.bufferchecks}`)
                                     person.lastbuffercheck = time
                                     person.save()
                                     return;
@@ -1110,7 +1110,7 @@ bot.on('fcf', async (user,content) => {
                                                 channel.send(embed)   
                                     }
                                     person.rpostchecks++
-                                    bot.chat(`/ff ${person.ign} checked RPost walls! Time since last check: ${ms((time-lastcheck[0].lastrpostcheck)*1000, { long: true })}! Total Checks: ${person.rpostchecks}`)
+                                    bot.chat(`/ff ${person.ign} checked RPost walls! Time since last check - ${ms((time-lastcheck[0].lastrpostcheck)*1000, { long: true })}! Total Checks: ${person.rpostchecks}`)
                                     person.lastrpostcheck = time
                                     person.save()
                                     return;
@@ -1174,7 +1174,7 @@ bot.on('fcf', async (user,content) => {
                             
                             if(i==staff.length){
                                 //console.log("xd")
-                                bot.chat(`/ff Vanish(${v.length}): ${v.length !== 0 ? v.join(", ") : "No staff online"}`)
+                                bot.chat(`/ff Vanish(${v.length}) - ${v.length !== 0 ? v.join(", ") : "No staff online"}`)
                                 v=[]
                             }
                         }, i*500)
@@ -1185,7 +1185,7 @@ bot.on('fcf', async (user,content) => {
                     bot.chat(`/tpa ${person.ign}`)
                     break;
                 case "whois":
-                    bot.chat(`/ff ${person.ign} - Walls: ${person.wallchecks}, Buffers: ${person.bufferchecks}, RPostChecks: ${person.rpostchecks}`)
+                    bot.chat(`/ff (${person.ign}) Walls - ${person.wallchecks}, Buffers - ${person.bufferchecks}, RPostChecks - ${person.rpostchecks}`)
                     break;
                 case "fire":
                     const button = bot.findBlock({point: bot.entity.position, matching: 77, maxDistance: 5});
@@ -1215,7 +1215,7 @@ bot.on('fcf', async (user,content) => {
                     break;
                 case "help":
                    
-                        bot.chat(`/ff Avaliable Commands: ${guild.rpostCommand}, ${guild.wallCommand}, ${guild.bufferCommand}, tts, v, flick, fire, whois, tp, tts`)
+                        bot.chat(`/ff Avaliable Commands - ${guild.rpostCommand}, ${guild.wallCommand}, ${guild.bufferCommand}, tts, v, flick, fire, whois, tp, tts`)
                     
                     break;
                 case "settings":
