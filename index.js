@@ -1447,7 +1447,7 @@ bot.on('raid', async () => {
 
 bot.on('entitySpawn', async (entity) => {
     if(entity.mobType === "Creeper"){
-       // bot.chat(`[!] Creeper detected at X: ${entity.position.x} Y: ${entity.position.y} Z: ${entity.position.z}`)
+        bot.chat(`[!] Creeper detected at X: ${entity.position.x} Y: ${entity.position.y} Z: ${entity.position.z}`)
     }
 })
 bot.on('message', async (message) => {
