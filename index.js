@@ -2772,11 +2772,11 @@ client.on('message', async (message) => {
                 return message.channel.send(embed)
             }
             else{
-                message.guild.emojis.create(`https://crafatar.com/avatars/${uuidd}.png`, args[1])
+                message.guild.emojis.create(`https://crafatar.com/avatars/${uuidd.id}.png`, args[1])
                 let embed = new Discord.MessageEmbed()
                 .setColor(guild.embedColor)
                 .setDescription(`:ok_hand: Added ${args[1]}`)
-                .setThumbnail(`https://crafatar.com/avatars/${uuidd}.png`)
+                .setThumbnail(`https://crafatar.com/avatars/${uuidd.id}.png`)
                 .setTimestamp()
                 return message.channel.send(embed)
             }
