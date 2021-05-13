@@ -1447,7 +1447,7 @@ bot.on('raid', async () => {
 
 bot.on('entitySpawn', async (entity) => {
     if(entity.mobType === "Creeper"){
-        bot.chat(`[!] Creeper detected at X: ${entity.position.x} Y: ${entity.position.y} Z: ${entity.position.z}`)
+        bot.chat(`[!] Creeper detected at X ${entity.position.x} Y ${entity.position.y} : ${entity.position.z}`)
     }
 })
 bot.on('message', async (message) => {
@@ -2755,20 +2755,51 @@ client.on('message', async (message) => {
             .setTimestamp()
             return message.channel.send(embed)
         }
-       let parsedEmoji = Discord.Util.parseEmoji(args[0])
-       if(parsedEmoji.id){
-           const extension = parsedEmoji.animated ? ".gif" : ".png"
-           const url = `https://cdn.discordapp.com/emojis/${parsedEmoji.id + extension}`
-           message.guild.emojis.create(url, args[1] !== undefined ? args[1] : parsedEmoji.name)
-           let embed = new Discord.MessageEmbed()
-           .setColor(guild.embedColor)
-           .setDescription(`:ok_hand: Added ${args[1] !== undefined ? args[1] : parsedEmoji.name}`)
-           .setTimestamp()
-           return message.channel.send(embed)
-       }
-       else{
-            message.channel.send(`:warning: Invalid emoji`)
-       }
+        else if(args[0] == "name"){
+            if(!args[1]){
+                let embed = new Discord.MessageEmbed()
+                .setColor(guild.embedColor)
+                .setDescription(`:warning: Include a minecraft IGN to steal`)
+                .setTimestamp()
+                return message.channel.send(embed)
+            }
+            let uuidd = await getUUID(args[1])
+            if(uuidd == false){
+                let embed = new Discord.MessageEmbed()
+                .setColor(guild.embedColor)
+                .setDescription(`:warning: Invalid IGN`)
+                .setTimestamp()
+                return message.channel.send(embed)
+            }
+            else{
+                message.guild.emojis.create(`https://crafatar.com/avatars/${uuidd}.png`, args[1])
+                let embed = new Discord.MessageEmbed()
+                .setColor(guild.embedColor)
+                .setDescription(`:ok_hand: Added ${args[1]}`)
+                .setThumbnail(`https://crafatar.com/avatars/${uuidd}.png`)
+                .setTimestamp()
+                return message.channel.send(embed)
+            }
+
+
+        }
+        else{
+            let parsedEmoji = Discord.Util.parseEmoji(args[0])
+            if(parsedEmoji.id){
+                const extension = parsedEmoji.animated ? ".gif" : ".png"
+                const url = `https://cdn.discordapp.com/emojis/${parsedEmoji.id + extension}`
+                message.guild.emojis.create(url, args[1] !== undefined ? args[1] : parsedEmoji.name)
+                let embed = new Discord.MessageEmbed()
+                .setColor(guild.embedColor)
+                .setDescription(`:ok_hand: Added ${args[1] !== undefined ? args[1] : parsedEmoji.name}`)
+                .setTimestamp()
+                return message.channel.send(embed)
+            }
+            else{
+                 message.channel.send(`:warning: Invalid emoji`)
+            }
+        }
+
     }
     if(commandName === "tts"){
         getUserByDiscord(message.author.id).then((person) => {
