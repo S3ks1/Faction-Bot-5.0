@@ -953,7 +953,7 @@ bot.on('login', async () => {
                         if(guild.alertRole !== "none"){
                             let r = g.roles.cache.find(r=>r.name===guild.alertRole)
                             if(r){
-                                c.send(r)
+                                c.send(`<@&${r.id}>`)
                             }
                         }
                     }
