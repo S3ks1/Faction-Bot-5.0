@@ -944,7 +944,7 @@ bot.on('login', async () => {
         let guild = await getGuild(config.mainGuild)
 
                 if(parseInt(time-walls[0].lastwallcheck) % parseInt(guild.wallAlert) == 0 && guild.walls === true && guild.grace == false){
-                    
+                    if(ms((time-walls[0].lastwallcheck)*1000, { long: true }) == "0 ms") return;
                     let g = client.guilds.cache.get(config.mainGuild)
                     let c = g.channels.cache.find(c => c.name === guild.wallChannel)
                     bot.chat(`Walls have not been checked in ${ms((time-walls[0].lastwallcheck)*1000, { long: true })}! Check now and type ${guild.prefix}${guild.wallCommand}`)
@@ -963,6 +963,7 @@ bot.on('login', async () => {
                     }
                 }
                 if(parseInt(time-buffers[0].lastbuffercheck) % parseInt(guild.bufferAlert) == 0 && guild.buffers === true && guild.grace == false){
+                    if(ms((time-buffers[0].lastbuffercheck)*1000, { long: true }) == "0 ms") return;
                     let g = client.guilds.cache.get(config.mainGuild)
                     let c = g.channels.cache.find(c => c.name === guild.bufferChannel)  
                     bot.chat(`Buffers have not been checked in ${ms((time-buffers[0].lastbuffercheck)*1000, { long: true })}! Check now and type ${guild.prefix}${guild.bufferCommand}`)
@@ -981,6 +982,7 @@ bot.on('login', async () => {
                     }
                 }
                 if(parseInt(time-rpost[0].lastrpostcheck) % parseInt(guild.rpostAlert) == 0 && guild.rpost === true && guild.grace == false){
+                    if(ms((time-rpost[0].lastrpostcheck)*1000, { long: true }) == "0 ms") return;
                     let g = client.guilds.cache.get(config.mainGuild)
                     let c = g.channels.cache.find(c => c.name === guild.rpostChannel)
                     bot.chat(`RPost walls have not been checked in ${ms((time-rpost[0].lastrpostcheck)*1000, { long: true })}! Check now and type ${guild.prefix}${guild.rpostCommand}`)
