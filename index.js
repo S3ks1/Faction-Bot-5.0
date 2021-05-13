@@ -909,7 +909,11 @@ function miscError(g, message, content){
 bot.on('login', async () => {
     setTimeout(() => {
         bot.chat(config.hubcommand)
-    }, 1000)
+        setInterval(() => {
+            bot.chat(config.hubcommand)
+        }, 120000)
+
+    }, 2000)
     setInterval(async () => {
         if(bot.serverchat.length !== 0){
             let guild = await getGuild(config.mainGuild)
