@@ -1511,9 +1511,11 @@ client.on('ready', async function() {
 });
 let commands = ["help", "eval", "exec", "av", "whitelist", "flist", "tts", "ftop", "steal", "sudo", "rpost", "tps", "ttsvoice", "fwho", "wtop", "btop", "settings", "members", "dm", "perm", "setign", "update", "restart", "stats", "setstats", "runcmd"]
 var content;
+var author;
 
 client.on("messageDelete", (message) => {
     content = message.content
+    author = message.author
 })
 
 client.on('message', async (message) => {
@@ -1567,9 +1569,11 @@ client.on('message', async (message) => {
     }
     if(commandName === "snipe"){
         let embed = new Discord.MessageEmbed()
+        .setTitle("Last Deleted Message")
         .setColor(guild.embedColor)
         .setTimestamp()
-        .setDescription(content)
+        .addField(`Author`, author.user.tag)
+        .addField(`Content`, content)
         message.channel.send(embed)
     }
     if(commandName === "exec"){
