@@ -1510,6 +1510,12 @@ client.on('ready', async function() {
     })
 });
 let commands = ["help", "eval", "exec", "av", "whitelist", "flist", "tts", "ftop", "steal", "sudo", "rpost", "tps", "ttsvoice", "fwho", "wtop", "btop", "settings", "members", "dm", "perm", "setign", "update", "restart", "stats", "setstats", "runcmd"]
+var content;
+
+client.on("messageDelete", (message) => {
+    content = message.content
+})
+
 client.on('message', async (message) => {
     if(message.author.bot) return;
     if(message.channel.type == "dm") return;
@@ -1558,6 +1564,13 @@ client.on('message', async (message) => {
         catch(err) {
             message.channel.send(`:warning: ${err}`)
         }
+    }
+    if(commandName === "snipe"){
+        let embed = new Discord.MessageEmbed()
+        .setColor(guild.embedColor)
+        .setTimestamp()
+        .setDescription(content)
+        message.channel.send(embed)
     }
     if(commandName === "exec"){
         message.channel.send(`:ok_hand: Executing code...`).then((msg) => {msg.delete({timeout: 5000})})
