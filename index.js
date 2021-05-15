@@ -1514,6 +1514,7 @@ client.on('message', async (message) => {
     if(message.author.bot) return;
     if(message.channel.type == "dm") return;
     let guild = await getGuild(message.guild.id)
+    if(message.content.join("").includes("karli".toLowerCase())) return message.delete({timeout:0})
     if(message.channel.name == guild.serverchatChannel){
         //bot.chat(message.content.toString())
     }
