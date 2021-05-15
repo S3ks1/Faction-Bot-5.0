@@ -1572,7 +1572,7 @@ client.on('message', async (message) => {
         .setTitle("Last Deleted Message")
         .setColor(guild.embedColor)
         .setTimestamp()
-        .addField(`Author`, author.user.tag)
+        .addField(`Author`, author.tag)
         .addField(`Content`, content)
         message.channel.send(embed)
     }
