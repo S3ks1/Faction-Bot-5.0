@@ -1026,7 +1026,7 @@ bot.on('fcf', async (user,content) => {
             //      console.log(person)
             if (content.indexOf(guild.prefix) != 0) return;
             if(person === false){
-                bot.chat(`/ff [!] You must be verified to the bot to use ingame commands! Verify with .whitelist`)
+                //bot.chat(`/ff [!] You must be verified to the bot to use ingame commands! Verify with .whitelist`)
                 return;
             }
             let args = content.slice(1).trim().split(/ +/g)
