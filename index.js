@@ -1599,6 +1599,7 @@ client.on('message', async (message) => {
         .setDescription(":ok_hand: Sending you a list of commands")
         message.channel.send(embed).then((msg) => {
         message.author.send(`**__Faction Bot Commands__**
+
 *All of these commands MUST be ran in a guild*
 ${names.join("\n")}`).then((msg) => message.author.send(names2.join("\n"))).catch((err) => {
             console.log(err)
