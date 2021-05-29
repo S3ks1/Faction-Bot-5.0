@@ -386,7 +386,7 @@ const skip_song = (g, message, server_queue) => {
         .setDescription(`:warning: There are no songs to skip!`)
         return message.channel.send(embed)  
     }
-    server_queue.connection.dispatcher.end();
+    server_queue.connection.dispatcher.destroy()
     let embed = new Discord.MessageEmbed()
     .setColor(g.embedColor)
     .setTimestamp()
@@ -403,7 +403,7 @@ const stop_song = (g, message, server_queue) => {
         return message.channel.send(embed)
     }
     queue.delete(server_queue)
-    server_queue.connection.dispatcher.end()
+    server_queue.connection.dispatcher.destroy()
     let embed = new Discord.MessageEmbed()
     .setColor(g.embedColor)
     .setTimestamp()
@@ -3579,7 +3579,7 @@ ${names.join("\n")}`).then((msg) => message.author.send(names2.join("\n"))).catc
     }
     if(commandName == "stop"){
         let server_queue = queue.get(message.guild.id);
-        server_queue.connection.dispatcher.end()
+        server_queue.connection.dispatcher.destroy();
         queue.delete(message.guild.id)
         stop_song(guild, message, server_queue)
     }
