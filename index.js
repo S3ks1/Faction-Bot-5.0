@@ -337,7 +337,7 @@ const video_player = async (g, guild, song) => {
             video_player(g, guild, song_queue.songs[0]);
         }
         else{
-            song_queue.voice_channel.dispatcher.destroy()
+            song_queue.voice_channel.connection.disconnect()
             queue.delete(server_queue)
             let embed = new Discord.MessageEmbed()
             .setColor(g.embedColor)
@@ -386,7 +386,7 @@ const skip_song = (g, message, server_queue) => {
         .setDescription(`:warning: There are no songs to skip!`)
         return message.channel.send(embed)  
     }
-    server_queue.connection.dispatcher.destroy()
+    server_queue.connection.disconnect()
     let embed = new Discord.MessageEmbed()
     .setColor(g.embedColor)
     .setTimestamp()
@@ -403,7 +403,7 @@ const stop_song = (g, message, server_queue) => {
         return message.channel.send(embed)
     }
     queue.delete(server_queue)
-    server_queue.connection.dispatcher.destroy()
+    server_queue.connection.disconnect()
     let embed = new Discord.MessageEmbed()
     .setColor(g.embedColor)
     .setTimestamp()
@@ -1367,6 +1367,7 @@ bot.on('fcf', async (user,content) => {
 
                         try{
                             let connection = await memberb.voice.channel.join();
+                            
                             queue_constructor.connection = connection;
                             queue.set(gb.id, queue_constructor)
                             video_player(guild, gb, queue_constructor.songs[0])
@@ -3579,7 +3580,7 @@ ${names.join("\n")}`).then((msg) => message.author.send(names2.join("\n"))).catc
     }
     if(commandName == "stop"){
         let server_queue = queue.get(message.guild.id);
-        server_queue.connection.dispatcher.destroy();
+        server_queue.connection.disconnect()
         queue.delete(message.guild.id)
         stop_song(guild, message, server_queue)
     }
