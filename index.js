@@ -761,7 +761,7 @@ function createPerm(cmdname){
             commandName: cmdname, 
             roles: [],
             users: [],
-            permissions: ["SEND_MESSAGES"]
+            permissions: ["ADMINISTRATOR"]
         })
         perm.save().then((a) => { resolve(true)}).catch((err) => reject(false))
     }).catch((err) => resolve(false))
