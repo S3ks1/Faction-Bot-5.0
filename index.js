@@ -2952,7 +2952,7 @@ ${names.join("\n")}`).then((msg) => message.author.send(names2.join("\n").then((
                     //console.log(args)
                    // console.log(person)
                     tts(`${message.member.user.username} says ${args.join(" ")}`, person.ttsVoice).then((res) => {
-                        message.channel.send(`/ff :ok_hand: Playing ${args.join(" ")} as ${person.ttsVoice}!`)
+                        message.channel.send(`:ok_hand: Playing ${args.join(" ")} as ${person.ttsVoice}!`)
                         //console.log(args)
                         //console.log(args.join(" "))
                         var bufferStream = new Stream.PassThrough()
