@@ -329,7 +329,6 @@ const video_player = async (g, guild, song) => {
     }
     let stream = ytdl(song.url, {filter: 'audioonly', quality: 'highestaudio'});
     currentStream = song_queue.connection.play(stream, {seek:0, volume: 0.2 })
-    stream.dispatcher.vole
     
     .on('finish', () => {
         //console.log('done')
