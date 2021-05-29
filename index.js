@@ -3664,6 +3664,24 @@ ${names.join("\n")}`).then((msg) => message.author.send(names2.join("\n").then((
             message.channel.send(embed)
         })
     }
+    if(commandName == "volume"){
+        if(parseFloat(args[0]) == NaN){
+            let embed = new Discord.MessageEmbed()
+            .setColor(guild.embedColor)
+            .setTimestamp()
+            .setDescription(":warning: Invalid number provided")
+            message.channel.send(embed)
+        }
+        else{
+            let server_queue = queue.get(message.guild.id)
+            server_queuea.connection.player.dispatcher.setVolume(parseFloat(args[0]))
+            let embed = new Discord.MessageEmbed()
+            .setColor(guild.embedColor)
+            .setTimestamp()
+            .setDescription(":ok_hand: Set volume to " + parseFloat(args[0]))
+            message.channel.send(embed)
+        }
+    }
 })
 
 client.login(config.token)
