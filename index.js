@@ -338,7 +338,7 @@ const video_player = async (g, guild, song) => {
         }
         else{
             song_queue.voice_channel.leave()
-            queue.delete(server_queue)
+            queue.delete(song_queue)
             let embed = new Discord.MessageEmbed()
             .setColor(g.embedColor)
             .setTimestamp()
