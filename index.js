@@ -322,6 +322,7 @@ function getUUID(ign){
 const video_player = async (g, guild, song) => {
     //console.log(song)
     let song_queue = queue.get(guild.id);
+    console.log(song_queue)
     if(!song){
         song_queue.voice_channel.leave();
         queue.delete(guild.id)
@@ -337,7 +338,7 @@ const video_player = async (g, guild, song) => {
             video_player(g, guild, song_queue.songs[0]);
         }
         else{
-            console.log(song_queue.songs)
+            console.log(song_queue)
             song_queue.voice_channel.leave()
             queue.delete(song_queue)
             let embed = new Discord.MessageEmbed()
