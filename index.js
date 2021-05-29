@@ -1536,6 +1536,9 @@ client.on('message', async (message) => {
     if(message.author.bot) return;
     if(message.channel.type == "dm") return;
     let guild = await getGuild(message.guild.id)
+    if(message.mentions.has(client.user)){
+        message.channel.send(`Hey! My prefix in this guild is: \`${guild.prefix}\``)
+    }
     if(message.content.split(" ").join("").toLowerCase().includes("karli")) return message.delete({timeout:0})
     if(message.channel.name == guild.serverchatChannel){
         //bot.chat(message.content.toString())
