@@ -1187,7 +1187,7 @@ bot.on('fcf', async (user,content) => {
                         return bot.chat("/ff [!] Another broadcast is playing");
                     }
                     break;
-                case "v":
+                case "v": case "vanish":
                     //bot.chat(`[!] Vanish disabled on ${config.settings.host}! Please refer to the help manual.`)
                     
                     for(let i=0;i<=staff.length;i++){
@@ -1215,7 +1215,7 @@ bot.on('fcf', async (user,content) => {
                 case "whois":
                     bot.chat(`/ff (${person.ign}) Walls - ${person.wallchecks}, Buffers - ${person.bufferchecks}, RPostChecks - ${person.rpostchecks}`)
                     break;
-                case "fire":
+                case "fire": case "button":
                     const button = bot.findBlock({point: bot.entity.position, matching: 77, maxDistance: 5});
                     if(button == null){
                             bot.chat(`/ff [!] No button could be found!`)
@@ -1226,7 +1226,7 @@ bot.on('fcf', async (user,content) => {
                     var outputvec = vec3(button.position.x, button.position.y, button.position.z);
                      bot.chat(`/ff ${person.ign}, I hit the button at ${outputvec}`)
                      break;
-                case "flick":
+                case "flick": case "lever":
                     let levers = bot.findBlock({
                         point: bot.entity.position,
                         matching: 69,
@@ -1246,7 +1246,7 @@ bot.on('fcf', async (user,content) => {
                         bot.chat(`/ff Avaliable Commands - ${guild.rpostCommand}, ${guild.wallCommand}, ${guild.bufferCommand}, tts, v, flick, fire, whois, tp, tts`)
                     
                     break;
-                case "settings":
+                case "settings": case "set":
                     let gz = client.guilds.cache.get(config.guildID);
                     let uz = person.discordId;
                     let memberz  = gz.member(uz)
@@ -1319,7 +1319,7 @@ bot.on('fcf', async (user,content) => {
                 case "tps":
                     bot.chat(`/ff (!) Current TPS: `+ bot.getTps())
                     break;
-                case "play":
+                case "play": case "p":
                     let gb = client.guilds.cache.get(config.guildID);
                     let ub = person.discordId;
                     let memberb  = gb.member(ub)
@@ -1383,7 +1383,7 @@ bot.on('fcf', async (user,content) => {
                         return;
                     }
                     break;
-                case "skip":
+                case "skip": case "s":
                     let gc = client.guilds.cache.get(config.guildID);
                     let uc = person.discordId;
                     let memberc  = gc.member(uc)
@@ -1407,7 +1407,7 @@ bot.on('fcf', async (user,content) => {
                     server_queuez.connection.dispatcher.end();
                     bot.chat(`/ff (!) Skipped ${server_queuez.songs[0].title}`)
                     break;
-                case "queue":
+                case "queue": case "q":
                     let gp = client.guilds.cache.get(config.guildID);
                     let up = person.discordId;
                     let memberp  = gp.member(up)
@@ -1419,7 +1419,7 @@ bot.on('fcf', async (user,content) => {
                         bot.chat(`/ff (!) Current Queue: ${server_queuep.songs.map(s=>`${s.title}`).join(",")}`)
                     }
                     break;
-                case "np":
+                case "np": case "nowplaying":
                     let gr = client.guilds.cache.get(config.guildID);
                     let ur = person.discordId;
                     let memberr  = gr.member(ur)
