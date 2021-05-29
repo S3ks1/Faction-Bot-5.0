@@ -3579,8 +3579,8 @@ ${names.join("\n")}`).then((msg) => message.author.send(names2.join("\n"))).catc
     }
     if(commandName == "stop"){
         let server_queue = queue.get(message.guild.id);
+        server_queue.connection.dispatcher.end()
         queue.delete(message.guild.id)
-        server_queue.dispatcher.end()
         stop_song(guild, message, server_queue)
     }
     if(commandName == "queue"){
