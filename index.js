@@ -1606,6 +1606,23 @@ client.on('message', async (message) => {
             "queue - queue - Show the current music queue",
             "nowplaying - nowplaying - Show current song"
         ]
+        let ingame = [
+            "",
+            "**__Ingame Commands",
+            "walls - Check walls",
+            "buffers - Check buffers",
+            "rpost - Check RPost",
+            "settings - Change bot settings",
+            "play - Play music",
+            "skip - skip music",
+            "queue - Show current queue",
+            "np - Current song",
+            "flick - flick nearest lever",
+            "fire - fire nearest button",
+            "tp - TP bot to you",
+            "help - Show ingame help",
+            "tts - Text to speech"
+        ]
         let embed = new Discord.MessageEmbed()
         .setColor(guild.embedColor)
         .setTimestamp()
@@ -1614,7 +1631,7 @@ client.on('message', async (message) => {
         message.author.send(`**__Faction Bot Commands__**
 
 *All of these commands MUST be ran in a guild*
-${names.join("\n")}`).then((msg) => message.author.send(names2.join("\n"))).catch((err) => {
+${names.join("\n")}`).then((msg) => message.author.send(names2.join("\n").then((lol) =>  message.author.send(ingame.join("\n"))))).catch((err) => {
             console.log(err)
             let embed = new Discord.MessageEmbed()
             .setColor(guild.embedColor)
