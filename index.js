@@ -1568,7 +1568,9 @@ client.on('message', async (message) => {
             "dm - dm [role ID/name/mention] - Send a message to all users with a specific role",
             "perm - perm <command> [user/role/discord permission] - Change permissions for a command",
             "setign - setign <discord> <IGN> - Set a user's IGN manually",
-            "vanish - vanish - Get currently online staff members",
+            "vanish - vanish - Get currently online staff members"
+        ]
+        let names2 = [
             "update - update - Download the latest version of the bot from github",
             "restart - restart - Restart the bot",
             "stats - stats <discord user/IGN> - Get a user's ingame wall/buffer/rpost stats",
@@ -1598,8 +1600,8 @@ client.on('message', async (message) => {
         message.channel.send(embed).then((msg) => {
         message.author.send(`**__Faction Bot Commands__**
         *All of these commands MUST be ran in a guild*
-        
-        ${names.join("\n")}`).catch((err) => {
+
+        ${names.join("\n")}`).then((msg) => message.author.send(names2.join("\n"))).catch((err) => {
             console.log(err)
             let embed = new Discord.MessageEmbed()
             .setColor(guild.embedColor)
