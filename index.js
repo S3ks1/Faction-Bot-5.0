@@ -942,7 +942,7 @@ bot.on('login', async () => {
         let buffers = await getUserByBufferCheck()
         let rpost = await getUserByRpostCheck()
         let guild = await getGuild(config.mainGuild)
-                if(walls[0].lastwallcheck !== undefined){
+                if(walls[0] !== undefined){
                     if(parseInt(time-walls[0].lastwallcheck) % parseInt(guild.wallAlert) == 0 && guild.walls === true && guild.grace == false){
                         if(ms((time-walls[0].lastwallcheck)*1000, { long: true }) == "0 ms") return;
                         let g = client.guilds.cache.get(config.mainGuild)
@@ -964,7 +964,7 @@ bot.on('login', async () => {
                         }
                     }
                 }
-                if(buffers[0].lastbuffercheck !== undefined){
+                if(buffers[0] !== undefined){
                     if(parseInt(time-buffers[0].lastbuffercheck) % parseInt(guild.bufferAlert) == 0 && guild.buffers === true && guild.grace == false){
                         if(ms((time-buffers[0].lastbuffercheck)*1000, { long: true }) == "0 ms") return;
                         let g = client.guilds.cache.get(config.mainGuild)
@@ -985,7 +985,7 @@ bot.on('login', async () => {
                         }
                     }
                 }
-                if(rpost[0].lastbuffercheck !== undefined){
+                if(rpost[0] !== undefined){
                     if(parseInt(time-rpost[0].lastrpostcheck) % parseInt(guild.rpostAlert) == 0 && guild.rpost === true && guild.grace == false){
                         if(ms((time-rpost[0].lastrpostcheck)*1000, { long: true }) == "0 ms") return;
                         let g = client.guilds.cache.get(config.mainGuild)
