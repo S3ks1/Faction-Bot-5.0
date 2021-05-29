@@ -386,7 +386,7 @@ const skip_song = (g, message, server_queue) => {
         .setDescription(`:warning: There are no songs to skip!`)
         return message.channel.send(embed)  
     }
-    server_queue.connection.disconnect()
+    server_queue.connection.dispatcher.end()
     let embed = new Discord.MessageEmbed()
     .setColor(g.embedColor)
     .setTimestamp()
