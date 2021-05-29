@@ -1402,7 +1402,8 @@ bot.on('fcf', async (user,content) => {
                         return
                     }
                     if(server_queuez.songs.length=1){
-                        server_queuez.voice_channel.leave()
+                        server_queuez.connection.dispatcher.end()
+
                     }
                     server_queuez.connection.dispatcher.end();
                     bot.chat(`/ff (!) Skipped ${server_queuez.songs[0].title}`)
@@ -1417,7 +1418,7 @@ bot.on('fcf', async (user,content) => {
                     }
                     else{
                         bot.chat(`/ff (!) Current Queue: ${server_queuep.songs.map(s=>`${s.title}`).join(",")}`)
-                    }
+                    }s
                     break;
                 case "np":
                     let gr = client.guilds.cache.get(config.guildID);
