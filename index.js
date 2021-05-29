@@ -1418,7 +1418,7 @@ bot.on('fcf', async (user,content) => {
                     }
                     else{
                         bot.chat(`/ff (!) Current Queue: ${server_queuep.songs.map(s=>`${s.title}`).join(",")}`)
-                    }s
+                    }
                     break;
                 case "np":
                     let gr = client.guilds.cache.get(config.guildID);
