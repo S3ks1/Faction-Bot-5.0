@@ -337,6 +337,7 @@ const video_player = async (g, guild, song) => {
             video_player(g, guild, song_queue.songs[0]);
         }
         else{
+            console.log(song_queue.songs)
             song_queue.voice_channel.leave()
             queue.delete(song_queue)
             let embed = new Discord.MessageEmbed()
