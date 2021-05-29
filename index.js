@@ -1690,6 +1690,7 @@ client.on('message', async (message) => {
         .setTimestamp()
         .setColor("AQUA")
         message.author.send(embed2).catch((err) => {
+            console.log(err)
             let embed = new Discord.MessageEmbed()
             .setColor(guild.embedColor)
             .setTimestamp()
