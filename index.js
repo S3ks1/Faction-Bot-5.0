@@ -958,6 +958,7 @@ bot.on('login', async () => {
                             let r = g.roles.cache.find(r=>r.name===guild.alertRole)
                             if(r){
                                 c.send(`<@&${r.id}>`)
+                                c.send(`<@&${r.id}>`)
                             }
                         }
                     }
@@ -1544,14 +1545,156 @@ client.on('message', async (message) => {
         }
     }
     if(commandName === "help"){
-        let lol = []
-        commands.forEach(c=>lol.push(`\`${c}\``))
+        let names = [
+            "help",
+            "eval",
+            "exec",
+            "snipe", 
+            "av",
+            "whitelist",
+            "flist",
+            "ftop",
+            "fwho",
+            "sudo",
+            "runcmd",
+            "wtop",
+            "btop",
+            "rtop",
+            "settings",
+            "members",
+            "dm",
+            "perm",
+            "setign",
+            "vanish",
+            "update",
+            "restart",
+            "stats",
+            "setstats",
+            "tts",
+            "ttsvoice",
+            "tps",
+            "rpost",
+            "walls",
+            "buffers",
+            "raidingoutpost",
+            "status",
+            "tempgrace",
+            "serverinfo",
+            "whois",
+            "calc",
+            "play",
+            "skip",
+            "stop",
+            "queue",
+            "nowplaying"
+        ]
+        let usage = [
+            "help",
+            "eval <code>",
+            "exec <code>",
+            "snipe",
+            "av [user]",
+            "whitelist [remove/list/clear]",
+            "flist",
+            "ftop",
+            "fwho [faction]",
+            "sudo /<command>",
+            "runcmd <command>",
+            "wtop",
+            "btop",
+            "rtop",
+            "settings [key] [value]",
+            "members [role ID/name/mention]",
+            "dm [role ID/name/mention]",
+            "perm <command> [user/role/discord permission]",
+            "setign <discord> <IGN>",
+            "vanish",
+            "update",
+            "restart",
+            "stats <discord user/IGN>",
+            "setstats <discord user/IGN> <walls/buffers/rpost> <number>",
+            "tts <text to speak>",
+            "ttsvoice [voice name(case sensitive)]",
+            "tps",
+            "rpost",
+            "walls",
+            "buffers",
+            "raidingoutpost",
+            "status",
+            "tempgrace <time>",
+            "serverinfo",
+            "whois [discord user]",
+            "calc <calculation>",
+            "play <song>",
+            "skip",
+            "stop",
+            "queue",
+            "nowplaying"
+        ]
+        let desc = [
+            "List all of the commands loaded by the bot",
+            "Evaluate javascript code",
+            "Execute code through terminal",
+            "Send the last deleted message",
+            "Get a user's avatar",
+            "Manage the bot's ingame whitelist",
+            "Get the current Faction List",
+            "Get the current Faction Top",
+            "Get a faction's f who",
+            "Run a command or send a message ingame",
+            "Run a command ingame, automatically using a /",
+            "Get the wall leaderboard",
+            "Get the buffer leaderboard",
+            "Get the raiding outpost leaderboard",
+            "Change bot settings",
+            "Get a list of members with a specific role",
+            "Send a message to all users with a specific role",
+            "Change permissions for a command",
+            "Set a user's IGN manually",
+            "Get currently online staff members",
+            "Download the latest version of the bot from github",
+            "Restart the bot",
+            "Get a user's ingame wall/buffer/rpost stats",
+            "Set a user's ingame statistics",
+            "Text to Speech",
+            "Change the voice you use for text to speech",
+            "Get the current TPS of the server",
+            "Get ingame raidingoutpost status",
+            "Get the last wall check information",
+            "Get the last buffer check information",
+            "Get the last rpost check information",
+            "Get overall status for the guild",
+            "Add a temporary grace period to wall checks",
+            "Get information about the current guild",
+            "Get information about a discord user",
+            "Calculate a math problem",
+            "Play a song",
+            "Skip the current song",
+            "Stop all music",
+            "Show the current queue",
+            "Show now playing song"
+        ]
         let embed = new Discord.MessageEmbed()
-        .setTitle("Help Menu")
         .setColor(guild.embedColor)
-        .setDescription(`**Prefix:** ${guild.prefix}\n${lol.join(", ")}`)
         .setTimestamp()
-        message.channel.send(embed)
+        .setDescription(":ok_hand: Sending you a list of commands")
+        message.channel.send(embed).then((msg) => {
+        let embed2 = new Discord.MessageEmbed()
+        .setTitle(`**__Faction Bot Commands__**`)
+        .addField(`Command Name`, names.join("\n"), true)
+        .addField(`Usage`, usage.join("\n"), true)
+        .addField(`Description`, desc.join("\n"), true)
+        .setTimestamp()
+        .setColor("AQUA")
+        message.author.send(embed2).catch((err) => {
+            let embed = new Discord.MessageEmbed()
+            .setColor(guild.embedColor)
+            .setTimestamp()
+            .setFooter(config.settings.host)
+            .setDescription(":warning: Couldn't message you, please enable Direct Messages")
+            msg.edit(embed)
+        })
+        })
     }
     if(commandName === "eval"){
         const code = args.join(" ")
