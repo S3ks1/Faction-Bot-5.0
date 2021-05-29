@@ -1436,7 +1436,7 @@ bot.on('fcf', async (user,content) => {
                     let ua = person.discordId;
                     let membera  = ga.member(ua)
                     let server_queuea = queue.get(ga.id)
-                    server_queuea.connection.volume(parseFloat(args[0]))
+                    server_queuea.connection.setVolumeLogarithmic(parseFloat(args[0]))
     
             }
         })
