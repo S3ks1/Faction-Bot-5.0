@@ -1403,10 +1403,6 @@ bot.on('fcf', async (user,content) => {
                         bot.chat(`/ff [!] No playing music`)
                         return
                     }
-                    if(server_queuez.songs.length=1){
-                        server_queuez.connection.dispatcher.end()
-
-                    }
                     server_queuez.connection.dispatcher.end();
                     bot.chat(`/ff (!) Skipped ${server_queuez.songs[0].title}`)
                     break;
