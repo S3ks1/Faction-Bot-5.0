@@ -330,7 +330,7 @@ const video_player = async (g, guild, song) => {
     }
     let stream = ytdl(song.url, {filter: 'audioonly', quality: 'highestaudio'});
     currentStream = song_queue.connection.play(stream, {seek:0, volume: 0.2 })
-    
+
     .on('finish', () => {
         //console.log('done')
         song_queue.songs.shift();
@@ -1430,6 +1430,13 @@ bot.on('fcf', async (user,content) => {
                         let songinfo = await ytdl.getInfo(server_queuer.songs[0].url)
                         bot.chat(`/ff (!) Now Playing: ${songinfo.videoDetails.title} by ${songinfo.videoDetails.ownerChannelName} - ${ms(songinfo.videoDetails.lengthSeconds*1000)}`)
                     }
+                    break;
+                case "volume":
+                    let ga = client.guilds.cache.get(config.guildID);
+                    let ua = person.discordId;
+                    let membera  = ga.member(ua)
+                    let server_queuea = queue.get(ga.id)
+                    server_queuea.connection.volume(parseFloat(args[0]))
     
             }
         })
