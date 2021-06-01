@@ -477,7 +477,7 @@ return promise;
 
 function arabicTts(text){
     let promise = new Promise(function(resolve, reject) {
-        params.Text = text.replace(/[^A-Za-z0-9 ]/g, '');
+        params.Text = text
         params.VoiceId = "Zeina"
         params.Engine = "standard"
         params.LanguageCode = "arb"
