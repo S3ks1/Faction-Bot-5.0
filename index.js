@@ -495,6 +495,26 @@ function arabicTts(text){
     return promise;
 }
 
+function spanishTts(text){
+    let promise = new Promise(function(resolve, reject) {
+        params.Text = text
+        params.VoiceId = "Mia"
+        params.Engine = "standard"
+        params.LanguageCode = "es-MX"
+        // Construct the request
+        Polly.synthesizeSpeech(params, function(err, data){
+            if (err){
+                resolve(false)
+                console.log(err)
+            } 
+            else{
+                resolve(data)
+            }
+        })
+    })
+    return promise;
+}
+
 function errorHandler(guild, channel, author, error){
     let embed = new Discord.MessageEmbed()
     .setColor(guild.embedColor)
@@ -3741,6 +3761,62 @@ ${names.join("\n")}`).then((msg) => message.author.send(names2.join("\n").then((
                    // console.log(person)
                     arabicTts(`${message.member.user.username} says ${args.join(" ")}`).then((res) => {
                         message.channel.send(`:ok_hand: Playing ${args.join(" ")} as Zeina`)
+                        //console.log(args)
+                        //console.log(args.join(" "))
+                        var bufferStream = new Stream.PassThrough()
+                        bufferStream.end(res.AudioStream);
+                        broadcast.play(bufferStream);
+                        connection.play(broadcast, {volume:2})
+                    })
+                })
+    
+            }
+            else{
+                return bot.chat(" [!] Another broadcast is playing");
+            }
+        })
+        
+        
+    }
+    if(commandName === "stts"){
+        getUserByDiscord(message.author.id).then((person) => {
+            if(person == false){
+                let embed = new Discord.MessageEmbed()
+                .setColor(guild.embedColor)
+                .setTimestamp()
+                .setDescription(`:warning: You must be whitelisted to use the TTS Bot. Use \`.whitelist\` or \`.setign\` to whitelist.`)
+                message.channel.send(embed)
+                return;
+            }
+            
+            if(!message.member.voice.channel){
+                
+                    let embed = new Discord.MessageEmbed()
+                    .setColor(guild.embedColor)
+                    .setTimestamp()
+                    .setDescription(`:warning: You aren't in a voice channel`)
+                    message.channel.send(embed)
+                    return;
+            }
+            else if(message.guild.me.voice.channel && message.member.voice.channel.id !== message.guild.me.voice.channel.id){
+                
+                    let embed = new Discord.MessageEmbed()
+                    .setColor(guild.embedColor)
+                    .setTimestamp()
+                    .setDescription(`:warning: You aren't in the same voice channel as me`)
+                    message.channel.send(embed)
+                    return;
+            }
+            
+            else if(message.member.hasPermission("SEND_MESSAGES") && used == 0){
+                const broadcast = client.voice.createBroadcast()
+                
+                var c = client.channels.cache.get(message.member.voice.channelID)
+                c.join().then(connection=>{
+                    //console.log(args)
+                   // console.log(person)
+                    spanishTts(`${message.member.user.username} says ${args.join(" ")}`).then((res) => {
+                        message.channel.send(`:ok_hand: Playing ${args.join(" ")} as Mia`)
                         //console.log(args)
                         //console.log(args.join(" "))
                         var bufferStream = new Stream.PassThrough()
