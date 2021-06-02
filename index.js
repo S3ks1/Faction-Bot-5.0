@@ -1648,7 +1648,7 @@ client.on('message', async (message) => {
         ]
         let ingame = [
             "",
-            "**__Ingame Commands",
+            "**__Ingame Commands__**",
             "walls - Check walls",
             "buffers - Check buffers",
             "rpost - Check RPost",
