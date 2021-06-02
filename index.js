@@ -1667,20 +1667,38 @@ client.on('message', async (message) => {
         .setColor(guild.embedColor)
         .setTimestamp()
         .setDescription(":ok_hand: Sending you a list of commands")
-        message.channel.send(embed).then((msg) => {
-        message.author.send(`**__Faction Bot Commands__**
+        let msg = await message.channel.send(embed)
+        await message.author.send(`**__Faction Bot Commands__**
 
 *All of these commands MUST be ran in a guild*
-${names.join("\n")}`).then((msg) => message.author.send(names2.join("\n").then((lol) =>  message.author.send(ingame.join("\n"))))).catch((err) => {
-            console.log(err)
-            let embed = new Discord.MessageEmbed()
-            .setColor(guild.embedColor)
-            .setTimestamp()
-            .setFooter(config.settings.host)
-            .setDescription(":warning: Couldn't message you, please enable Direct Messages")
-            msg.edit(embed)
-        })
-        })
+${names.join("\n")}`).catch((err) => {
+    let embed = new Discord.MessageEmbed()
+    .setColor(guild.embedColor)
+    .setTimestamp()
+    .setFooter(config.settings.host)
+    .setDescription(":warning: Couldn't message you, please enable Direct Messages")
+    msg.edit(embed)
+})
+
+ await message.author.send(names2.join("\n")).catch((err) => {
+    let embed = new Discord.MessageEmbed()
+    .setColor(guild.embedColor)
+    .setTimestamp()
+    .setFooter(config.settings.host)
+    .setDescription(":warning: Couldn't message you, please enable Direct Messages")
+    msg.edit(embed)
+ })
+ await message.author.send(ingame.join("\n")).catch((err) => {
+    let embed = new Discord.MessageEmbed()
+    .setColor(guild.embedColor)
+    .setTimestamp()
+    .setFooter(config.settings.host)
+    .setDescription(":warning: Couldn't message you, please enable Direct Messages")
+    msg.edit(embed)
+})
+
+        
+    
     }
     if(commandName === "eval"){
         const code = args.join(" ")
