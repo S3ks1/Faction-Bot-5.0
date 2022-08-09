@@ -1,18 +1,18 @@
 const config = {}
 
 config.settings = {
-    username: "klingenfelt+14@gmail.com",
-    password: "Hornet41324132!",
-    host: "pvp.thearchon.net",
+    username: "email",
+    password: "password",
+    host: "serverIP",
     port: 25565,
     version: "1.8.9"
 }
-config.token = "ODE5MDMzMDE1ODgzMDA1OTgy.YEgt7w.m-UiRe-5gGQ7ZZBi0FofaOVaxSs"
-config.guildID = "830511479270670356"
-config.mongoURL = "mongodb+srv://thompsongay:stfuretard@cluster0.qzho7.mongodb.net/TestDiscord?retryWrites=true&w=majority"
+config.token = "Discord Token"
+config.guildID = "Server ID"
+config.mongoURL = "Mongo connect URL"
 config.embedColor = "#0099ff"
-config.mainGuild = "830511479270670356"
-config.hubcommand = "/amber"
-config.botActivity = "Your mum"
+config.mainGuild = "Server ID"
+config.hubcommand = "Connect Command"
+config.botActivity = "Bot Activity"
 
 module.exports = config
