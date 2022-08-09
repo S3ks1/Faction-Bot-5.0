@@ -85,8 +85,8 @@ var data;
 
 var Polly = new AWS.Polly({
     region: 'us-east-1',
-    accessKeyId: 'AKIAV6TFB5FYLVNOJV7N',
-    secretAccessKey: '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'
+    accessKeyId: 'Access Key ID',
+    secretAccessKey: 'Access Key'
 });
 
 var onlineindex = 0;
@@ -2418,7 +2418,6 @@ ${names.join("\n")}`).catch((err) => {
                     .setTimestamp()
                     .setTitle(`Members of ${role.name} (${arr2.length})`)
                     .setColor(guild.embedColor)
-                //console.log(Math.ceil(nigger.length / 10))
                 if(n.length > 0){
                     embed.setDescription(n.join("\n"))
                     embed.setFooter(`Page ${Math.floor(start/10) + Math.ceil(n.length/10)}/${Math.ceil(description.length/10)}`)
